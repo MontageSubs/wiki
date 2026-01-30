@@ -1,0 +1,53 @@
+site_name: 蒙太奇字幕百科 | MontageSubs Wiki
+site_description: 一本众创、共建、同享的字幕百科。
+site_author: MontageSubs Community
+
+# 界面外观定制
+theme:
+  name: material
+  language: zh
+  # 重点：现代感的核心配置
+  features:
+    - navigation.tabs          # 顶部大类导航
+    - navigation.sections      # 侧边栏分级
+    - navigation.top           # 快速回顶
+    - navigation.tracking      # 地址栏随滚动自动更新
+    - search.suggest           # 搜索智能提示
+    - search.highlight         # 搜索关键词高亮
+    - content.code.copy        # 代码块一键复制按钮
+  
+  # 极致平衡的配色
+  palette:
+    # 日间模式
+    - scheme: default
+      primary: white
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: 切换至深色模式
+    # 深色模式
+    - scheme: slate
+      primary: grey
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: 切换至日间模式
+
+# 字体
+font:
+  text: Roboto
+  code: Roboto Mono
+
+# 插件配置
+plugins:
+  - search
+
+# 导航栏结构设计 (你可以根据实际文件增减)
+nav:
+  - 首页: index.md
+  - 核心指南: 
+    - 术语考据: terminology.md
+    - 技术标准: standards.md
+  - 工具流:
+    - 软件推荐: tools.md
+    - 自动化脚本: scripts.md
