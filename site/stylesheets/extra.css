@@ -15,32 +15,17 @@
 }
 
 /* ==========================================================================
-   2. 页眉返回首页逻辑（核心修复）
+   2. 交互与层级修正
    ========================================================================== */
-.md-header__button.md-logo {
-    display: flex;
-    align-items: center;
-    position: relative; 
-    z-index: 10;
-    width: auto;
-    margin-right: 0;
+[for="__drawer"] {
+    position: relative;
+    z-index: 100;
 }
 
-.md-header__button.md-logo::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 320px; 
-    height: 100%;
-    cursor: pointer;
-    z-index: 11;
+/* 正文 H1 标题加粗（你之前要求的样式） */
+.md-typeset h1 {
+    font-weight: 800 !important;
 }
-
-.md-header__topic {
-    cursor: pointer;
-}
-
 /* ==========================================================================
    3. 编辑对话框样式打磨
    ========================================================================== */
