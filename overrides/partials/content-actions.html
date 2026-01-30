@@ -1,21 +1,12 @@
-{% extends "partials/content-actions.html" %}
+{% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
+{% set file_path = page.file.src_uri %}
+{% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
 
-{% block edit %}
-  {% if page.edit_url %}
-    {% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
-    {% set file_path = page.file.src_uri %}
-    
-    {# 逻辑修复：处理 index.md -> Home #}
-    {% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
-    
-    {# 编辑按钮 #}
-    <a href="{{ repo_url }}/{{ wiki_page }}/_edit" title="在 Wiki 中编辑此页" class="md-content__button md-icon">
-      {% include ".icons/material/file-document-edit.svg" %}
-    </a>
-    
-    {# 历史记录按钮 #}
-    <a href="{{ repo_url }}/{{ wiki_page }}/_history" title="查看本页编辑历史" class="md-content__button md-icon">
-      {% include ".icons/material/history.svg" %}
-    </a>
-  {% endif %}
-{% endblock %}
+<nav class="md-content__articles">
+  <a href="{{ repo_url }}/{{ wiki_page }}/_edit" title="在 Wiki 中编辑此页" class="md-content__button md-icon">
+    {% include ".icons/material/file-document-edit.svg" %}
+  </a>
+  <a href="{{ repo_url }}/{{ wiki_page }}/_history" title="查看本页编辑历史" class="md-content__button md-icon">
+    {% include ".icons/material/history.svg" %}
+  </a>
+</nav>
