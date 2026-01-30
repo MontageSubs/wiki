@@ -1,0 +1,4 @@
+/* 隐藏页脚 */
+.md-footer-meta__copyright > .md-typeset {
+  display: none;
+}
