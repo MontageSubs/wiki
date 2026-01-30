@@ -69,11 +69,6 @@ markdown_extensions:
 extra_css:
   - site/stylesheets/extra.css
 
-extra:
-  translations:
-    edit.link.title: "在 Wiki 中编辑此页"
-    view.link.title: "查看本页编辑历史"
-
   social:
     - icon: fontawesome/brands/github
       link: https://montagesubs.github.io
@@ -83,6 +78,10 @@ extra:
       link: https://weibo.com/u/8358891788
     - icon: fontawesome/brands/bluesky
       link: https://bsky.app/profile/montagesubs.bsky.social
+      
+nav:
+  - 首页: index.md
+  - 新增条目: https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new
 
 copyright: |
   Copyright &copy; 2026 <a href="https://montagesubs.github.io">MontageSubs</a>
