@@ -1,5 +1,5 @@
 # MontageSubs Wiki: The Subtitling Encyclopedia
-> **From the community, by the community, for the community.**
+> ***From the community, by the community, for the community.***
 
 <div align="right">
   
