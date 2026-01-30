@@ -71,7 +71,8 @@ jobs:
             find docs -mindepth 1 -not -path 'docs/site*' -delete
             cp -r wiki_git/* docs/
             rm -rf docs/.git
-            
+
+            find docs -name "_*.md" -delete
             find docs -name "*.md" -exec sed -i -E 's/\[\[([^]|]+)\|([^]]+)\]\]/[\2](\1.md)/g' {} +
             find docs -name "*.md" -exec sed -i -E 's/\[\[([^]|]+)\]\]/[\1](\1.md)/g' {} +
             
