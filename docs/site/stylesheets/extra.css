@@ -1,3 +1,4 @@
+/* 隐藏页尾 */
 .md-copyright {
     font-size: 0;
 }
@@ -9,4 +10,17 @@
 
 .md-copyright a[href*="squidfunk.github.io"] {
     display: none;
+}
+
+/* 页眉返回首页 */
+.md-header__button.md-logo {
+    display: flex;
+    align-items: center;
+    width: auto;
+    margin-right: 0;
+}
+
+.md-header__topic {
+    pointer-events: auto;
+    cursor: pointer;
 }
