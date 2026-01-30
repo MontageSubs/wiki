@@ -1,12 +1,25 @@
-# 蒙太奇字幕组百科 — 字幕知识库
-**MontageSubs Wiki: An open encyclopedia for the subtitling world.**
+# 蒙太奇字幕百科
+**MontageSubs Wiki: The Subtitling Encyclopedia**
+
+> **一本众创、共建、同享的字幕百科。**
+> 
+> *From the community, by the community, for the community.*
+
+
+<div align="right">
+  
+ **中文 | [English](./README.en.md)**
+
+</div><br/>
+
+
 
 <div align="center">
 
-| [📖 阅读百科](https://montagesubs.github.io/wiki/) | [📝 编辑百科](https://github.com/MontageSubs/wiki/wiki) |
+| [📖 阅读百科](https://montagesubs.github.io/wiki/) | [✍️ 编辑百科](https://github.com/MontageSubs/wiki/wiki) |
 | :---: | :---: |
 
-</div>
+</div><br/>
 
 ## 简介
 
