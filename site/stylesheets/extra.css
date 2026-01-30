@@ -1,4 +1,12 @@
-/* 隐藏页脚 */
-.md-footer-meta__copyright > .md-typeset {
-  display: none;
+.md-copyright {
+    font-size: 0;
+}
+
+.md-copyright__highlight, 
+.md-copyright__highlight a {
+    font-size: 0.64rem;
+}
+
+.md-copyright a[href*="squidfunk.github.io"] {
+    display: none;
 }
