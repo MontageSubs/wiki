@@ -1,41 +1,32 @@
-/* ==========================================================================
-   1. 隐藏页尾冗余信息
-   ========================================================================== */
+/* 隐藏页脚冗余信息 */
 .md-copyright {
     font-size: 0;
 }
-.md-copyright__highlight, 
-.md-copyright__highlight a {
+.md-copyright__highlight, .md-copyright__highlight a {
     font-size: 0.64rem;
 }
-/* 隐藏 Material 主题强制显示的作者链接 */
 .md-copyright a[href*="squidfunk.github.io"] {
     display: none;
 }
 
-/* ==========================================================================
-   2. 页眉返回首页逻辑（优雅避让方案）
-   ========================================================================== */
-
-/* 桌面端：全量覆盖 Logo 到标题区域 */
+/* 桌面端页眉返回首页点击区 */
 @media screen and (min-width: 76.25em) {
     .md-header__button.md-logo {
         position: relative;
         z-index: 10;
     }
-    /* 创建透明点击层，向右覆盖标题文字 */
     .md-header__button.md-logo::after {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
-        width: 400px; /* 覆盖范围 */
+        width: 400px;
         height: 100%;
         cursor: pointer;
     }
 }
 
-/* 手机端：精准避让汉堡菜单 */
+/* 移动端页眉避让汉堡菜单逻辑 */
 @media screen and (max-width: 76.24em) {
     .md-header__button.md-logo {
         position: relative;
@@ -45,42 +36,35 @@
         content: "";
         position: absolute;
         top: 0;
-        /* 关键：向右偏移 4rem (约 64px)，空出左侧汉堡菜单点击位 */
         left: 4rem; 
         width: 280px;
         height: 100%;
         cursor: pointer;
     }
-
-    /* 提高汉堡菜单层级，确保在透明层之上 */
     [for="__drawer"] {
         position: relative;
         z-index: 100;
     }
 }
 
-/* 悬停视觉反馈 */
+/* 页眉标题悬停反馈 */
 .md-header__topic:hover {
     opacity: 0.7;
     transition: opacity 0.2s;
 }
 
-/* ==========================================================================
-   3. 正文与对话框样式打磨
-   ========================================================================== */
-
-/* 正文 H1 标题加粗 */
+/* 正文标题加粗 */
 .md-typeset h1 {
     font-weight: 800 !important;
 }
 
-/* 编辑对话框背景遮罩 */
+/* 编辑弹窗背景遮罩样式 */
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(3px);
 }
 
-/* 编辑对话框本体 */
+/* 编辑弹窗主体样式 */
 #edit-dialog {
     position: fixed;
     top: 50%;
@@ -92,7 +76,27 @@ dialog::backdrop {
     border-radius: 12px;
 }
 
-/* 弹窗打开时防止底层内容滚动 */
+/* 弹窗开启时禁用底层滚动 */
 body:has(dialog[open]) {
     overflow: hidden;
+}
+
+/* 移动端页脚版权与图标居中对齐 */
+@media screen and (max-width: 47.9375em) {
+    .md-footer-meta__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .md-copyright {
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+    }
+    .md-social {
+        padding-left: 0;
+        margin-left: 0;
+        display: flex;
+        justify-content: center;
+    }
 }
