@@ -66,7 +66,7 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://montagesubs.github.io
-    - icon: fontawesome/brands/paper-plane
+    - icon: fontawesome/solid/paper-plane
       link: https://t.me/s/MTSubs
     - icon: fontawesome/brands/weibo
       link: https://weibo.com/u/8358891788
