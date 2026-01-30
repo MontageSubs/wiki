@@ -3,7 +3,7 @@
 
 <div align="center">
 
-| [📖 阅读百科](https://montagesubs.github.io/wiki/) | [📝 编辑百科](https://github.com/montagesubs/wiki/wiki) |
+| [📖 阅读百科](https://montagesubs.github.io/wiki/) | [📝 编辑百科](https://github.com/MontageSubs/wiki/wiki) |
 | :---: | :---: |
 
 </div>
@@ -29,7 +29,7 @@
 
 ## 许可证
 本项目采用双重许可证：
-* **文档内容**：采用 [CC BY-SA 4.0](LICENSE) 许可。
+* **文档内容**：采用 [CC BY-SA 4.0](LICENSE-DOCS) 许可。
 * **代码内容**：采用 [MIT License](LICENSE-CODE) 许可。
 
 ---
