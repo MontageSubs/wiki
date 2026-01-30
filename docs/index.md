@@ -31,13 +31,3 @@
   * *推荐阅读途径，具备优化的排版样式。*
 * **协作编辑**：[https://github.com/MontageSubs/wiki/wiki](https://github.com/MontageSubs/wiki/wiki)
   * *百科的唯一编辑入口，欢迎任何贡献者直接参与编写。*
-
----
-
-<div align="center" markdown="1">
-
-**蒙太奇字幕组 (MontageSubs)**  
-“用爱发电 ❤️ Powered by love”
-
-</div>
-
