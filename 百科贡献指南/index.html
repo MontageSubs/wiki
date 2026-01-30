@@ -390,34 +390,62 @@
   
 
   <nav class="md-content__articles" style="float: right; display: flex; gap: 8px; position: relative; z-index: 10;">
-    <button onclick="document.getElementById('edit-dialog').showModal()" title="贡献与编辑" class="md-content__button md-icon" style="background: none; border: none; cursor: pointer; padding: 0; color: inherit;">
+    <button onclick="document.getElementById('edit-dialog').showModal()" title="贡献与编辑" class="md-content__button md-icon" style="background: none; border: none; cursor: pointer; padding: 0; color: var(--md-icon-fg-color);">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
     </button>
-    <a href="https://github.com/MontageSubs/wiki/wiki/百科贡献指南/_history" title="查看本页编辑历史" class="md-content__button md-icon">
+    <a href="https://github.com/MontageSubs/wiki/wiki/百科贡献指南/_history" title="查看本页编辑历史" class="md-content__button md-icon" style="color: var(--md-icon-fg-color);">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.96 4.07.04.03L9 12H6a7 7 0 0 1 7-7 7 7 0 0 1 7 7 7 7 0 0 1-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 9-9 9 9 0 0 0-9-9z"></path></svg>
     </a>
   </nav>
 
-  <dialog id="edit-dialog" style="border: none; border-radius: 12px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); width: 90%; max-width: 350px; font-family: inherit; background: var(--md-default-bg-color); color: var(--md-default-fg-color);">
-    <div style="text-align: center; margin-bottom: 16px;">
-      <h3 style="margin: 0; font-size: 1.1rem; color: var(--md-primary-fg-color);">参与百科编辑</h3>
+  <dialog id="edit-dialog" style="border: 1px solid var(--md-divider-color); border-radius: 12px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 90%; max-width: 360px; font-family: inherit; background: var(--md-default-bg-color); color: var(--md-default-fg-color);">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h3 style="margin: 0; font-size: 1.2rem; color: var(--md-default-fg-color); font-weight: 700;">参与百科编辑</h3>
     </div>
     
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      <a href="https://github.com/MontageSubs/wiki/wiki/百科贡献指南/_edit" style="background: var(--md-primary-fg-color); color: var(--md-primary-bg-color); padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.85rem; font-weight: bold;">已登录 GitHub？立即编辑</a>
-      <a href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/%E7%99%BE%E7%A7%91%E8%B4%A1%E7%8C%AE%E6%8C%87%E5%8D%97/_edit" style="border: 1px solid var(--md-divider-color); padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; color: var(--md-default-fg-color); font-size: 0.85rem;">未登录？点此登录后编辑</a>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a href="https://github.com/MontageSubs/wiki/wiki/百科贡献指南/_edit" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15);">已登录 GitHub？立即编辑</a>
+      
+      <a href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/%E7%99%BE%E7%A7%91%E8%B4%A1%E7%8C%AE%E6%8C%87%E5%8D%97/_edit" class="gh-btn-secondary" style="padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid var(--md-divider-color);">未登录？点此登录后编辑</a>
     </div>
 
-    <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--md-divider-color);">
-      <ul style="font-size: 0.75rem; padding-left: 18px; line-height: 1.8; margin: 0;">
-        <li><a href="https://github.com/MontageSubs/wiki/wiki/百科语法指南" style="color: var(--md-typeset-a-color);">百科语法指南</a></li>
-        <li><a href="https://github.com/MontageSubs/wiki/wiki/GitHub-帮助指南" style="color: var(--md-typeset-a-color);">GitHub 帮助指南</a></li>
-        <li><a href="https://github.com/MontageSubs/wiki/wiki/贡献指南" style="color: var(--md-typeset-a-color);">贡献指南</a></li>
+    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--md-divider-color);">
+      <ul style="font-size: 0.8rem; padding-left: 1.2rem; line-height: 2; margin: 0;">
+        <li><a href="https://github.com/MontageSubs/wiki/wiki/百科语法指南" style="color: var(--md-typeset-a-color); text-decoration: none;">百科语法指南</a></li>
+        <li><a href="https://github.com/MontageSubs/wiki/wiki/GitHub-帮助指南" style="color: var(--md-typeset-a-color); text-decoration: none;">GitHub 帮助指南</a></li>
+        <li><a href="https://github.com/MontageSubs/wiki/wiki/贡献指南" style="color: var(--md-typeset-a-color); text-decoration: none;">贡献指南</a></li>
       </ul>
     </div>
 
-    <button onclick="this.closest('dialog').close()" style="margin-top: 16px; width: 100%; padding: 10px; border: none; background: var(--md-code-bg-color); color: var(--md-default-fg-color); cursor: pointer; border-radius: 6px; font-size: 0.8rem;">关闭窗口</button>
+    <button onclick="this.closest('dialog').close()" class="gh-btn-secondary" style="margin-top: 20px; width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color);">关闭窗口</button>
   </dialog>
+
+  <style>
+    /* 绿色主按钮：文字白 */
+    .gh-btn-primary { background-color: #1f883d; }
+    .gh-btn-primary:hover { background-color: #1a7a35; }
+    [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
+    [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
+
+    /* 灰色次要按钮：文字随主题变色 */
+    .gh-btn-secondary { 
+      background-color: #f6f8fa; 
+      color: #24292f !important; 
+      transition: background-color 0.2s;
+    }
+    .gh-btn-secondary:hover { background-color: #f3f4f6; }
+
+    /* 深色模式下的灰色按钮 */
+    [data-md-color-scheme="slate"] .gh-btn-secondary { 
+      background-color: #212830; 
+      color: #adbac7 !important; 
+      border-color: #444c56;
+    }
+    [data-md-color-scheme="slate"] .gh-btn-secondary:hover { 
+      background-color: #262c36; 
+      border-color: #768390;
+    }
+  </style>
 
   
                   
