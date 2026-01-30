@@ -1,0 +1,45 @@
+name: "Deploy: Encyclopedia Static Site"
+
+on:
+  push:
+    branches:
+      - infra          # 仅在 infra 分支有代码变更时触发
+    paths:
+      - 'mkdocs.yml'   # 只有当配置文件、文档或脚本变动时才运行，忽略其他杂项
+      - 'docs/**'
+  workflow_dispatch:   # 保留手动触发按钮
+
+# 并发控制：如果前一个部署还没跑完又触发了新的，自动取消旧的，确保最后一次部署生效
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy (MkDocs Material)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: infra  # 显式锁定 infra 分支
+          fetch-depth: 0 # 获取完整历史
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+          cache: 'pip' # 开启缓存，加快后续运行速度
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install mkdocs-material
+
+      - name: Build and Push to GitHub Pages
+        run: |
+          # --clean 会清理过时的旧文件，确保部署环境纯净
+          python -m mkdocs gh-deploy --force --clean --verbose
