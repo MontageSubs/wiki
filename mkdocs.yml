@@ -6,8 +6,8 @@ site_url: https://montagesubs.github.io/wiki/
 theme:
   name: material
   language: zh
-  logo: .site/assets/montagesubs_logo-512.jpg
-  favicon: .site/assets/favicon.ico
+  logo: site/assets/montagesubs_logo-512.jpg
+  favicon: site/assets/favicon.ico
   
   font:
     text: Roboto
@@ -63,7 +63,7 @@ markdown_extensions:
       emoji_generator: !!python/name:pymdownx.emoji.to_svg
 
 extra_css:
-  - .site/stylesheets/extra.css
+  - site/stylesheets/extra.css
 
 extra:
   social:
