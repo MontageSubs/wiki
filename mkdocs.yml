@@ -2,15 +2,11 @@ site_name: 蒙太奇字幕百科 | MontageSubs Wiki
 site_description: 一本众创、共建、同享的字幕百科。
 site_author: MontageSubs Community
 site_url: https://montagesubs.github.io/wiki/
-
-# 仓库配置：用于生成基础的编辑链接
-repo_name: 'MontageSubs/wiki'
-repo_url: 'https://github.com/MontageSubs/wiki'
-# GitHub Wiki 的编辑链接后缀是 /_edit，MkDocs 会自动拼接到每个文件名后
-edit_uri: 'wiki/' 
+edit_uri: edit/
 
 theme:
   name: material
+  custom_dir: overrides
   language: zh
   logo: site/assets/montagesubs_logo-512.jpg
   favicon: site/assets/favicon.ico
@@ -28,10 +24,7 @@ theme:
     - search.highlight
     - content.code.copy
     - content.tooltips
-    # 启用内容操作按钮
-    - content.action.edit
-    - content.action.view
-    
+
   hide:
     - footer.powered
 
@@ -76,12 +69,9 @@ extra_css:
   - site/stylesheets/extra.css
 
 extra:
-  # 自定义按钮跳转逻辑
-  # MkDocs Material 支持覆盖内置按钮的链接
-  # 我们利用 translations 改变按钮的含义
   translations:
     edit.link.title: "在 Wiki 中编辑此页"
-    view.link.title: "查看此页历史"
+    view.link.title: "查看本页编辑历史"
 
   social:
     - icon: fontawesome/brands/github
