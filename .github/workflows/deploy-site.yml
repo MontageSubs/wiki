@@ -32,7 +32,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
-          cache: 'pip' # 开启缓存，显著加快后续构建速度
 
       - name: Install Dependencies
         run: |
