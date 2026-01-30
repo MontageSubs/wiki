@@ -467,9 +467,9 @@
     </div>
     
     <div style="display: flex; flex-direction: column; gap: 10px;">
-      <a href="https://github.com/MontageSubs/wiki/wiki/Home/_edit" class="gh-upgrade-btn" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15);">已登录 GitHub？立即编辑</a>
+      <a href="https://github.com/MontageSubs/wiki/wiki/Home/_edit" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15);">已登录 GitHub？立即编辑</a>
       
-      <a href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/Home/_edit" style="border: 1px solid var(--md-divider-color); background: transparent; padding: 12px; border-radius: 8px; text-align: center; text-decoration: none; color: var(--md-default-fg-color); font-size: 0.9rem; display: block;">未登录？点此登录后编辑</a>
+      <a href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/Home/_edit" class="gh-btn-secondary" style="padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid var(--md-divider-color);">未登录？点此登录后编辑</a>
     </div>
 
     <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--md-divider-color);">
@@ -484,11 +484,29 @@
   </dialog>
 
   <style>
-    .gh-upgrade-btn { background-color: #1f883d; }
-    .gh-upgrade-btn:hover { background-color: #1a7a35; }
+    /* 按钮 1: GitHub 绿色风格 */
+    .gh-btn-primary { background-color: #1f883d; }
+    .gh-btn-primary:hover { background-color: #1a7a35; }
+    [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
+    [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
 
-    [data-md-color-scheme="slate"] .gh-upgrade-btn { background-color: #238636; }
-    [data-md-color-scheme="slate"] .gh-upgrade-btn:hover { background-color: #2ea043; }
+    /* 按钮 2: GitHub 灰色风格 */
+    .gh-btn-secondary { 
+      background-color: #f6f8fa; 
+      color: #24292f !important; 
+    }
+    .gh-btn-secondary:hover { background-color: #f3f4f6; }
+
+    /* 按钮 2: 深色模式适配 */
+    [data-md-color-scheme="slate"] .gh-btn-secondary { 
+      background-color: #212830; 
+      color: #adbac7 !important; 
+      border-color: #444c56;
+    }
+    [data-md-color-scheme="slate"] .gh-btn-secondary:hover { 
+      background-color: #262c36; 
+      border-color: #768390;
+    }
   </style>
 
   
