@@ -19,9 +19,11 @@
 
 
 ## Welcome to Our Knowledge Hub
-Welcome! This is a vibrant, open-source home for everything related to the art and craft of subtitling. Whether you are a seasoned translator or just starting your journey, this encyclopedia is built to support our collective growth and share our passion for audiovisual translation.
+Welcome to our open-source corner! This is a collaborative playground dedicated to the craft of subtitling. We’re here to gather scattered tips, technical deep-dives, and artistic nuances into a solid, community-driven knowledge base.
 
-**Note on Language**: To best serve our local creators, this is a **Chinese-language encyclopedia**. We are dedicated to building a professional and accessible resource for the Chinese-speaking subtitling community.
+As a hub rooted in the Chinese-speaking subtitling scene, we focus on building a professional ecosystem for local creators. Whether you’re here to learn the ropes or share your own “secret sauce,” your contributions help us drive the evolution of Chinese subtitling standards together. Let’s build a better, more vibrant community, one frame at a time!
+
+
 
 ## Why We Are Building This
 Subtitling is more than just text on a screen—it’s a bridge between cultures. Our mission is to:
