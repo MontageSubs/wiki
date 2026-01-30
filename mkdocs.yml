@@ -7,7 +7,7 @@ edit_uri: https://github.com/MontageSubs/wiki/wiki/
 
 theme:
   name: material
-  custom_dir: overrides
+  custom_dir: docs/site/overrides
   language: zh
   logo: site/assets/montagesubs_logo-512.jpg
   favicon: site/assets/favicon.ico
