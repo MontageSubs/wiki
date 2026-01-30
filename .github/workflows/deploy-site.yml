@@ -3,13 +3,13 @@ name: "Deploy: Encyclopedia Static Site"
 on:
   push:
     branches:
-      - infra          # 仅在 infra 分支有代码变更时触发
+      - infra          # 监听 infra 分支变动
     paths:
-      - 'mkdocs.yml'   # 只有当配置文件、文档或脚本变动时才运行，忽略其他杂项
-      - 'docs/**'
-  workflow_dispatch:   # 保留手动触发按钮
+      - 'mkdocs.yml'   # 当配置文件修改时触发
+      - 'docs/**'      # 当文档内容修改时触发
+  workflow_dispatch:   # 允许手动触发
 
-# 并发控制：如果前一个部署还没跑完又触发了新的，自动取消旧的，确保最后一次部署生效
+# 并发控制：防止多个构建任务冲突
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -25,21 +25,27 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: infra  # 显式锁定 infra 分支
-          fetch-depth: 0 # 获取完整历史
+          ref: infra
+          fetch-depth: 0 # 获取完整历史以生成“最后更新时间”
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.x
-          cache: 'pip' # 开启缓存，加快后续运行速度
+          cache: 'pip' # 开启缓存，显著加快后续构建速度
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
+          # 安装 Material 主题 (已包含 pymdown-extensions 等核心扩展)
           pip install mkdocs-material
+          
+          # 如果你在 mkdocs.yml 的 plugins 中启用了 git-revision-date-localized
+          # 请取消下面这行的注释：
+          # pip install mkdocs-git-revision-date-localized-plugin
 
       - name: Build and Push to GitHub Pages
         run: |
-          # --clean 会清理过时的旧文件，确保部署环境纯净
+          # --clean: 清理旧文件
+          # --verbose: 输出详细日志方便调试
           python -m mkdocs gh-deploy --force --clean --verbose
