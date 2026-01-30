@@ -1,27 +1,30 @@
 site_name: 蒙太奇字幕百科 | MontageSubs Wiki
 site_description: 一本众创、共建、同享的字幕百科。
 site_author: MontageSubs Community
-site_url: https://montagesubs.github.io/wiki/  # 建议替换为你的实际 Pages 网址
+site_url: https://montagesubs.github.io/wiki/
 
-# 界面外观定制
 theme:
   name: material
+  language: zh
   logo: assets/montagesubs_logo-512.jpg
   favicon: assets/favicon.png
-  language: zh
+  
+  font:
+    text: Roboto
+    code: Roboto Mono
+
   features:
-    - navigation.tabs          # 顶部大类导航
-    - navigation.sections      # 侧边栏分级
-    - navigation.top           # 快速回顶
-    - navigation.tracking      # 地址栏随滚动自动更新
-    - search.suggest           # 搜索智能提示
-    - search.highlight         # 搜索关键词高亮
-    - content.code.copy        # 代码块一键复制
-    - content.tooltips         # 提示框锚点
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tooltips
   hide:
     - footer.powered
 
-  # 极致平衡的配色 - 自动适配系统黑夜模式
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
@@ -42,31 +45,23 @@ theme:
         icon: material/weather-night
         name: 切换至日间模式
 
-# 字体配置
-font:
-  text: Roboto
-  code: Roboto Mono
-
-# 核心插件
 plugins:
   - search
 
-# Markdown 语法扩展（功能增强核心）
 markdown_extensions:
-  - md_in_html          # 允许在 HTML 标签内写 Markdown (需配合 markdown="1")
-  - admonition          # 提示框 (!!! info "title")
-  - footnotes           # 维基百科式参考资料/脚注 ([^1])
-  - attr_list           # 允许给元素添加 CSS 类
-  - pymdownx.details    # 折叠块 (??? note "title")
-  - pymdownx.superfences # 支持嵌套代码块
-  - pymdownx.magiclink  # 自动将 URL 转为可点击链接
-  - pymdownx.tasklist:  # 任务清单 (- [x])
+  - md_in_html
+  - admonition
+  - footnotes
+  - attr_list
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.magiclink
+  - pymdownx.tasklist:
       custom_checkbox: true
-  - pymdownx.emoji:     # 表情符号支持 (:smile:)
+  - pymdownx.emoji:
       emoji_index: !!python/name:pymdownx.emoji.twemoji
       emoji_generator: !!python/name:pymdownx.emoji.to_svg
 
-# 自定义页脚与社媒信息
 extra:
   social:
     - icon: fontawesome/brands/github
@@ -75,17 +70,8 @@ extra:
       link: https://t.me/s/MTSubs
     - icon: fontawesome/brands/weibo
       link: https://weibo.com/u/8358891788
-    - icon: fontawesome/solid/bluesky
+    - icon: fontawesome/brands/bluesky
       link: https://bsky.app/profile/montagesubs.bsky.social
 
-# 版权声明
 copyright: |
   Copyright &copy; 2026 <a href="https://montagesubs.github.io">MontageSubs</a>
-
-# 导航栏设置（当前保持注释状态，启用全自动扫描模式）
-# nav:
-#   - 首页: index.md
-#   - 核心指南: 
-#       - 术语考据: terminology.md
-#   - 工具流:
-#       - 软件推荐: tools.md
