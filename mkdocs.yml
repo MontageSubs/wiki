@@ -1,12 +1,12 @@
 site_name: 蒙太奇字幕百科 | MontageSubs Wiki
 site_description: 一本众创、共建、同享的字幕百科。
 site_author: MontageSubs Community
+site_url: https://montagesubs.github.io/wiki/  # 建议替换为你的实际 Pages 网址
 
 # 界面外观定制
 theme:
   name: material
   language: zh
-  # 重点：现代感的核心配置
   features:
     - navigation.tabs          # 顶部大类导航
     - navigation.sections      # 侧边栏分级
@@ -14,40 +14,75 @@ theme:
     - navigation.tracking      # 地址栏随滚动自动更新
     - search.suggest           # 搜索智能提示
     - search.highlight         # 搜索关键词高亮
-    - content.code.copy        # 代码块一键复制按钮
-  
-  # 极致平衡的配色
+    - content.code.copy        # 代码块一键复制
+    - content.tooltips         # 提示框锚点
+
+  # 极致平衡的配色 - 自动适配系统黑夜模式
   palette:
-    # 日间模式
-    - scheme: default
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: 跟随系统模式
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: white
       accent: indigo
       toggle:
         icon: material/weather-sunny
         name: 切换至深色模式
-    # 深色模式
-    - scheme: slate
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       primary: grey
       accent: indigo
       toggle:
         icon: material/weather-night
         name: 切换至日间模式
 
-# 字体
+# 字体配置
 font:
   text: Roboto
   code: Roboto Mono
 
-# 插件配置
+# 核心插件
 plugins:
   - search
 
-# 导航栏结构设计 (你可以根据实际文件增减)
-nav:
-  - 首页: index.md
-  - 核心指南: 
-    - 术语考据: terminology.md
-    - 技术标准: standards.md
-  - 工具流:
-    - 软件推荐: tools.md
-    - 自动化脚本: scripts.md
+# Markdown 语法扩展（功能增强核心）
+markdown_extensions:
+  - md_in_html          # 允许在 HTML 标签内写 Markdown (需配合 markdown="1")
+  - admonition          # 提示框 (!!! info "title")
+  - footnotes           # 维基百科式参考资料/脚注 ([^1])
+  - attr_list           # 允许给元素添加 CSS 类
+  - pymdownx.details    # 折叠块 (??? note "title")
+  - pymdownx.superfences # 支持嵌套代码块
+  - pymdownx.magiclink  # 自动将 URL 转为可点击链接
+  - pymdownx.tasklist:  # 任务清单 (- [x])
+      custom_checkbox: true
+  - pymdownx.emoji:     # 表情符号支持 (:smile:)
+      emoji_index: !!python/name:pymdownx.emoji.twemoji
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+
+# 自定义页脚与社媒信息
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/montagesubs
+    - icon: fontawesome/brands/bilibili
+      link: https://space.bilibili.com/你的UID  # 请修改
+    - icon: fontawesome/solid/paper-plane
+      link: https://t.me/your_channel          # 请修改
+    - icon: fontawesome/brands/weibo
+      link: https://weibo.com/u/your_id        # 请修改
+
+# 版权声明
+copyright: |
+  Copyright &copy; 2026 <a href="https://github.com/montagesubs">MontageSubs</a> - 
+  “用爱发电 ❤️ Powered by love”
+
+# 导航栏设置（当前保持注释状态，启用全自动扫描模式）
+# nav:
+#   - 首页: index.md
+#   - 核心指南: 
+#       - 术语考据: terminology.md
+#   - 工具流:
+#       - 软件推荐: tools.md
