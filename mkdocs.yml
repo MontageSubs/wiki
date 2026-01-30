@@ -6,6 +6,8 @@ site_url: https://montagesubs.github.io/wiki/  # 建议替换为你的实际 Pag
 # 界面外观定制
 theme:
   name: material
+  logo: assets/montagesubs_logo-512.jpg
+  favicon: assets/favicon.png
   language: zh
   features:
     - navigation.tabs          # 顶部大类导航
@@ -16,6 +18,8 @@ theme:
     - search.highlight         # 搜索关键词高亮
     - content.code.copy        # 代码块一键复制
     - content.tooltips         # 提示框锚点
+  hide:
+    - footer.powered
 
   # 极致平衡的配色 - 自动适配系统黑夜模式
   palette:
@@ -66,18 +70,17 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/montagesubs
-    - icon: fontawesome/brands/bilibili
-      link: https://space.bilibili.com/你的UID  # 请修改
-    - icon: fontawesome/solid/paper-plane
-      link: https://t.me/your_channel          # 请修改
+      link: https://montagesubs.github.io
+    - icon: fontawesome/brands/paper-plane
+      link: https://t.me/s/MTSubs
     - icon: fontawesome/brands/weibo
-      link: https://weibo.com/u/your_id        # 请修改
+      link: https://weibo.com/u/8358891788
+    - icon: fontawesome/solid/bluesky
+      link: https://bsky.app/profile/montagesubs.bsky.social
 
 # 版权声明
 copyright: |
-  Copyright &copy; 2026 <a href="https://github.com/montagesubs">MontageSubs</a> - 
-  “用爱发电 ❤️ Powered by love”
+  Copyright &copy; 2026 <a href="https://montagesubs.github.io">MontageSubs</a>
 
 # 导航栏设置（当前保持注释状态，启用全自动扫描模式）
 # nav:
