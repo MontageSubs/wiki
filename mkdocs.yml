@@ -63,6 +63,7 @@ plugins:
       lang:
         - en
         - zh
+      prebuild_index: true
       separator: '[\s\-\.]+'
 # ==========================================================================
 # 4. Markdown 扩展增强
