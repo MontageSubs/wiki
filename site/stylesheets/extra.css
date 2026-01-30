@@ -1,4 +1,6 @@
-/* 隐藏页尾 */
+/* ==========================================================================
+   1. 隐藏页尾冗余信息
+   ========================================================================== */
 .md-copyright {
     font-size: 0;
 }
@@ -12,20 +14,36 @@
     display: none;
 }
 
-/* 页眉返回首页 */
+/* ==========================================================================
+   2. 页眉返回首页逻辑（核心修复）
+   ========================================================================== */
 .md-header__button.md-logo {
     display: flex;
     align-items: center;
+    position: relative; 
+    z-index: 10;
     width: auto;
     margin-right: 0;
 }
 
+.md-header__button.md-logo::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 320px; 
+    height: 100%;
+    cursor: pointer;
+    z-index: 11;
+}
+
 .md-header__topic {
-    pointer-events: auto;
     cursor: pointer;
 }
 
-/* 编辑按钮 */
+/* ==========================================================================
+   3. 编辑对话框样式打磨
+   ========================================================================== */
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(3px);
@@ -37,4 +55,10 @@ dialog::backdrop {
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
+    border: 1px solid var(--md-divider-color); 
+    outline: none;
+}
+
+body:has(dialog[open]) {
+    overflow: hidden;
 }
