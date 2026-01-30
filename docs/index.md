@@ -25,7 +25,7 @@
 
 ---
 
-<div align="center">
+<div align="center" markdown="1">
 
 **蒙太奇字幕组 (MontageSubs)**  
 “用爱发电 ❤️ Powered by love”
