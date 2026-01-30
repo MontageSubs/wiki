@@ -2,7 +2,8 @@ site_name: 蒙太奇字幕百科 | MontageSubs Wiki
 site_description: 一本众创、共建、同享的字幕百科。
 site_author: MontageSubs Community
 site_url: https://montagesubs.github.io/wiki/
-edit_uri: edit/
+
+edit_uri: https://github.com/MontageSubs/wiki/wiki/
 
 theme:
   name: material
