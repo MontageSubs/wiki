@@ -9,6 +9,11 @@
   font-weight: 800 !important;
 }
 
+/* 增加正文与页脚之间的留白间距 */
+.md-main__inner {
+  margin-bottom: 4rem !important;
+}
+
 /* --- 2. 页眉交互逻辑 --- */
 
 /* 桌面端页眉返回首页点击区 */
