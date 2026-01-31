@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {# 1. 页脚引用 #}
@@ -9,18 +8,13 @@
 {# 2. 内容引用 #}
 {% block content %}
   
-  {# 引用编辑按钮与弹窗逻辑 #}
+  {# 引用右上角编辑按钮及弹窗 #}
   {% include "partials/actions.html" %}
 
-  {# 渲染标题 #}
-  {% if not page.meta.hide_title %}
-    <h1>{{ page.title | default(site_name) }}</h1>
-  {% endif %}
-
-  {# 贡献者信息 #}
+  {# 引用最后贡献者头像组件（它包含在标题下方的逻辑） #}
   {% include "partials/contributors.html" %}
 
-  {# 渲染正文 #}
+  {# 渲染正文：这会渲染 Markdown 里的 H1 标题和所有内容 #}
   {{ super() }}
 
 {% endblock %}
