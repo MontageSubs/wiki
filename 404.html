@@ -357,97 +357,86 @@
               <article class="md-content__inner md-typeset">
                 
 <article class="md-content__inner md-typeset" style="text-align: center; margin-top: 4rem; max-width: 100%; padding: 0 1rem;">
-    <h1 style="font-weight: 800; margin-bottom: 1.5rem;">404 - 此条目尚不存在</h1>
+    <h1 style="font-weight: 800; margin-bottom: 2rem;">404 - 此条目尚不存在</h1>
     
-    <div id="type-wrapper" style="display: inline-block; text-align: left; position: relative; min-height: 100px; margin-bottom: 2rem;">
-        <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6; white-space: nowrap;">字幕始于空白的轴线，百科成于点滴的积累。</p>
-        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color); margin: 0; white-space: nowrap;">何不亲手填补这块空白？</p>
+    <div id="typewriter-box" style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 2.5rem;">
+        <p id="line-1" class="type-line" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; line-height: 1.6;">字幕始于空白的轴线，百科成于点滴的积累。</p>
+        <p id="line-2" class="type-line" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color); margin: 0;">何不亲手填补这块空白？</p>
         <span id="cursor"></span>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-      <a id="gh-create-btn" href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15); width: 280px;">
-        使用 GitHub 创建此条目
-      </a>
-      <a href="/wiki/." class="gh-btn-secondary" style="padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); text-align: center; text-decoration: none; display: block; width: 280px;">
-        返回首页
-      </a>
+      <a id="gh-create-btn" href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new" class="gh-btn-primary">使用 GitHub 创建此条目</a>
+      <a href="/wiki/." class="gh-btn-secondary">返回首页</a>
     </div>
 </article>
 
 <style>
-    /* 按钮样式保持不变 */
-    .gh-btn-primary { background-color: #1f883d; }
+    /* 样式抽离：确保 HTML 结构优雅 */
+    .type-line { 
+        display: inline-block; 
+        text-align: left; 
+        white-space: nowrap; 
+        position: relative;
+        min-height: 1.5em;
+    }
+    .gh-btn-primary, .gh-btn-secondary {
+        width: 280px; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; 
+        font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15);
+    }
+    .gh-btn-primary { background-color: #1f883d; color: #ffffff !important; }
     .gh-btn-primary:hover { background-color: #1a7a35; }
     [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
-    [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
     .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; }
     [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
     
     #cursor {
-      display: inline-block;
-      width: 2px;
-      height: 1.1em;
-      background-color: var(--md-default-fg-color);
-      vertical-align: middle;
-      margin-left: 4px;
-      animation: blink 0.8s infinite;
-      visibility: hidden;
+      display: inline-block; width: 2px; height: 1.1em; background-color: var(--md-default-fg-color);
+      vertical-align: middle; margin-left: 4px; animation: blink 0.8s infinite; visibility: hidden;
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 </style>
 
 <script>
     (function() {
-      // 1. 链接重定向逻辑
-      var pageName = window.location.pathname.split('/').filter(Boolean).pop() || "";
+      // 1. URL 处理
+      const pageName = window.location.pathname.split('/').filter(Boolean).pop() || "";
       if (pageName && pageName !== "wiki") {
-        var targetUrl = "https://github.com/MontageSubs/wiki/wiki/" + pageName;
-        document.getElementById('gh-create-btn').href = "https://github.com/login?return_to=" + encodeURIComponent(targetUrl);
+        const targetUrl = `https://github.com/MontageSubs/wiki/wiki/${pageName}`;
+        document.getElementById('gh-create-btn').href = `https://github.com/login?return_to=${encodeURIComponent(targetUrl)}`;
       }
 
-      // 2. 动态宽度锁定逻辑
-      var wrapper = document.getElementById('type-wrapper');
-      var l1 = document.getElementById('type-line-1');
-      var l2 = document.getElementById('type-line-2');
-      var cur = document.getElementById('cursor');
+      // 2. 键入逻辑封装
+      const cur = document.getElementById('cursor');
+      const lines = [document.getElementById('line-1'), document.getElementById('line-2')];
+      const content = lines.map(el => {
+        // 核心：测量并锁定每一行的独立宽度
+        el.style.width = el.offsetWidth + 'px';
+        const text = el.textContent.trim();
+        el.textContent = '';
+        return text;
+      });
 
-      // 核心：在清空前获取两行中较宽的那一个，并锁定容器宽度
-      var finalWidth = wrapper.offsetWidth;
-      wrapper.style.width = finalWidth + 'px';
+      async function typeEffect(idx) {
+        if (idx >= lines.length) return;
+        
+        const el = lines[idx];
+        const text = content[idx];
+        el.appendChild(cur);
+        cur.style.visibility = 'visible';
 
-      var txt1 = l1.textContent.trim();
-      var txt2 = l2.textContent.trim();
-
-      // 清空准备打字
-      l1.textContent = '';
-      l2.textContent = '';
-      l1.appendChild(cur);
-      cur.style.visibility = 'visible';
-
-      function typeWriter(element, text, speed, callback) {
-        var i = 0;
-        function type() {
-          if (i < text.length) {
-            element.insertBefore(document.createTextNode(text.charAt(i)), cur);
-            i++;
-            setTimeout(type, speed);
-          } else if (callback) {
-            callback();
-          }
+        for (let char of text) {
+          el.insertBefore(document.createTextNode(char), cur);
+          // 拟人化停顿：遇到标点符号多等一会儿
+          let delay = /[，。？！,.?!]/.test(char) ? 450 : 70;
+          await new Promise(r => setTimeout(r, delay));
         }
-        type();
+        
+        setTimeout(() => typeEffect(idx + 1), 400); // 换行停顿
       }
 
-      // 3. 启动动画
-      setTimeout(function() {
-        typeWriter(l1, txt1, 60, function() {
-          setTimeout(function() {
-            l2.appendChild(cur); // 光标跳到第二行
-            typeWriter(l2, txt2, 90);
-          }, 400);
-        });
-      }, 300);
+      // 启动
+      setTimeout(() => typeEffect(0), 500);
     })();
 </script>
 
