@@ -356,27 +356,27 @@
               
               <article class="md-content__inner md-typeset">
                 
-<article class="md-content__inner md-typeset" style="text-align: center; margin-top: 4rem; max-width: 450px; margin-left: auto; margin-right: auto;">
+<article class="md-content__inner md-typeset" style="text-align: center; margin-top: 4rem; max-width: 100%; padding: 0 1rem;">
     <h1 style="font-weight: 800; margin-bottom: 1.5rem;">404 - 此条目尚不存在</h1>
     
-    <div style="min-height: 100px; margin-bottom: 2rem; text-align: left; display: inline-block; width: auto; max-width: 100%;">
-        <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6; min-height: 1.6em;">字幕始于空白的轴线，百科成于点滴的积累。</p>
-        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color); min-height: 1.5em; margin: 0;">何不亲手填补这块空白？</p>
+    <div id="type-wrapper" style="display: inline-block; text-align: left; position: relative; min-height: 100px; margin-bottom: 2rem;">
+        <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6; white-space: nowrap;">字幕始于空白的轴线，百科成于点滴的积累。</p>
+        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color); margin: 0; white-space: nowrap;">何不亲手填补这块空白？</p>
         <span id="cursor"></span>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-      <a id="gh-create-btn" href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15); width: 100%; max-width: 300px;">
+      <a id="gh-create-btn" href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15); width: 280px;">
         使用 GitHub 创建此条目
       </a>
-      <a href="/wiki/." class="gh-btn-secondary" style="padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); text-align: center; text-decoration: none; display: block; width: 100%; max-width: 300px;">
+      <a href="/wiki/." class="gh-btn-secondary" style="padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); text-align: center; text-decoration: none; display: block; width: 280px;">
         返回首页
       </a>
     </div>
 </article>
 
 <style>
-    /* 样式对齐 */
+    /* 按钮样式保持不变 */
     .gh-btn-primary { background-color: #1f883d; }
     .gh-btn-primary:hover { background-color: #1a7a35; }
     [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
@@ -384,14 +384,13 @@
     .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; }
     [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
     
-    /* 自适应光标 */
     #cursor {
       display: inline-block;
       width: 2px;
-      height: 1em;
-      vertical-align: middle;
-      margin-left: 3px;
+      height: 1.1em;
       background-color: var(--md-default-fg-color);
+      vertical-align: middle;
+      margin-left: 4px;
       animation: blink 0.8s infinite;
       visibility: hidden;
     }
@@ -400,51 +399,52 @@
 
 <script>
     (function() {
-      // 1. 动态 URL
-      var currentPath = window.location.pathname;
-      var pathSegments = currentPath.split('/').filter(Boolean);
-      var pageName = pathSegments.pop() || "";
+      // 1. 链接重定向逻辑
+      var pageName = window.location.pathname.split('/').filter(Boolean).pop() || "";
       if (pageName && pageName !== "wiki") {
         var targetUrl = "https://github.com/MontageSubs/wiki/wiki/" + pageName;
         document.getElementById('gh-create-btn').href = "https://github.com/login?return_to=" + encodeURIComponent(targetUrl);
       }
 
-      // 2. 键入动画核心逻辑
+      // 2. 动态宽度锁定逻辑
+      var wrapper = document.getElementById('type-wrapper');
       var l1 = document.getElementById('type-line-1');
       var l2 = document.getElementById('type-line-2');
       var cur = document.getElementById('cursor');
 
-      var txt1 = l1.textContent.trim();
-      var txt2 = l2.textContent.replace('|', '').trim();
+      // 核心：在清空前获取两行中较宽的那一个，并锁定容器宽度
+      var finalWidth = wrapper.offsetWidth;
+      wrapper.style.width = finalWidth + 'px';
 
-      // 初始化：清空并挂载光标到第一行
+      var txt1 = l1.textContent.trim();
+      var txt2 = l2.textContent.trim();
+
+      // 清空准备打字
       l1.textContent = '';
       l2.textContent = '';
       l1.appendChild(cur);
       cur.style.visibility = 'visible';
 
-      function typeEffect(element, text, speed, callback) {
+      function typeWriter(element, text, speed, callback) {
         var i = 0;
-        function step() {
+        function type() {
           if (i < text.length) {
-            // 始终插在光标前面
             element.insertBefore(document.createTextNode(text.charAt(i)), cur);
             i++;
-            setTimeout(step, speed);
+            setTimeout(type, speed);
           } else if (callback) {
             callback();
           }
         }
-        step();
+        type();
       }
 
-      // 执行序列：打完第一行 -> 移动光标 -> 打第二行
+      // 3. 启动动画
       setTimeout(function() {
-        typeEffect(l1, txt1, 60, function() {
+        typeWriter(l1, txt1, 60, function() {
           setTimeout(function() {
-            // 关键：将光标从第一行末尾移动到第二行开头
-            l2.appendChild(cur); 
-            typeEffect(l2, txt2, 90);
+            l2.appendChild(cur); // 光标跳到第二行
+            typeWriter(l2, txt2, 90);
           }, 400);
         });
       }, 300);
