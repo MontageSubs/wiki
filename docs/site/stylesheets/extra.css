@@ -119,13 +119,13 @@ body:has(dialog[open]) {
 
 
 /* ============================================================
-   === FOOTER ENHANCEMENT FINAL (自定义主题适配版) ===
+   === FOOTER ENHANCEMENT FINAL (色彩对齐与阶梯间距优化版) ===
    ============================================================ */
 
 /* 1. 彻底隐藏默认元素 */
 .md-copyright { display: none !important; }
 
-/* 2. 容器与对齐：利用主题变量定义颜色 */
+/* 2. 容器基础布局 */
 .custom-footer-container {
   display: flex !important;
   justify-content: space-between !important;
@@ -134,84 +134,72 @@ body:has(dialog[open]) {
   min-height: 100px;
 }
 
+/* 3. 字体与颜色统合 [要求一] */
+/* 使用辅助色变量确保色调柔和一致，无亮色冲突 */
+.cc-license, .footer-nav, .group-name, .slogan, .nav-sep, .md-social__link {
+  color: var(--md-footer-fg-color--light) !important;
+  text-decoration: none;
+}
+
+.cc-license a { color: var(--md-typeset-a-color); }
+
+/* 字号分层 [要求二] */
+.cc-license { font-size: 13.5px; font-weight: 700; line-height: 20px; }
+.footer-nav { font-size: 11.5px; }
+.group-name { font-size: 11.5px; font-weight: 700; display: block; }
+.slogan { font-size: 9px; }
+
+/* 4. 间距逻辑 [要求二] */
 .footer-col {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 垂直拉开层次 */
-}
-
-/* 3. 字体层次：使用主题原生变量确保自动适配暗色/浅色 */
-.cc-license {
-  font-size: 13.5px; /* 略小于正文 */
-  font-weight: 700;
-  line-height: 20px; /* 匹配右侧图标高度 */
-  color: var(--md-footer-fg-color); 
-}
-
-.cc-license a { color: var(--md-typeset-a-color); text-decoration: none; }
-
-.footer-nav {
-  font-size: 11.5px; /* 明显缩小，产生第二层级 */
-  color: var(--md-footer-fg-color--light);
-}
-
-.group-name {
-  font-size: 11.5px; /* 与功能导航一致，保持对称 */
-  font-weight: 700;
-  color: var(--md-footer-fg-color);
-}
-
-.slogan {
-  font-size: 9px;
-  color: var(--md-footer-fg-color--light);
-  margin-top: 2px;
-}
-
-/* 4. 右侧图标与品牌区布局：解决粘连 */
-.md-social {
-  margin: 0 !important;
-  padding: 0 !important;
-  display: flex;
-  gap: 15px;
-  height: 20px; /* 与左侧 CC 许可 line-height 严格一致 */
-  align-items: center;
-}
-
-.md-social__link {
-  width: 18px;
-  height: 18px;
-  color: var(--md-footer-fg-color--light) !important;
-}
-
-.md-social__link svg { fill: currentColor; }
-
-.brand-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px; /* 物理增加与图标行的间距，防止粘连 */
+  justify-content: space-between;
 }
 
 .left-col { align-items: flex-start; }
 .right-col { align-items: flex-end; text-align: right; }
 
-/* 5. 手机端标准对齐 [要求四] */
+/* 社交图标容器 */
+.md-social {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  gap: 15px;
+  height: 20px; /* 对齐左侧第一行高度 */
+  align-items: center;
+}
+.md-social__link { width: 18px; height: 18px; }
+.md-social__link svg { fill: currentColor; }
+
+/* 品牌签名组：使组名和口号视觉上合为一体 */
+.brand-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px; /* 最小间距：组名与口号紧贴 */
+  margin-top: 12px; /* 较大间距：区分图标行与品牌组 */
+}
+
+/* 5. 手机端标准行间距对齐 [要求三] */
 @media screen and (max-width: 47.9375em) {
   .custom-footer-container {
-    display: grid !important;
-    grid-template-columns: 1fr;
-    gap: 1.2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1.1rem !important; /* 强制所有行间距完全一致 */
     padding: 2rem 0 !important;
   }
 
+  /* 消除嵌套容器干扰 */
   .footer-col { display: contents; }
 
-  .footer-row-cc { order: 1; }
-  .footer-row-social { order: 2; display: flex; justify-content: center; }
-  .footer-row-nav { order: 3; }
-  .footer-row-brand { order: 4; }
+  .footer-row-cc { order: 1; margin: 0 !important; }
+  .footer-row-social { order: 2; margin: 0 !important; display: flex; justify-content: center; }
+  .footer-row-nav { order: 3; margin: 0 !important; }
+  .footer-row-brand { order: 4; margin: 0 !important; }
 
-  .brand-group-wrapper { margin-top: 0; }
+  /* 品牌组内部依然保持紧凑整体，不参与外部的大间距平分 */
+  .brand-group-wrapper { gap: 1px; margin-top: 0 !important; }
 }
 
 /* === FOOTER ENHANCEMENT END === */
