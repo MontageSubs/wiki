@@ -1,23 +1,24 @@
+
 {% extends "base.html" %}
 
-{# 1. 覆写页脚块 #}
+{# 1. 页脚引用 #}
 {% block footer %}
   {% include "partials/footer.html" %}
 {% endblock %}
 
-{# 2. 覆写内容块 #}
+{# 2. 内容引用 #}
 {% block content %}
-
-  {# 插入右上角编辑操作按钮及弹窗组件 #}
+  
+  {# 引用编辑按钮与弹窗逻辑 #}
   {% include "partials/actions.html" %}
 
-  {# 渲染原始标题 (如果需要强制显示标题可写在此处) #}
+  {# 渲染标题 #}
   {% if not page.meta.hide_title %}
     <h1>{{ page.title | default(site_name) }}</h1>
   {% endif %}
 
-  {# 预留位置：此处未来可以 include 贡献者组件 #}
-  {# {% include "partials/contributors.html" %} #}
+  {# 贡献者信息 #}
+  {% include "partials/contributors.html" %}
 
   {# 渲染正文 #}
   {{ super() }}
