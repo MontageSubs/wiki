@@ -38,14 +38,29 @@
 
 {# 4. 专属样式定义 #}
 <style>
+  /* 核心操作按钮 (GitHub 绿) */
   .gh-btn-primary { background-color: #1f883d; }
   .gh-btn-primary:hover { background-color: #1a7a35; }
   [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
   [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
-  .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; transition: background-color 0.2s; }
+      
+  /* 次要按钮样式 (Light Mode) */
+  .gh-btn-secondary { 
+       background-color: #f6f8fa; 
+       color: #24292f !important; 
+       transition: background-color 0.2s;
+  }
   .gh-btn-secondary:hover { background-color: #f3f4f6; }
-  [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
-  [data-md-color-scheme="slate"] .gh-btn-secondary:hover { background-color: #262c36; border-color: #768390; }
+  /* 次要按钮样式 (Dark Mode) */
+  [data-md-color-scheme="slate"] .gh-btn-secondary { 
+       background-color: #212830; 
+       color: #adbac7 !important; 
+       border-color: #444c56;
+  }
+  [data-md-color-scheme="slate"] .gh-btn-secondary:hover { 
+       background-color: #262c36; 
+       border-color: #768390;
+  }
 </style>
 
 {# 5. 交互脚本 #}
