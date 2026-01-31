@@ -16,10 +16,7 @@ theme:
   language: zh
   logo: site/assets/montagesubs_logo-512.jpg
   favicon: site/assets/favicon.ico
-  
-  font:
-    text: Roboto
-    code: Roboto Mono
+  font: false
     
   features:
     - navigation.tabs
