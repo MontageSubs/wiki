@@ -119,7 +119,7 @@ body:has(dialog[open]) {
 
 
 /* ============================================================
-   === FOOTER ENHANCEMENT FINAL (色彩对齐与阶梯间距优化版) ===
+   === FOOTER ENHANCEMENT FINAL (手机端绝对间距与交互优化) ===
    ============================================================ */
 
 /* 1. 彻底隐藏默认元素 */
@@ -134,22 +134,30 @@ body:has(dialog[open]) {
   min-height: 100px;
 }
 
-/* 3. 字体与颜色统合 [要求一] */
-/* 使用辅助色变量确保色调柔和一致，无亮色冲突 */
+/* 3. 字体、颜色与悬停效果 [要求一] */
 .cc-license, .footer-nav, .group-name, .slogan, .nav-sep, .md-social__link {
   color: var(--md-footer-fg-color--light) !important;
   text-decoration: none;
+  transition: color 0.25s; /* 平滑过渡 */
+}
+
+/* 悬停亮色反馈：统一使用主题主链接颜色 [要求一] */
+.footer-nav a:hover, 
+.group-name:hover, 
+.md-social__link:hover {
+  color: var(--md-typeset-a-color) !important;
 }
 
 .cc-license a { color: var(--md-typeset-a-color); }
+.cc-license a:hover { opacity: 0.8; }
 
-/* 字号分层 [要求二] */
+/* 字号分层 */
 .cc-license { font-size: 13.5px; font-weight: 700; line-height: 20px; }
 .footer-nav { font-size: 11.5px; }
 .group-name { font-size: 11.5px; font-weight: 700; display: block; }
 .slogan { font-size: 9px; }
 
-/* 4. 间距逻辑 [要求二] */
+/* 4. 桌面间距逻辑 */
 .footer-col {
   display: flex;
   flex-direction: column;
@@ -159,47 +167,58 @@ body:has(dialog[open]) {
 .left-col { align-items: flex-start; }
 .right-col { align-items: flex-end; text-align: right; }
 
-/* 社交图标容器 */
 .md-social {
   margin: 0 !important;
   padding: 0 !important;
   display: flex;
   gap: 15px;
-  height: 20px; /* 对齐左侧第一行高度 */
+  height: 20px;
   align-items: center;
 }
 .md-social__link { width: 18px; height: 18px; }
 .md-social__link svg { fill: currentColor; }
 
-/* 品牌签名组：使组名和口号视觉上合为一体 */
 .brand-group-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px; /* 最小间距：组名与口号紧贴 */
-  margin-top: 12px; /* 较大间距：区分图标行与品牌组 */
+  gap: 1px;
+  margin-top: 12px;
 }
 
-/* 5. 手机端标准行间距对齐 [要求三] */
+/* 5. 手机端逻辑：强制物理间距绝对相等 [要求三] */
 @media screen and (max-width: 47.9375em) {
   .custom-footer-container {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    gap: 1.1rem !important; /* 强制所有行间距完全一致 */
+    /* 使用唯一的 gap 控制行间距，确保 1-2, 2-3, 3-4 行间距物理相等 */
+    gap: 1.2rem !important; 
     padding: 2rem 0 !important;
   }
 
-  /* 消除嵌套容器干扰 */
+  /* 核心修正：取消所有子元素的默认 margin，由父级的 gap 统一接管 */
   .footer-col { display: contents; }
+  
+  .footer-row-item {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important; /* 消除行高带来的视觉偏差 */
+  }
 
-  .footer-row-cc { order: 1; margin: 0 !important; }
-  .footer-row-social { order: 2; margin: 0 !important; display: flex; justify-content: center; }
-  .footer-row-nav { order: 3; margin: 0 !important; }
-  .footer-row-brand { order: 4; margin: 0 !important; }
+  /* 社交行在手机端需要恢复弹性盒居中 */
+  .footer-row-social { display: flex !important; justify-content: center !important; }
 
-  /* 品牌组内部依然保持紧凑整体，不参与外部的大间距平分 */
-  .brand-group-wrapper { gap: 1px; margin-top: 0 !important; }
+  /* 品牌组作为整体，内部间距保持紧凑，不参与外部 gap 平分 */
+  .brand-group-wrapper { 
+    margin: 0 !important; 
+    gap: 2px !important; 
+  }
+
+  .footer-row-cc { order: 1; }
+  .footer-row-social { order: 2; }
+  .footer-row-nav { order: 3; }
+  .footer-row-brand { order: 4; }
 }
 
 /* === FOOTER ENHANCEMENT END === */
