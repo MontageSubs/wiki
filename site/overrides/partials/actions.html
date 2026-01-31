@@ -1,14 +1,13 @@
-{# 1. 计算基础变量 #}
+{# 1. 计算变量 (这里必须重新计算，因为 actions 是独立文件) #}
 {% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
 {% set file_path = page.file.src_uri %}
 {% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
-{% set target_edit_url = repo_url ~ "/" ~ wiki_page ~ "/_edit" %}
-{% set login_edit_url = "https://github.com/login?return_to=" ~ (target_edit_url | urlencode) %}
+{% set login_edit_url = "https://github.com/login?return_to=" ~ (repo_url ~ "/" ~ wiki_page ~ "/_edit" | urlencode) %}
 {% set history_url = repo_url ~ "/" ~ wiki_page ~ "/_history" %}
 
-{# 2. 导航栏：无论有没有 JS，都只渲染这一套按钮 #}
-<nav class="md-content__articles" style="float: right; display: flex; gap: 8px; position: relative; pointer-events: none;">
-  <a href="{{ login_edit_url }}" id="main-edit-btn" title="贡献与编辑" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
+{# 2. 唯一导航栏：HTML 层面永远只有这一套 #}
+<nav id="unique-action-nav" class="md-content__articles" style="float: right; display: flex; gap: 8px; position: relative; pointer-events: none;">
+  <a href="{{ login_edit_url }}" id="edit-button-trigger" title="贡献与编辑" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
   </a>
   <a href="{{ history_url }}" title="查看编辑历史" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
@@ -16,8 +15,8 @@
   </a>
 </nav>
 
-{# 3. 交互弹窗：保持原有配色方案，默认在页面中不可见 #}
-<dialog id="edit-dialog" style="border: 1px solid var(--md-divider-color); border-radius: 12px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 90%; max-width: 360px; font-family: inherit; background: var(--md-default-bg-color); color: var(--md-default-fg-color);">
+{# 3. 弹窗 #}
+<dialog id="action-dialog" style="border: 1px solid var(--md-divider-color); border-radius: 12px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 90%; max-width: 360px; font-family: inherit; background: var(--md-default-bg-color); color: var(--md-default-fg-color);">
   <div style="text-align: center; margin-bottom: 20px;">
     <h3 style="margin: 0; font-size: 1.2rem; color: var(--md-default-fg-color); font-weight: 700;">参与百科贡献</h3>
     <p style="font-size: 0.8rem; color: var(--md-default-fg-color--light); margin-top: 8px; line-height: 1.5;">一本众创、共建、同享的字幕百科</p>
@@ -32,42 +31,46 @@
       <li><a href="{{ repo_url }}/贡献指南" style="color: var(--md-typeset-a-color); text-decoration: none;">贡献指南</a></li>
     </ul>
   </div>
-  <button onclick="this.closest('dialog').close()" class="gh-btn-secondary" style="margin-top: 20px; width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); background: var(--md-default-bg-color); color: var(--md-default-fg-color);">取消</button>
+  <button id="close-dialog-btn" class="gh-btn-secondary" style="margin-top: 20px; width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); background: var(--md-default-bg-color); color: var(--md-default-fg-color);">取消</button>
 </dialog>
 
-{# 4. 专属样式定义 #}
 <style>
   .gh-btn-primary { background-color: #1f883d; }
   .gh-btn-primary:hover { background-color: #1a7a35; }
   [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
-  [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
-  .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; transition: background-color 0.2s; }
-  [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
+  .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; }
+  [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; }
 </style>
 
-{# 5. 交互脚本 (渐进增强核心) #}
+{# 4. 关键：防冲突自执行脚本 #}
 <script>
-  (function() {
-    var setup = function() {
-      var btn = document.getElementById('main-edit-btn');
-      var dialog = document.getElementById('edit-dialog');
-      if (btn && dialog) {
-        // 重置 onclick，确保即使局部加载也不会累加事件
-        btn.onclick = function(e) {
-          // 在有 JS 的情况下，阻止默认 href 跳转，改为弹出 Dialog
-          e.preventDefault();
-          dialog.showModal();
-        };
-      }
-    };
+(function() {
+  var init = function() {
+    var btn = document.getElementById('edit-button-trigger');
+    var dialog = document.getElementById('action-dialog');
+    var close = document.getElementById('close-dialog-btn');
     
-    // 立即运行一次
-    setup();
-    
-    // 适配 mkdocs-material 的 navigation.instant (局部刷新)
-    // 这是防止切换页面后弹窗失效或按钮数量异常的关键
-    if (typeof subscribe === "function") {
-      subscribe(setup);
+    // 如果这些都没找到，说明页面还没加载好，直接退出
+    if (!btn || !dialog) return;
+
+    // 强力清除旧的事件监听（防止即时加载导致的逻辑累加）
+    var newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', function(e) {
+      e.preventDefault(); // 有 JS 时拦截跳转
+      dialog.showModal();
+    });
+
+    if (close) {
+      close.onclick = function() { dialog.close(); };
     }
-  })();
-   </script>
+  };
+
+  init();
+  // 适配即时加载：当页面内容变化时重新初始化
+  if (typeof subscribe === "function") {
+    subscribe(init);
+  }
+})();
+</script>

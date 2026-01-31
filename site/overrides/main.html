@@ -5,17 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  {# 1. 定义公共变量供 actions 内部使用 #}
-  {% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
-  {% set file_path = page.file.src_uri %}
-  {% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
-  {% set target_edit_url = repo_url ~ "/" ~ wiki_page ~ "/_edit" %}
-
-  {# 2. 引入 Actions (已包含 JS 判断逻辑，不会产生重复按钮) #}
   {% include "partials/actions.html" %}
-  
-  {# 3. 引入贡献者信息 #}
-  {% include "partials/contributors.html" %}
 
   {# 4. 渲染正文 #}
   {{ super() }}
