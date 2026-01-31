@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{# 引入独立页脚文件 #}
+{% block footer %}
+  {% include "partials/footer.html" %}
+{% endblock %}
+
 {% block content %}
   {# 1. 业务逻辑变量定义 #}
   {% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
