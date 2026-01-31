@@ -90,6 +90,21 @@ markdown_extensions:
 extra_css:
   - site/stylesheets/extra.css
 
+extra:
+  social:
+    - icon: material/home
+      link: https://montagesubs.github.io
+      name: 主页
+    - icon: fontawesome/solid/paper-plane
+      link: https://t.me/s/MTSubs
+      name: Telegram 频道
+    - icon: fontawesome/brands/weibo
+      link: https://weibo.com/u/8358891788
+      name: 新浪微博
+    - icon: fontawesome/brands/github
+      link: https://github.com/MontageSubs
+      name: GitHub
+
 nav:
   - 首页: index.md
   - 新增条目: https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new
