@@ -180,7 +180,7 @@ body:has(dialog[open]) {
   display: flex; 
   flex-direction: column; 
   align-items: center; /* 确保口号相对于字幕组名称居中 */
-  gap: 0px; /* 品牌组内紧凑 */ 
+  gap: 1px; /* 品牌组内紧凑 */ 
   margin-top: 12px; /* 与图标行拉开较大间距 */
 }
 
