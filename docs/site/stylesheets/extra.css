@@ -1,151 +1,50 @@
-/* --- 1. 基础视觉优化 --- */
-/* 隐藏页脚冗余信息 */
-.md-copyright {
-  font-size: 0;
-}
-.md-copyright__highlight,
-.md-copyright__highlight a {
-  font-size: 0.64rem;
-}
-.md-copyright a[href*="squidfunk.github.io"] {
-  display: none;
-}
-
-/* 页眉标题悬停反馈 */
-.md-header__topic:hover {
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-
-/* 正文标题加粗 */
-.md-typeset h1 {
-  font-weight: 800 !important;
-}
-
-/* --- 2. 页眉交互逻辑 --- */
-
-/* 桌面端页眉返回首页点击区 */
-@media screen and (min-width: 76.25em) {
-  .md-header__button.md-logo {
-    position: relative;
-    z-index: 10;
-  }
-  .md-header__button.md-logo::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 400px;
-    height: 100%;
-    cursor: pointer;
-  }
-}
-
-/* 移动端页眉适配：简化逻辑，避免 Z轴 冲突 */
-@media screen and (max-width: 76.24em) {
-  .md-header__button.md-logo {
-    position: relative;
-    z-index: 10; /* 仅保留 Logo 层级，确保不被默认元素遮挡 */
-  }
-}
-
-/* --- 3. 编辑弹窗样式 --- */
-/* 编辑弹窗背景遮罩样式 */
-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(3px);
-}
-
-/* 编辑弹窗主体样式 */
-#edit-dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  border: 1px solid var(--md-divider-color);
-  outline: none;
-  border-radius: 12px;
-}
-
-/* 弹窗开启时禁用底层滚动 */
-body:has(dialog[open]) {
-  overflow: hidden;
-}
-
-/* --- 4. 移动端布局适配 --- */
-/* 移动端页脚版权与图标居中对齐 */
-@media screen and (max-width: 47.9375em) {
-  .md-footer-meta__inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .md-copyright {
-    margin-bottom: 0.5rem;
-    margin-right: 0;
-  }
-  .md-social {
-    padding-left: 0;
-    margin-left: 0;
-    display: flex;
-    justify-content: center;
-  }
-}
-
-/* --- 5. 全局排版与字体优化 --- */
-:root {
-  /* 调整基础行高，让中文阅读更通透 */
-  --md-typeset-line-height: 1.7;
-}
-
-.md-typeset {
-  /* 优先使用系统原生中文黑体，最后回退到 Roboto */
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", "Helvetica Neue", Arial, sans-serif, Roboto;
-  /* 微调字间距，防止文字粘连 */
-  letter-spacing: 0.01em;
-}
-
-/* 专门针对中文标点符号和段落的间距优化 */
+/* --- 1. 基础视觉优化与排版 --- */
 .md-typeset p {
   margin-top: 0.8em;
   margin-bottom: 0.8em;
-  /* 允许在单词内换行，防止中文长句排版断开 */
   word-break: break-word;
 }
 
-/* 代码块字体优化：优先使用等宽字体，并加大行高 */
-.md-typeset code,
-.md-typeset kbd,
-.md-typeset pre {
-  font-family: "JetBrains Mono", "Cascadia Code", "Consolas", "Courier New", "Roboto Mono", monospace;
+.md-typeset code, .md-typeset kbd, .md-typeset pre {
+  font-family: "JetBrains Mono", "Cascadia Code", "Consolas", monospace;
   line-height: 1.5;
 }
 
-/* 标题字体权重与间距同步优化 */
 .md-typeset :is(h1, h2, h3, h4, h5, h6) {
   letter-spacing: -0.01em;
   font-weight: 700;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-/* 页尾 */
-
-/* 强化百科许可链接的视觉效果 */
-.license-row a {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  color: var(--md-typeset-a-color); /* 使用主题链接色增加辨识度 */
-  transition: opacity 0.2s;
+/* --- 2. 页眉交互逻辑 --- */
+@media screen and (min-width: 76.25em) {
+  .md-header__button.md-logo { position: relative; z-index: 10; }
+  .md-header__button.md-logo::after {
+    content: ""; position: absolute; top: 0; left: 0; width: 400px; height: 100%; cursor: pointer;
+  }
 }
 
-.license-row a:hover {
-  opacity: 0.7;
+/* --- 3. 编辑按钮与弹窗样式 --- */
+.custom-edit-nav { float: right; display: flex; gap: 12px; margin-top: 5px; }
+.custom-edit-dialog {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  border: none; border-radius: 12px; padding: 24px; width: 90%; max-width: 360px;
+  background: var(--md-default-bg-color); color: var(--md-default-fg-color);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.custom-edit-dialog::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(3px); }
+.gh-btn-primary { 
+  background-color: #1f883d; color: white !important; display: block; 
+  text-align: center; padding: 12px; border-radius: 6px; font-weight: 600; text-decoration: none;
+}
+.gh-btn-secondary { 
+  margin-top: 15px; width: 100%; padding: 8px; background: transparent; 
+  border: 1px solid var(--md-divider-color); color: var(--md-default-fg-color); border-radius: 6px; 
 }
 
-/* 保持之前的高度对齐逻辑不变 */
+/* --- 4. 自定义页脚布局核心 (修复对齐) --- */
+.md-footer-meta__inner.md-grid { display: block !important; }
+
 .custom-footer-grid {
   display: flex !important;
   justify-content: space-between !important;
@@ -154,11 +53,24 @@ body:has(dialog[open]) {
 }
 
 .footer-left-col, .footer-right-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 56px; 
+  display: flex; flex-direction: column; justify-content: space-between; height: 56px;
 }
 
-/* ... 其他之前的 CSS 代码 ... */
+.license-row { font-size: 14px; font-weight: 700; line-height: 1.2; }
+.license-row a { text-decoration: underline; color: var(--md-typeset-a-color); }
+.nav-row { font-size: 13px; color: var(--md-default-fg-color--light); line-height: 1; }
+.nav-row a { color: inherit; text-decoration: none; }
 
+.footer-right-col { align-items: flex-end; text-align: right; }
+.social-row { display: flex; gap: 16px; height: 20px; align-items: center; }
+.social-row svg { width: 18px; height: 18px; fill: var(--md-default-fg-color--lightest); }
+
+.brand-signature { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+.brand-name { font-size: 12.5px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.brand-slogan { font-size: 9px; color: var(--md-default-fg-color--lightest); letter-spacing: 0.05em; white-space: nowrap; }
+
+/* 响应式适配 */
+@media screen and (max-width: 45em) {
+  .custom-footer-grid { flex-direction: column !important; align-items: center !important; height: auto !important; gap: 25px; }
+  .footer-left-col, .footer-right-col { height: auto; align-items: center; text-align: center; gap: 12px; }
+}
