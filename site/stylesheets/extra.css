@@ -1,15 +1,12 @@
 /* --- 1. 基础视觉优化 --- */
-
 /* 隐藏页脚冗余信息 */
 .md-copyright {
   font-size: 0;
 }
-
 .md-copyright__highlight,
 .md-copyright__highlight a {
   font-size: 0.64rem;
 }
-
 .md-copyright a[href*="squidfunk.github.io"] {
   display: none;
 }
@@ -44,20 +41,15 @@
   }
 }
 
-/* 移动端页眉适配：仅保留层级，删除阻塞菜单的伪元素覆盖层 */
+/* 移动端页眉适配：简化逻辑，避免 Z轴 冲突 */
 @media screen and (max-width: 76.24em) {
   .md-header__button.md-logo {
     position: relative;
-    z-index: 10;
-  }
-  [for="__drawer"] {
-    position: relative;
-    z-index: 100;
+    z-index: 10; /* 仅保留 Logo 层级，确保不被默认元素遮挡 */
   }
 }
 
 /* --- 3. 编辑弹窗样式 --- */
-
 /* 编辑弹窗背景遮罩样式 */
 dialog::backdrop {
   background: rgba(0, 0, 0, 0.4);
@@ -82,7 +74,6 @@ body:has(dialog[open]) {
 }
 
 /* --- 4. 移动端布局适配 --- */
-
 /* 移动端页脚版权与图标居中对齐 */
 @media screen and (max-width: 47.9375em) {
   .md-footer-meta__inner {
@@ -104,7 +95,6 @@ body:has(dialog[open]) {
 }
 
 /* --- 5. 全局排版与字体优化 --- */
-
 :root {
   /* 调整基础行高，让中文阅读更通透 */
   --md-typeset-line-height: 1.7;
