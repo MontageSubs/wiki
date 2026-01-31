@@ -129,3 +129,89 @@ body:has(dialog[open]) {
   font-weight: 700;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
+
+/* --- 6. 自定义双列页脚布局 --- */
+.custom-footer-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 80px; /* 强制高度对齐的基础高度 */
+}
+
+/* 左侧内容：授权与导航 */
+.left-col .cc-license {
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color);
+}
+.footer-nav {
+  font-size: 0.7rem;
+  color: var(--md-default-fg-color--light);
+}
+.footer-nav a {
+  color: inherit;
+  transition: color 0.2s;
+}
+.footer-nav a:hover {
+  color: var(--md-typeset-a-color);
+}
+
+/* 右侧内容：社交与品牌 */
+.right-col {
+  text-align: right;
+  align-items: flex-end;
+}
+.custom-social {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  opacity: 0.5; /* 颜色淡化 */
+}
+.custom-social svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: currentColor;
+}
+
+.brand-block {
+  text-align: right;
+}
+.group-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: block;
+}
+.slogan {
+  font-size: 10px; /* 极小字号 */
+  letter-spacing: 0;
+  margin-top: 1px; /* 紧贴组名 */
+  color: var(--md-default-fg-color--light);
+}
+
+/* 适配移动端 */
+@media screen and (max-width: 47.9375em) {
+  .custom-footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .footer-col {
+    align-items: center;
+    min-height: auto;
+    gap: 0.5rem;
+  }
+  .right-col {
+    text-align: center;
+    border-top: 1px solid var(--md-divider-color);
+    padding-top: 1rem;
+  }
+  .custom-social {
+    justify-content: center;
+  }
+}
