@@ -1,0 +1,21 @@
+{% if config.extra.footer_nav %}
+  <nav class="md-footer-custom-nav" style="margin-bottom: 0.4rem; font-weight: 600; font-size: 0.75rem;">
+    {% for item in config.extra.footer_nav %}
+      <a href="{{ item.link | url }}" style="color: var(--md-typeset-a-color); text-decoration: none;">{{ item.name }}</a>
+      {% if not loop.last %} 
+        <span style="margin: 0 0.3rem; opacity: 0.3; font-weight: normal;">|</span> 
+      {% endif %}
+    {% endfor %}
+  </nav>
+{% endif %}
+
+<div class="md-copyright__highlight" style="font-size: 0.65rem; color: var(--md-default-fg-color--light);">
+  Copyright &copy; <span id="current-year">2026</span> 
+  <a href="https://montagesubs.github.io" target="_blank" rel="noopener" style="color: inherit;">MontageSubs</a> 
+  <span style="margin: 0 0.3rem; opacity: 0.3;">·</span>
+  本站内容采用 <a href="{{ '服务协议' | url }}#授权条款" style="font-weight: bold; color: inherit;">CC BY-SA 4.0</a> 授权
+</div>
+
+<script>
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
