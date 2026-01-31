@@ -1,135 +1,210 @@
-/* --- 1. 全局排版与字体优化 --- */
+
+/* 页眉标题悬停反馈 */
+.md-header__topic:hover {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+/* 正文标题加粗 */
+.md-typeset h1 {
+  font-weight: 800 !important;
+}
+
+/* --- 2. 页眉交互逻辑 --- */
+
+/* 桌面端页眉返回首页点击区 */
+@media screen and (min-width: 76.25em) {
+  .md-header__button.md-logo {
+    position: relative;
+    z-index: 10;
+  }
+  .md-header__button.md-logo::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 100%;
+    cursor: pointer;
+  }
+}
+
+/* 移动端页眉适配：简化逻辑，避免 Z轴 冲突 */
+@media screen and (max-width: 76.24em) {
+  .md-header__button.md-logo {
+    position: relative;
+    z-index: 10; /* 仅保留 Logo 层级，确保不被默认元素遮挡 */
+  }
+}
+
+/* --- 3. 编辑弹窗样式 --- */
+/* 编辑弹窗背景遮罩样式 */
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+}
+
+/* 编辑弹窗主体样式 */
+#edit-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  border: 1px solid var(--md-divider-color);
+  outline: none;
+  border-radius: 12px;
+}
+
+/* 弹窗开启时禁用底层滚动 */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* --- 4. 移动端布局适配 --- */
+/* 移动端页脚版权与图标居中对齐 */
+@media screen and (max-width: 47.9375em) {
+  .md-footer-meta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .md-copyright {
+    margin-bottom: 0.5rem;
+    margin-right: 0;
+  }
+  .md-social {
+    padding-left: 0;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* --- 5. 全局排版与字体优化 --- */
 :root {
+  /* 调整基础行高，让中文阅读更通透 */
   --md-typeset-line-height: 1.7;
 }
 
 .md-typeset {
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif, Roboto;
+  /* 优先使用系统原生中文黑体，最后回退到 Roboto */
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", "Helvetica Neue", Arial, sans-serif, Roboto;
+  /* 微调字间距，防止文字粘连 */
   letter-spacing: 0.01em;
 }
 
-/* --- 2. 宁静优雅的页脚布局 (核心修复) --- */
+/* 专门针对中文标点符号和段落的间距优化 */
+.md-typeset p {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+  /* 允许在单词内换行，防止中文长句排版断开 */
+  word-break: break-word;
+}
 
-/* 彻底禁用原生版权干扰 */
+/* 代码块字体优化：优先使用等宽字体，并加大行高 */
+.md-typeset code,
+.md-typeset kbd,
+.md-typeset pre {
+  font-family: "JetBrains Mono", "Cascadia Code", "Consolas", "Courier New", "Roboto Mono", monospace;
+  line-height: 1.5;
+}
+
+/* 标题字体权重与间距同步优化 */
+.md-typeset :is(h1, h2, h3, h4, h5, h6) {
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* --- 专用页脚增强逻辑 (不改动原始其他功能) --- */
+
+/* 1. 彻底解决隐藏版权文字但不伤及图标的问题 */
 .md-copyright {
   display: none !important;
 }
 
-/* 双列网格布局：左侧信息，右侧品牌与图标 */
+/* 2. 页脚 Grid 布局：确保左右高度对齐 */
 .custom-footer-container {
   display: grid !important;
   grid-template-columns: 1fr 1fr;
-  align-items: end; /* 底部对齐，更稳重 */
-  padding: 1.5rem 0;
-  border-top: 1px solid var(--md-divider-color);
+  align-items: stretch; /* 确保左右高度一致 */
+  padding: 1.2rem 0;
 }
 
-/* 统一配色：安静的低对比度灰色，跟随系统颜色 */
+/* 3. 颜色统一：安静、低调的灰阶 (解决加粗与喧闹感) */
 .cc-license, .footer-nav, .nav-sep, .slogan, .group-name, .md-social__link {
   color: var(--md-footer-fg-color--light) !important;
-  transition: color 0.25s ease;
+  font-weight: 400 !important; /* 取消加粗 [要求五] */
 }
 
-/* 悬停微亮反馈 */
-.footer-nav a:hover, .cc-license a:hover, .md-social__link:hover {
-  color: var(--md-footer-fg-color) !important;
-}
-
-/* 左侧层级：CC许可最大，导航次之 */
+/* 4. 左侧层级化字号 [要求三] */
 .cc-license {
-  font-size: 0.8rem; /* 略小于正文 */
-  font-weight: 500;
-  display: block;
-  margin-bottom: 4px;
+  font-size: 0.75rem; /* 明显小于正文，产生层次感 */
 }
-
 .footer-nav {
-  font-size: 0.65rem; /* 明显变小，产生专业层次感 */
+  font-size: 0.65rem;
 }
 
-.nav-sep {
-  margin: 0 4px;
-  opacity: 0.5;
-}
-
-/* 右侧层级：图标位于上方，品牌位于下方且极致紧凑 */
+/* 5. 右侧对齐与图标尺寸修正 [要求四] */
 .right-col {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* 靠右对齐 */
+  justify-content: space-between; /* 撑开上下高度，与左侧对齐 [要求二] */
+  align-items: flex-end; /* 右对齐 */
 }
 
-/* 图标样式 */
 .md-social {
   padding: 0 !important;
-  margin: 0 0 8px 0 !important; /* 图标与品牌间的距离 */
+  margin: 0 !important;
+  display: flex;
+  gap: 12px;
 }
 
 .md-social__link {
-  width: 1rem !important;
-  height: 1rem !important;
-  margin-left: 12px !important; /* 图标之间的间距 */
-  display: inline-block;
+  width: 18px !important; /* 强制统一容器大小 [要求四] */
+  height: 18px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
 }
 
+/* 针对不同来源图标的视觉大小微调，消除视觉差 */
 .md-social__link svg {
+  max-width: 100%;
+  max-height: 100%;
   fill: currentColor;
-  display: block;
 }
+/* 针对 Telegram 图标过大的特殊缩放 */
+.md-social__link[href*="t.me"] svg { transform: scale(0.9); }
+/* 针对小房子图标过小的特殊缩放 */
+.md-social__link[href*="montagesubs.github.io"] svg { transform: scale(1.1); }
 
-/* 品牌块：组名与口号极致间距 (满足要求二) */
+/* 6. 品牌组紧密排版与居中对齐 [要求二、三] */
 .brand-group-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* 靠右对齐 */
-  line-height: 1; /* 极小行高 */
+  align-items: center; /* 确保口号相对于字幕组名称居中 [要求三] */
+  text-align: center;
 }
 
 .group-name {
   font-size: 0.65rem;
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
+  line-height: 1.2;
 }
 
 .slogan {
   font-size: 9px;
-  margin-top: 2px !important; /* 极小间距 */
-  padding: 0;
-  opacity: 0.7;
+  margin-top: -1px !important; /* 极度紧凑 [要求二] */
+  opacity: 0.8;
 }
 
-/* --- 3. 手机端适配：逻辑重排 (满足要求五) --- */
+/* 7. 移动端间距压缩 [要求五] */
 @media screen and (max-width: 47.9375em) {
   .custom-footer-container {
     display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center;
-    gap: 1rem !important; /* 行与行之间等距 */
-  }
-
-  /* 调整元素显示顺序 */
-  .left-col { order: 1; display: contents; }
-  .right-col { order: 2; display: contents; }
-
-  /* 满足手机端特定排序 */
-  .left-col .footer-row-1 { order: 1; } /* 1. CC许可 */
-  .right-col .footer-row-1 { order: 2; margin: 0 !important; } /* 2. 外部图标 */
-  .left-col .footer-row-2 { order: 3; } /* 3. 导航 */
-  .brand-group-wrapper { order: 4; align-items: center; margin-top: -4px; } /* 4. 品牌组整体 */
-
-  .md-social__link {
-    margin: 0 6px !important; /* 手机端图标左右散开 */
+    flex-direction: column;
+    gap: 0.8rem !important; /* 减小行间距 */
   }
 }
-
-/* --- 4. 其他 UI 优化 (保留附件原有功能) --- */
-.md-header__topic:hover { opacity: 0.7; transition: opacity 0.2s; }
-.md-typeset h1 { font-weight: 800 !important; }
-
-#edit-dialog {
-  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  border: 1px solid var(--md-divider-color); border-radius: 12px;
-}
-dialog::backdrop { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(3px); }
