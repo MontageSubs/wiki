@@ -1,12 +1,24 @@
-/* 隐藏页脚冗余信息 */
-.md-copyright {
-    font-size: 0;
+/* --- 1. 核心修复：移动端导航与层级逻辑 --- */
+
+/* 确保 Header 内部组件有明确的层级 */
+.md-header__inner {
+    position: relative;
 }
-.md-copyright__highlight, .md-copyright__highlight a {
-    font-size: 0.64rem;
+
+/* 汉堡菜单按钮：必须高于 Logo 点击区 */
+[for="__drawer"] {
+    position: relative;
+    z-index: 10;
 }
-.md-copyright a[href*="squidfunk.github.io"] {
-    display: none;
+
+/* 侧边栏：必须在最顶层，确保内部链接可点击 */
+.md-sidebar--primary {
+    z-index: 20 !important;
+}
+
+/* 遮罩层：位于侧边栏下方，用于点击收起菜单 */
+.md-overlay {
+    z-index: 15;
 }
 
 /* 桌面端页眉返回首页点击区 */
@@ -26,33 +38,50 @@
     }
 }
 
-/* 移动端页眉避让汉堡菜单逻辑 */
+/* 移动端页眉点击区自适应：避让汉堡菜单 */
 @media screen and (max-width: 76.24em) {
     .md-header__button.md-logo {
         position: relative;
-        /* 稍微降低，确保不压过侧边栏遮罩 */
-        z-index: 5; 
+        z-index: 5;
     }
     .md-header__button.md-logo::after {
         content: "";
         position: absolute;
         top: 0;
-        /* 在手机端，返回首页的点击区应该仅限标题文字，不能伸得太长 */
-        left: 3.5rem; 
-        width: 150px; /* 从 280px 缩小到 150px，足以覆盖标题，但不会挡住侧边栏关闭区 */
+        /* 避开左侧汉堡菜单按钮空间 */
+        left: 3rem; 
+        /* 宽度覆盖标题文字即可，不撑满屏幕 */
+        width: 160px;
         height: 100%;
         cursor: pointer;
     }
-    
-    /* 核心修复：确保侧边栏的开关标签永远在最顶层 */
-    [for="__drawer"] {
-        z-index: 20 !important; 
-    }
 }
 
-/* 补充：确保遮罩层可以被点击且不被拦截 */
-.md-overlay {
-    z-index: 10; /* 必须高于 md-logo 的 5 */
+/* --- 2. 视觉样式优化 --- */
+
+/* 隐藏页脚冗余信息 */
+.md-copyright {
+    font-size: 0;
+}
+.md-copyright__highlight, .md-copyright__highlight a {
+    font-size: 0.64rem;
+}
+.md-copyright a[href*="squidfunk.github.io"] {
+    display: none;
+}
+
+/* 移动端页脚内容居中 */
+@media screen and (max-width: 47.9375em) {
+    .md-footer-meta__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .md-copyright {
+        margin-bottom: 0.5rem;
+        margin-right: 0;
+    }
 }
 
 /* 页眉标题悬停反馈 */
@@ -66,22 +95,10 @@
     font-weight: 800 !important;
 }
 
-/* 编辑弹窗背景遮罩样式 */
+/* 编辑弹窗背景遮罩 */
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(3px);
-}
-
-/* 编辑弹窗主体样式 */
-#edit-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
-    border: 1px solid var(--md-divider-color); 
-    outline: none;
-    border-radius: 12px;
 }
 
 /* 弹窗开启时禁用底层滚动 */
@@ -89,57 +106,30 @@ body:has(dialog[open]) {
     overflow: hidden;
 }
 
-/* 移动端页脚版权与图标居中对齐 */
-@media screen and (max-width: 47.9375em) {
-    .md-footer-meta__inner {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-    .md-copyright {
-        margin-bottom: 0.5rem;
-        margin-right: 0;
-    }
-    .md-social {
-        padding-left: 0;
-        margin-left: 0;
-        display: flex;
-        justify-content: center;
-    }
-}
+/* --- 3. 字体与排版优化 --- */
 
-/* 全局正文字体优化 */
 :root {
-  /* 调整基础行高，让中文阅读更通透 */
   --md-typeset-line-height: 1.7;
 }
 
 .md-typeset {
-  /* 1. 优先使用系统原生中文黑体，最后回退到 Roboto */
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", "Helvetica Neue", Arial, sans-serif, Roboto;
-  /* 2. 微调字间距，防止文字粘连 */
   letter-spacing: 0.01em;
 }
 
-/* 专门针对中文标点符号和段落的间距优化 */
 .md-typeset p {
   margin-top: 0.8em;
   margin-bottom: 0.8em;
-  /* 允许在单词内换行，防止中文长句排版断开 */
   word-break: break-word;
 }
 
-/* 代码块字体优化：优先使用等宽字体，并加大行高 */
 .md-typeset code, .md-typeset kbd, .md-typeset pre {
   font-family: "JetBrains Mono", "Cascadia Code", "Consolas", "Courier New", "Roboto Mono", monospace;
   line-height: 1.5;
 }
 
-/* 解决你提到的标点符号挤压感 */
 .md-typeset :is(h1, h2, h3, h4, h5, h6) {
   letter-spacing: -0.01em;
   font-weight: 700;
-  /* 标题字体也可以同步优化 */
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
