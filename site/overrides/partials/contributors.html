@@ -1,0 +1,20 @@
+{% if page.meta.last_author %}
+<div style="display: flex; align-items: center; gap: 10px; margin-top: -10px; margin-bottom: 20px; font-size: 0.9em; color: var(--md-default-fg-color--light);">
+    
+    {# 最后贡献者头像 - 直接链接 GitHub 原生头像 #}
+    <img src="https://github.com/{{ page.meta.last_author }}.png" 
+         alt="{{ page.meta.last_author }}" 
+         style="height: 28px; width: 28px; border-radius: 50%; border: 1px solid var(--md-default-fg-color--lightest);">
+
+    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+        <span style="font-weight: bold; color: var(--md-default-fg-color);">
+            {{ page.meta.last_author }}
+        </span>
+        {% if page.meta.git_revision_date_localized %}
+        <span style="font-size: 0.8em; opacity: 0.8;">
+            更新于 {{ page.meta.git_revision_date_localized }}
+        </span>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
