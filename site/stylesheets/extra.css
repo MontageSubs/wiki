@@ -123,107 +123,83 @@ body:has(dialog[open]) {
 }
 
 /* ============================================================
-   === FOOTER ENHANCEMENT ===
+   === FOOTER ENHANCEMENT - FINAL REFACTORED (联动与精细间距版) ===
    ============================================================ */
 
-/* 1. 基础隐藏与容器设置 */
-.md-copyright { display: none !important; }
-
-.custom-footer-container {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: stretch !important;
-  padding: 1.8rem 0 !important;
-  /* 调整此高度可联动改变左右两行文字的垂直间距 */
-  min-height: 90px; 
-}
-
-/* 2. 统一颜色与悬停协议 */
-.custom-footer-container, 
-.custom-footer-container a, 
-.custom-footer-container .md-social__link {
-  color: var(--md-footer-fg-color--light) !important;
-  transition: color 0.25s ease;
-  text-decoration: none;
-}
-
-/* 维持与 Wiki 内容一致的悬停色 */
-.custom-footer-container a:hover, 
-.custom-footer-container .md-social__link:hover {
-  color: var(--md-typeset-a-color) !important;
-}
-
-/* 3. 桌面端联动排版：左右高低完全一致 [联动关键] */
-.footer-col { 
-  display: flex; 
-  flex-direction: column; 
-  /* 左右均使用等分撑开，确保第一行对齐、末行对齐 */
-  justify-content: space-between; 
-}
 .left-col { align-items: flex-start; }
 .right-col { align-items: flex-end; text-align: right; }
 
 /* 字号分层 */
 .cc-license { font-size: 13.5px; font-weight: 700; line-height: 20px; }
 .footer-nav, .group-name { font-size: 11.5px; }
-.group-name { font-weight: 700; display: block; }
-.slogan { font-size: 9px; line-height: 1; } /* 锁定行高防止撑开 */
+.group-name { 
+  font-weight: 700; 
+  display: block; 
+}
+.slogan { 
+  font-size: 9px; 
+  line-height: 1; 
+} /* 锁定行高防止物理撑开 */
 
 /* 4. 间距管理与口号压缩 */
-.md-social { 
-  margin: 0 !important; 
-  padding: 0 !important; 
-  display: flex; 
-  gap: 15px; 
-  height: 20px; /* 与左侧 CC 许可 line-height 保持绝对对齐 */
+.md-social {   
+  margin: 0 !important;   
+  padding: 0 !important;   
+  display: flex;   
+  gap: 15px;   
+  height: 20px; /* 与左侧 CC 许可 line-height 保持垂直中轴对齐 */
   align-items: center; 
 }
 .md-social__link { width: 18px; height: 18px; }
 .md-social__link svg { fill: currentColor; }
 
-.brand-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* 右对齐 */
-  gap: 0px; /* 彻底取消 gap 间距 */
+.brand-group-wrapper {  
+  display: flex;  
+  flex-direction: column;  
+  align-items: center; /* 修正：口号相对于字幕组名称居中对齐 */  
+  gap: 0px; 
   margin-top: 10px; 
 }
 
-/* 针对口号的极致压缩：向上再提 2 像素 [要求一像素效果] */
-.slogan {
-  margin-top: -2px; 
+/* 针对口号的间距微调：由 -2px 放宽至 -1px，增加 1px 的松弛感 */
+.slogan {  
+  margin-top: -1px; 
 }
 
 /* 5. 手机端逻辑：强制物理间距绝对相等 */
-@media screen and (max-width: 47.9375em) {
-  .custom-footer-container {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 1.25rem !important; 
-    padding: 2.2rem 0 !important;
-    min-height: auto;
-  }
-
-  .footer-col { display: contents; }
+@media screen and (max-width: 47.9375em) {  
+  .custom-footer-container {    
+    display: flex !important;    
+    flex-direction: column !important;    
+    align-items: center !important;    
+    gap: 1.25rem !important; /* 统一所有逻辑大行的物理间距 */    
+    padding: 2.2rem 0 !important;    
+    min-height: auto;  
+  }  
   
-  .footer-row-item { 
-    margin: 0 !important; 
-    line-height: 1.2 !important; 
-    display: flex;
-    justify-content: center;
+  .footer-col { display: contents; }    
+  
+  .footer-row-item {     
+    margin: 0 !important;     
+    line-height: 1.2 !important;     
+    display: flex;    
+    justify-content: center;  
+  }  
+  
+  .footer-row-cc { order: 1; }  
+  .footer-row-social { order: 2; }  
+  .footer-row-nav { order: 3; }  
+  .footer-row-brand { order: 4; }  
+  
+  /* 品牌组在手机端维持紧凑且居中整体 */  
+  .brand-group-wrapper {     
+    margin-top: 0 !important;     
+    align-items: center;     
+    gap: 0px;  
   }
-
-  .footer-row-cc { order: 1; }
-  .footer-row-social { order: 2; }
-  .footer-row-nav { order: 3; }
-  .footer-row-brand { order: 4; }
-
-  /* 品牌组在手机端依然维持其紧凑整体 */
-  .brand-group-wrapper { 
-    margin-top: 0 !important; 
-    align-items: center; 
-    gap: 0px;
+  
+  .slogan {
+    margin-top: 0px; /* 手机端由于排版空间变化，重置负边距以保证清晰 */
   }
 }
 
