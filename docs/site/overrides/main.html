@@ -1,20 +1,21 @@
 {% extends "base.html" %}
 
-{# 1. 页脚引用 #}
+{# 1. 屏蔽主题自带的编辑按钮 #}
+{% block source %}{% endblock %}
+
+{# 2. 引入独立页脚 #}
 {% block footer %}
   {% include "partials/footer.html" %}
 {% endblock %}
 
-{# 2. 内容引用 #}
+{# 3. 组织页面内容 #}
 {% block content %}
-  
-  {# 引用右上角编辑按钮及弹窗 #}
+  {# 引用你刚才搬运的原始 Actions 代码 #}
   {% include "partials/actions.html" %}
 
-  {# 引用最后贡献者头像组件（它包含在标题下方的逻辑） #}
+  {# 引用贡献者组件 #}
   {% include "partials/contributors.html" %}
 
-  {# 渲染正文：这会渲染 Markdown 里的 H1 标题和所有内容 #}
+  {# 渲染正文 #}
   {{ super() }}
-
 {% endblock %}
