@@ -130,77 +130,35 @@ body:has(dialog[open]) {
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-/* --- 页脚空间与呼吸感 --- */
-.md-footer-meta {
-  padding-top: 2rem;    /* 增加顶部间距 */
-  padding-bottom: 2rem; /* 增加底部间距 */
-  background-color: var(--md-footer-bg-color--dark); /* 稍微加深底色增强分界感 */
+/* 页尾 */
+
+/* 强化百科许可链接的视觉效果 */
+.license-row a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  color: var(--md-typeset-a-color); /* 使用主题链接色增加辨识度 */
+  transition: opacity 0.2s;
 }
 
-/* --- 标语样式 --- */
-.footer-slogan {
-  font-size: 0.9rem;
-  font-weight: 700;
-  margin-bottom: 0.8rem;
-  color: var(--md-default-fg-color);
-  letter-spacing: 0.05em;
-}
-.footer-slogan .heart {
-  color: #ff4d4f;
-  margin: 0 0.2rem;
-  display: inline-block;
-  animation: heartBeat 1.5s ease-in-out infinite;
+.license-row a:hover {
+  opacity: 0.7;
 }
 
-/* --- 导航样式 --- */
-.md-footer-custom-nav {
-  margin-bottom: 0.6rem;
-  font-size: 0.75rem;
-  opacity: 0.9;
+/* 保持之前的高度对齐逻辑不变 */
+.custom-footer-grid {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  padding: 35px 0 !important;
 }
 
-/* --- 版权行防断行处理 --- */
-.md-copyright__highlight {
-  line-height: 1.6;
+.footer-left-col, .footer-right-col {
   display: flex;
-  flex-wrap: wrap; /* 允许在手机端整块换行，而不是拆散字符 */
-  gap: 0.4rem;
-  font-size: 0.65rem;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 56px; 
 }
 
-.copyright-sep {
-  margin: 0 0.2rem;
-  opacity: 0.5;
-}
+/* ... 其他之前的 CSS 代码 ... */
 
-/* 心动动画 */
-@keyframes heartBeat {
-  0% { transform: scale(1); }
-  14% { transform: scale(1.1); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.1); }
-  70% { transform: scale(1); }
-}
-
-/* --- 移动端排版修正 --- */
-@media screen and (max-width: 47.9375em) {
-  .footer-left-column {
-    align-items: center; /* 居中对齐 */
-    width: 100%;
-  }
-  
-  .md-copyright__highlight {
-    justify-content: center;
-    flex-direction: column; /* 手机端版权行：Copyright一行，授权协议一行 */
-    gap: 0.2rem;
-  }
-  
-  .copyright-sep {
-    display: none; /* 手机端垂直排列时隐藏圆点 */
-  }
-
-  .footer-slogan {
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-  }
-}
