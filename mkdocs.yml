@@ -98,6 +98,9 @@ extra:
     - icon: fontawesome/brands/weibo
       link: https://weibo.com/u/8358891788
       name: 新浪微博
+    - icon: fontawesome/brands/bluesky
+      link: hhttps://bsky.app/profile/montagesubs.bsky.social
+      name: BlueSky
     - icon: fontawesome/brands/github
       link: https://github.com/MontageSubs
       name: GitHub
