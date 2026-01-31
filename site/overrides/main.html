@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
+{% block source %}{% endblock %}
+
 {% block footer %}
   {% include "partials/footer.html" %}
 {% endblock %}
 
 {% block content %}
+  {# 插入我们自定义的 Actions #}
   {% include "partials/actions.html" %}
+  
+  {# 插入贡献者信息 #}
   {% include "partials/contributors.html" %}
 
+  {# 渲染正文 #}
   {{ super() }}
 {% endblock %}
