@@ -1,18 +1,27 @@
-<div class="footer-left-column">
-  {% if config.extra.footer_nav %}
-    <nav class="md-footer-custom-nav">
-      {% for item in config.extra.footer_nav %}
-        <a href="{{ item.link | url }}">{{ item.name }}</a>
-        {% if not loop.last %} <span class="sep">|</span> {% endif %}
-      {% endfor %}
+<div class="md-grid custom-footer-grid">
+  <div class="footer-left-col">
+    <div class="license-row">
+      百科文字内容在 <a href="{{ 'CC-BY-SA-4.0许可证' | url }}">CC BY-SA 4.0</a> 许可下提供
+    </div>
+    <nav class="nav-row">
+      <a href="{{ '关于我们' | url }}">关于我们</a> | 
+      <a href="{{ '隐私政策' | url }}">隐私政策</a> | 
+      <a href="{{ '服务协议' | url }}">服务协议</a> | 
+      <a href="{{ '参与贡献' | url }}">参与贡献</a>
     </nav>
-  {% endif %}
+  </div>
 
-  <div class="md-copyright__highlight">
-    Copyright &copy; <span id="current-year">2026</span> 
-    <a href="https://montagesubs.github.io" target="_blank" rel="noopener">MontageSubs</a> · 
-    本站内容采用 <a href="{{ '服务协议' | url }}#授权条款" class="license-link">CC BY-SA 4.0</a> 授权
+  <div class="footer-right-col">
+    <div class="social-row">
+      {% for social in config.extra.social %}
+        <a href="{{ social.link }}" target="_blank" title="{{ social.name }}">
+          {% include ".icons/" ~ social.icon ~ ".svg" %}
+        </a>
+      {% endfor %}
+    </div>
+    <div class="brand-signature">
+      <div class="brand-name">蒙太奇字幕组 (MontageSubs)</div>
+      <div class="brand-slogan">用爱发电 ❤️ Powered by love</div>
+    </div>
   </div>
 </div>
-
-<script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
