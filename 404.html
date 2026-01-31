@@ -398,7 +398,6 @@
     }
     .gh-btn-secondary:hover { background-color: #f3f4f6; }
 
-    /* 次要按钮样式 (Dark Mode) */
     [data-md-color-scheme="slate"] .gh-btn-secondary { 
         background-color: #212830; 
         color: #adbac7 !important; 
@@ -414,18 +413,18 @@
     (function() {
       try {
         var currentPath = window.location.pathname;
-        // 提取路径名，忽略前后的斜杠
         var pathSegments = currentPath.split('/').filter(Boolean);
-        var pageName = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : "Home";
-        
-        var repoUrl = "https://github.com/MontageSubs/wiki/wiki";
-        var targetEditUrl = repoUrl + "/" + pageName + "/_edit";
-        var loginEditUrl = "https://github.com/login?return_to=" + encodeURIComponent(targetEditUrl);
-        
-        var btn = document.getElementById('gh-create-btn');
-        if (btn) btn.href = loginEditUrl;
+        var pageName = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : "";
+
+        if (pageName) {
+            var repoWikiUrl = "https://github.com/MontageSubs/wiki/wiki";
+            var targetUrl = repoWikiUrl + "/" + pageName;
+            var loginRedirectUrl = "https://github.com/login?return_to=" + encodeURIComponent(targetUrl);
+            
+            var btn = document.getElementById('gh-create-btn');
+            if (btn) btn.href = loginRedirectUrl;
+        }
       } catch (e) {
-        console.log("Fallback to static URL");
       }
     })();
   </script>
