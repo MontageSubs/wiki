@@ -30,21 +30,29 @@
 @media screen and (max-width: 76.24em) {
     .md-header__button.md-logo {
         position: relative;
-        z-index: 10;
+        /* 稍微降低，确保不压过侧边栏遮罩 */
+        z-index: 5; 
     }
     .md-header__button.md-logo::after {
         content: "";
         position: absolute;
         top: 0;
-        left: 4rem; 
-        width: 280px;
+        /* 在手机端，返回首页的点击区应该仅限标题文字，不能伸得太长 */
+        left: 3.5rem; 
+        width: 150px; /* 从 280px 缩小到 150px，足以覆盖标题，但不会挡住侧边栏关闭区 */
         height: 100%;
         cursor: pointer;
     }
+    
+    /* 核心修复：确保侧边栏的开关标签永远在最顶层 */
     [for="__drawer"] {
-        position: relative;
-        z-index: 100;
+        z-index: 20 !important; 
     }
+}
+
+/* 补充：确保遮罩层可以被点击且不被拦截 */
+.md-overlay {
+    z-index: 10; /* 必须高于 md-logo 的 5 */
 }
 
 /* 页眉标题悬停反馈 */
