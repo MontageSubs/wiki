@@ -1,21 +1,12 @@
 {% extends "base.html" %}
 
-{# 1. 屏蔽主题自带的编辑按钮 #}
-{% block source %}{% endblock %}
-
-{# 2. 引入独立页脚 #}
 {% block footer %}
   {% include "partials/footer.html" %}
 {% endblock %}
 
-{# 3. 组织页面内容 #}
 {% block content %}
-  {# 引用你刚才搬运的原始 Actions 代码 #}
   {% include "partials/actions.html" %}
-
-  {# 引用贡献者组件 #}
   {% include "partials/contributors.html" %}
 
-  {# 渲染正文 #}
   {{ super() }}
 {% endblock %}
