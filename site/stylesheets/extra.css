@@ -7,6 +7,7 @@
 /* 正文标题加粗 */
 .md-typeset h1 {
   font-weight: 800 !important;
+  color: var(--md-typeset-color) !important; /* 强制对齐正文最亮颜色 */
 }
 
 /* 增加正文与页脚之间的留白间距 */
