@@ -131,12 +131,12 @@ body:has(dialog[open]) {
 }
 
 
-/* --- 6. 自定义双列页脚增强 (最终修订版) --- */
+/* --- 6. 自定义双列页脚最终修订版 --- */
 
 .custom-footer-container {
   display: grid !important;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 1.2rem;
   align-items: stretch;
 }
 
@@ -144,88 +144,78 @@ body:has(dialog[open]) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 100px;
+  min-height: 80px;
 }
 
-/* 颜色统一适配：自动跟随主题变色 */
-.cc-license, 
-.footer-nav, 
-.nav-sep,
-.slogan {
-  /* 使用 Material 原生变量：次要文字颜色 */
-  color: var(--md-default-fg-color--light) !important; 
+/* 颜色适配：强制使用页脚文字颜色变量，确保在深色页脚背景下清晰可见 */
+.cc-license, .footer-nav, .nav-sep, .slogan, .custom-social .md-social__link {
+  color: var(--md-footer-fg-color--light) !important;
 }
+.cc-license a, .footer-nav a { color: inherit; }
 
-/* 左侧：CC 协议样式 (要求字号与图标一致，配色淡化) */
+/* 字号层级设定 (第四点) */
+/* 第一级（最大）：左侧CC许可 & 右侧图标 */
 .cc-license {
-  font-weight: normal; 
-  font-size: 0.7rem; /* 调小字号 */
+  font-size: 0.85rem; 
+  font-weight: 700;
 }
-.cc-license a {
-  color: inherit;
-  font-weight: bold;
-  text-decoration: underline;
+.custom-social svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: currentColor; /* 确保图标颜色跟随文字变色 */
 }
 
-/* 导航分隔符 */
-.nav-sep {
-  margin: 0 0.5rem;
-}
+/* 第二级（稍小）：左侧导航 & 右侧组名 */
 .footer-nav {
-  font-size: 0.75rem;
+  font-size: 0.72rem; 
 }
-.footer-nav a {
-  color: inherit;
+.group-name {
+  font-size: 0.72rem; /* 第三点：组名稍微再小点 */
+  font-weight: 700;
+  color: var(--md-footer-fg-color) !important; /* 组名亮度略高于其他文字 */
 }
 
-/* 右侧：社交图标 */
+/* 第三级（最小）：口号 */
+.slogan {
+  font-size: 10px;
+  margin-top: 1px; /* 紧贴组名 (第七点) */
+}
+
+/* 右侧对齐逻辑 (第六点) */
+.brand-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 标语对齐组名中心 */
+  align-self: flex-end; /* 整体靠右 */
+}
+
 .custom-social {
   display: flex;
   justify-content: flex-end;
   gap: 0.8rem;
 }
-.custom-social .md-social__link {
-  color: var(--md-default-fg-color--light) !important;
-  opacity: 0.8;
-}
-.custom-social svg {
-  width: 1.1rem;
-  height: 1.1rem;
-}
 
-/* 右侧：组名与标语包装器 (实现集体靠右，内部居中对齐) */
-.brand-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 内部居中对齐 */
-  align-self: flex-end; /* 整体靠右对齐 */
-  margin-top: auto;
-}
-
-.group-name {
-  font-weight: 700;
-  font-size: 0.85rem; /* 稍微调小 */
-  color: var(--md-default-fg-color); /* 组名保持高亮度 */
-}
-
-.slogan {
-  font-size: 10px;
-  margin-top: 1px; /* 紧贴组名 */
-  white-space: nowrap;
-}
-
-/* 移动端适配 */
+/* 手机端逻辑排序 (第五点) */
 @media screen and (max-width: 47.9375em) {
   .custom-footer-container {
     grid-template-columns: 1fr !important;
-    text-align: center;
-  }
-  .footer-col {
+    display: flex !important;
+    flex-direction: column;
     align-items: center;
-    min-height: auto;
-    gap: 1rem;
+    gap: 1rem !important;
   }
-  .brand-group-wrapper {
-    align-self: center; /* 移动端居中 */
+
+  .left-col { order: 1; display: contents; } 
+  .right-col { order: 2; display: contents; }
+
+  /* 强制垂直排序 */
+  .left-col .footer-row-1 { order: 1; }  /* 1. CC许可 */
+  .right-col .footer-row-1 { order: 2; }  /* 2. 外部图标 */
+  .left-col .footer-row-2 { order: 3; }  /* 3. 关于我们导航 */
+  .brand-group-wrapper { order: 4; align-self: center; } /* 4. 品牌块 */
+
+  .custom-social, .footer-nav, .brand-group-wrapper {
+    justify-content: center;
+    text-align: center;
   }
 }
