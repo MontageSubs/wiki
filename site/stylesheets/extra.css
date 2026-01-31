@@ -119,100 +119,99 @@ body:has(dialog[open]) {
 
 
 /* ============================================================
-   === FOOTER ENHANCEMENT START (页脚增强逻辑) ===
+   === FOOTER ENHANCEMENT FINAL (自定义主题适配版) ===
    ============================================================ */
 
-/* 1. 隐藏默认版权 */
+/* 1. 彻底隐藏默认元素 */
 .md-copyright { display: none !important; }
 
-/* 2. 桌面端核心布局：双列高度强制对齐 */
+/* 2. 容器与对齐：利用主题变量定义颜色 */
 .custom-footer-container {
   display: flex !important;
   justify-content: space-between !important;
-  align-items: stretch !important; /* 强制拉伸左右列高度一致 */
-  padding: 1.5rem 0 !important;
-  min-height: 90px;
+  align-items: stretch !important;
+  padding: 1.8rem 0 !important;
+  min-height: 100px;
 }
 
-/* 统一列行为：顶底分布 */
 .footer-col {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between; /* 垂直拉开层次 */
 }
 
-/* 左侧对齐 */
-.left-col { align-items: flex-start; }
-
-/* 右侧对齐 */
-.right-col { align-items: flex-end; text-align: right; }
-
-/* 3. 色彩与字号统合 (全页脚仅限两种主色) */
-:root {
-  --footer-main-color: var(--md-default-fg-color); /* 颜色1：主文字 */
-  --footer-sub-color: var(--md-default-fg-color--light); /* 颜色2：辅助色 */
+/* 3. 字体层次：使用主题原生变量确保自动适配暗色/浅色 */
+.cc-license {
+  font-size: 13.5px; /* 略小于正文 */
+  font-weight: 700;
+  line-height: 20px; /* 匹配右侧图标高度 */
+  color: var(--md-footer-fg-color); 
 }
 
-/* 重点文字 (CC第一行 & 组名) */
-.cc-license, .group-name {
-  color: var(--footer-main-color) !important;
-  font-weight: 700 !important;
-  font-size: 0.75rem;
+.cc-license a { color: var(--md-typeset-a-color); text-decoration: none; }
+
+.footer-nav {
+  font-size: 11.5px; /* 明显缩小，产生第二层级 */
+  color: var(--md-footer-fg-color--light);
 }
 
-/* 辅助文字 (导航 & 口号 & 图标) */
-.footer-nav, .footer-nav a, .slogan, .md-social__link, .nav-sep {
-  color: var(--footer-sub-color) !important;
-  font-weight: 400 !important;
-  text-decoration: none;
-}
-
-/* 4. 右侧精细布局：解决粘连 */
-.md-social {
-  margin: 0 !important;
-  padding: 0 !important;
-  display: flex;
-  gap: 15px; /* 增加图标间距 */
-  height: 20px;
-}
-
-.md-social__link svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
-}
-
-.brand-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 组名口号内部居中 */
-  gap: 2px; /* 紧凑间距 */
+.group-name {
+  font-size: 11.5px; /* 与功能导航一致，保持对称 */
+  font-weight: 700;
+  color: var(--md-footer-fg-color);
 }
 
 .slogan {
   font-size: 9px;
-  opacity: 0.9; /* 稍微提升亮度，确保审美不至过暗 */
+  color: var(--md-footer-fg-color--light);
+  margin-top: 2px;
 }
 
-/* 5. 手机模式适配：强制标准行间距 [要求三 & 要求四] */
+/* 4. 右侧图标与品牌区布局：解决粘连 */
+.md-social {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex;
+  gap: 15px;
+  height: 20px; /* 与左侧 CC 许可 line-height 严格一致 */
+  align-items: center;
+}
+
+.md-social__link {
+  width: 18px;
+  height: 18px;
+  color: var(--md-footer-fg-color--light) !important;
+}
+
+.md-social__link svg { fill: currentColor; }
+
+.brand-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px; /* 物理增加与图标行的间距，防止粘连 */
+}
+
+.left-col { align-items: flex-start; }
+.right-col { align-items: flex-end; text-align: right; }
+
+/* 5. 手机端标准对齐 [要求四] */
 @media screen and (max-width: 47.9375em) {
   .custom-footer-container {
-    display: grid !important; /* 使用 Grid 强制行高统一 */
+    display: grid !important;
     grid-template-columns: 1fr;
-    gap: 1.2rem !important; /* 统一标准的行间距 */
-    text-align: center !important;
+    gap: 1.2rem !important;
     padding: 2rem 0 !important;
   }
 
-  .footer-col { display: contents; } /* 打破容器限制参与排序 */
+  .footer-col { display: contents; }
 
   .footer-row-cc { order: 1; }
   .footer-row-social { order: 2; display: flex; justify-content: center; }
   .footer-row-nav { order: 3; }
   .footer-row-brand { order: 4; }
 
-  /* 移动端特殊处理：组名口号维持整体不拆分 */
-  .brand-group-wrapper { align-items: center; }
+  .brand-group-wrapper { margin-top: 0; }
 }
 
 /* === FOOTER ENHANCEMENT END === */
