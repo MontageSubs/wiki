@@ -21,6 +21,7 @@
           {% if config.extra.social %}
             {% for social in config.extra.social %}
               <a href="{{ social.link }}" target="_blank" rel="noopener" class="md-social__link">
+                {# 下面这行是 Material 原生渲染图标的关键 #}
                 {% include ".icons/" ~ social.icon ~ ".svg" %}
               </a>
             {% endfor %}
@@ -35,4 +36,4 @@
 
     </div>
   </div>
-  </footer>
+      </footer>
