@@ -71,7 +71,7 @@ plugins:
       custom_format: "%Y-%m-%d %H:%M:%S"
       locale: zh
       enable_git_follow: true
-      show_authors: true
+      show_authors: false
   - minify:
       minify_html: true
       minify_js: true
