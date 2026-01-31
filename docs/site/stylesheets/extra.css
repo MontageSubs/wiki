@@ -134,99 +134,16 @@ body:has(dialog[open]) {
 
 /* --- 6. 极简专业版双列页脚 --- */
 
-.custom-footer-container {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr;
-  align-items: stretch;
-  padding: 1.2rem 0;
-}
-
-/* 统一配色：安静、优雅的低对比度灰色 */
-.cc-license, .footer-nav, .nav-sep, .slogan, .group-name, .md-social__link {
-  color: var(--md-footer-fg-color--light) !important;
-  transition: color 0.25s;
-}
-
-/* 仅在悬停时提供极轻微的反馈 */
-.footer-nav a:hover, .cc-license a:hover, .md-social__link:hover {
-  color: var(--md-footer-fg-color) !important;
-}
-
-/* 层次化字号设计 */
-/* 左侧：减小字号以产生层次感 (第三点) */
-.cc-license {
-  font-size: 0.75rem; /* 小于正文，产生注释感 */
-  font-weight: 500;
-}
-.footer-nav {
-  font-size: 0.65rem;
-  margin-top: 0.8rem;
-}
-
-/* 右侧：图标可见性与大小 */
-.custom-social {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-.custom-social svg {
-  width: 1rem;
-  height: 1rem;
-  fill: currentColor;
-  display: block; /* 确保渲染 */
-}
-
-/* 品牌块：极致紧凑 (第二点) */
-.brand-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  align-self: flex-end;
-  gap: 0; /* 移除 flex 默认间距 */
-}
-.group-name {
-  font-size: 0.65rem;
-  font-weight: 600;
-  margin-top: 0.8rem;
-  line-height: 1.2;
-}
-.slogan {
-  font-size: 9px;
-  margin-top: -1px; /* 负边距实现极致紧凑 */
-  line-height: 1;
-}
-
-/* 手机端适配：紧凑的呼吸感布局 (第五点) */
-@media screen and (max-width: 47.9375em) {
-  .custom-footer-container {
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.7rem !important; /* 压缩行间距，避免稀疏 */
-    padding: 1.5rem 1rem;
-  }
-
-  .left-col, .right-col { display: contents; }
-  
-  /* 垂直逻辑顺序 */
-  .left-col .footer-row-1 { order: 1; } /* CC许可 */
-  .right-col .footer-row-1 { order: 2; margin-top: 0.2rem; } /* 图标 */
-  .left-col .footer-row-2 { order: 3; margin-top: 0.1rem; } /* 导航 */
-  .brand-group-wrapper { order: 4; align-self: center; margin-top: -0.2rem; } /* 品牌 */
-
-  .nav-sep { margin: 0 0.3rem; }
-}
-
-/* 确保图标可见 */
+/* 确保社媒图标可见并有基础大小 */
 .custom-social .md-social__link {
   display: inline-block;
-  width: 1.125rem;
-  height: 1.125rem;
-  fill: currentColor; /* 跟随文字颜色 */
-  margin-left: 0.5rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: currentColor;
 }
 
-.custom-social svg {
+.custom-social .md-social__link svg {
   width: 100%;
   height: 100%;
+  display: block;
 }
