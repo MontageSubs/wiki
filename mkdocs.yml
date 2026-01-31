@@ -28,9 +28,6 @@ theme:
     - search.highlight
     - content.code.copy
     - content.tooltips
-    - search.share
-    - navigation.instant  # 开启即时加载，体验极速
-    - navigation.instant.prefetch # 预取链接，鼠标悬停时就开始后台加载
     
   hide:
     - footer.powered
@@ -66,17 +63,6 @@ plugins:
       pipeline: []
       indexing: 'full'
       separator: '[\s\-\.\u200b\uff0c\u3002\uff01\u3001\uff1f]+'
-  - git-revision-date-localized:
-      type: datetime
-      custom_format: "%Y-%m-%d %H:%M:%S"
-      locale: zh
-      enable_git_follow: true
-      show_authors: false
-  - minify:
-      minify_html: true
-      minify_js: true
-      minify_css: true
-      html_minifier_ignore_comments: true
 # ==========================================================================
 # 4. Markdown 扩展增强
 # ==========================================================================
