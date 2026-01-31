@@ -130,9 +130,11 @@ body:has(dialog[open]) {
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-/* --- 6. 自定义双列页脚布局 --- */
+
+/* --- 6. 自定义双列页脚增强 (最终修订版) --- */
+
 .custom-footer-container {
-  display: grid;
+  display: grid !important;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   align-items: stretch;
@@ -142,76 +144,88 @@ body:has(dialog[open]) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 80px; /* 强制高度对齐的基础高度 */
+  min-height: 100px;
 }
 
-/* 左侧内容：授权与导航 */
-.left-col .cc-license {
-  font-weight: 800;
-  font-size: 0.85rem;
-  color: var(--md-default-fg-color);
+/* 颜色统一适配：自动跟随主题变色 */
+.cc-license, 
+.footer-nav, 
+.nav-sep,
+.slogan {
+  /* 使用 Material 原生变量：次要文字颜色 */
+  color: var(--md-default-fg-color--light) !important; 
+}
+
+/* 左侧：CC 协议样式 (要求字号与图标一致，配色淡化) */
+.cc-license {
+  font-weight: normal; 
+  font-size: 0.7rem; /* 调小字号 */
+}
+.cc-license a {
+  color: inherit;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* 导航分隔符 */
+.nav-sep {
+  margin: 0 0.5rem;
 }
 .footer-nav {
-  font-size: 0.7rem;
-  color: var(--md-default-fg-color--light);
+  font-size: 0.75rem;
 }
 .footer-nav a {
   color: inherit;
-  transition: color 0.2s;
-}
-.footer-nav a:hover {
-  color: var(--md-typeset-a-color);
 }
 
-/* 右侧内容：社交与品牌 */
-.right-col {
-  text-align: right;
-  align-items: flex-end;
-}
+/* 右侧：社交图标 */
 .custom-social {
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
-  opacity: 0.5; /* 颜色淡化 */
+  gap: 0.8rem;
+}
+.custom-social .md-social__link {
+  color: var(--md-default-fg-color--light) !important;
+  opacity: 0.8;
 }
 .custom-social svg {
   width: 1.1rem;
   height: 1.1rem;
-  fill: currentColor;
 }
 
-.brand-block {
-  text-align: right;
+/* 右侧：组名与标语包装器 (实现集体靠右，内部居中对齐) */
+.brand-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 内部居中对齐 */
+  align-self: flex-end; /* 整体靠右对齐 */
+  margin-top: auto;
 }
+
 .group-name {
   font-weight: 700;
-  font-size: 0.95rem;
-  display: block;
-}
-.slogan {
-  font-size: 10px; /* 极小字号 */
-  letter-spacing: 0;
-  margin-top: 1px; /* 紧贴组名 */
-  color: var(--md-default-fg-color--light);
+  font-size: 0.85rem; /* 稍微调小 */
+  color: var(--md-default-fg-color); /* 组名保持高亮度 */
 }
 
-/* 适配移动端 */
+.slogan {
+  font-size: 10px;
+  margin-top: 1px; /* 紧贴组名 */
+  white-space: nowrap;
+}
+
+/* 移动端适配 */
 @media screen and (max-width: 47.9375em) {
   .custom-footer-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     text-align: center;
   }
   .footer-col {
     align-items: center;
     min-height: auto;
-    gap: 0.5rem;
+    gap: 1rem;
   }
-  .right-col {
-    text-align: center;
-    border-top: 1px solid var(--md-divider-color);
-    padding-top: 1rem;
-  }
-  .custom-social {
-    justify-content: center;
+  .brand-group-wrapper {
+    align-self: center; /* 移动端居中 */
   }
 }
