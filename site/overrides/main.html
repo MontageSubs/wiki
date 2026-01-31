@@ -1,20 +1,17 @@
 {% extends "base.html" %}
 
-{# 彻底禁掉主题自带的 2 个按钮，这是解决 4 按钮问题的根源 #}
-{% block source %}{% endblock %}
-
 {% block footer %}
   {% include "partials/footer.html" %}
 {% endblock %}
 
 {% block content %}
-  {# 1. 变量预设 (为 Actions 提供数据) #}
+  {# 1. 定义公共变量供 actions 内部使用 #}
   {% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
   {% set file_path = page.file.src_uri %}
   {% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
   {% set target_edit_url = repo_url ~ "/" ~ wiki_page ~ "/_edit" %}
 
-  {# 2. 引入抽离后的 Actions (包含导航、弹窗、样式、脚本) #}
+  {# 2. 引入 Actions (已包含 JS 判断逻辑，不会产生重复按钮) #}
   {% include "partials/actions.html" %}
   
   {# 3. 引入贡献者信息 #}
