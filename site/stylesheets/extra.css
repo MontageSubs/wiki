@@ -131,91 +131,95 @@ body:has(dialog[open]) {
 }
 
 
-/* --- 6. 自定义双列页脚最终修订版 --- */
+
+
+/* --- 6. 极简主义双列页脚 (专业修订版) --- */
 
 .custom-footer-container {
   display: grid !important;
   grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
   align-items: stretch;
+  padding: 1.5rem 0; /* 增加上下呼吸感 */
 }
 
-.footer-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 80px;
-}
-
-/* 颜色适配：强制使用页脚文字颜色变量，确保在深色页脚背景下清晰可见 */
-.cc-license, .footer-nav, .nav-sep, .slogan, .custom-social .md-social__link {
+/* 统一配色方案：安静、低调的灰色 */
+.cc-license, .footer-nav, .nav-sep, .slogan, 
+.group-name, .md-social__link {
   color: var(--md-footer-fg-color--light) !important;
+  transition: color 0.25s;
 }
-.cc-license a, .footer-nav a { color: inherit; }
 
-/* 字号层级设定 (第四点) */
-/* 第一级（最大）：左侧CC许可 & 右侧图标 */
+/* 鼠标悬停时轻微亮起，增加精致感 */
+.footer-nav a:hover, .cc-license a:hover, .md-social__link:hover {
+  color: var(--md-footer-fg-color) !important;
+}
+
+/* 字号与层级分化 */
+/* 第一级：左侧许可 & 右侧图标 */
 .cc-license {
-  font-size: 0.85rem; 
-  font-weight: 700;
-}
-.custom-social svg {
-  width: 1.1rem;
-  height: 1.1rem;
-  fill: currentColor; /* 确保图标颜色跟随文字变色 */
-}
-
-/* 第二级（稍小）：左侧导航 & 右侧组名 */
-.footer-nav {
-  font-size: 0.72rem; 
-}
-.group-name {
-  font-size: 0.72rem; /* 第三点：组名稍微再小点 */
-  font-weight: 700;
-  color: var(--md-footer-fg-color) !important; /* 组名亮度略高于其他文字 */
-}
-
-/* 第三级（最小）：口号 */
-.slogan {
-  font-size: 10px;
-  margin-top: 1px; /* 紧贴组名 (第七点) */
-}
-
-/* 右侧对齐逻辑 (第六点) */
-.brand-group-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* 标语对齐组名中心 */
-  align-self: flex-end; /* 整体靠右 */
+  font-size: 0.8rem; /* 稍微收敛 */
+  font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
 .custom-social {
   display: flex;
   justify-content: flex-end;
-  gap: 0.8rem;
+  gap: 1.2rem; /* 增加图标间距 */
 }
 
-/* 手机端逻辑排序 (第五点) */
+.custom-social svg {
+  width: 1.05rem; /* 调整为精致的小图标 */
+  height: 1.05rem;
+  fill: currentColor;
+  display: block;
+}
+
+/* 第二级：左侧导航 & 右侧组名 */
+.footer-nav {
+  font-size: 0.65rem; /* 明显变小以示主次 */
+  margin-top: 0.8rem;
+}
+
+.group-name {
+  font-size: 0.65rem; /* 组名与导航字号一致，显得专业不喧闹 */
+  font-weight: 600;
+  margin-top: 0.8rem;
+}
+
+/* 第三级：口号 */
+.slogan {
+  font-size: 9px; /* 极细字号 */
+  margin-top: 0.2rem; /* 紧密联系 */
+  opacity: 0.8;
+}
+
+/* 右侧品牌对齐逻辑 */
+.brand-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 口号对齐组名中心 */
+  align-self: flex-end; /* 整体靠右 */
+}
+
+/* --- 手机端适配：垂直呼吸感布局 --- */
 @media screen and (max-width: 47.9375em) {
   .custom-footer-container {
-    grid-template-columns: 1fr !important;
     display: flex !important;
     flex-direction: column;
     align-items: center;
-    gap: 1rem !important;
+    gap: 1.2rem !important; /* 控制行间距，避免过稀疏 */
+    padding: 2rem 1rem;
   }
 
-  .left-col { order: 1; display: contents; } 
+  /* 逻辑排序：1.许可 2.图标 3.导航 4.品牌组 */
+  .left-col { order: 1; display: contents; }
   .right-col { order: 2; display: contents; }
 
-  /* 强制垂直排序 */
-  .left-col .footer-row-1 { order: 1; }  /* 1. CC许可 */
-  .right-col .footer-row-1 { order: 2; }  /* 2. 外部图标 */
-  .left-col .footer-row-2 { order: 3; }  /* 3. 关于我们导航 */
-  .brand-group-wrapper { order: 4; align-self: center; } /* 4. 品牌块 */
+  .left-col .footer-row-1 { order: 1; margin-bottom: 0.2rem; }
+  .right-col .footer-row-1 { order: 2; margin-bottom: 0.2rem; }
+  .left-col .footer-row-2 { order: 3; margin-top: 0; }
+  .brand-group-wrapper { order: 4; align-self: center; margin-top: -0.5rem; }
 
-  .custom-social, .footer-nav, .brand-group-wrapper {
-    justify-content: center;
-    text-align: center;
-  }
+  .nav-sep { margin: 0 0.3rem; }
 }
