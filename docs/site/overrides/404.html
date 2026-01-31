@@ -4,9 +4,10 @@
 <article class="md-content__inner md-typeset" style="text-align: center; margin-top: 4rem; max-width: 450px; margin-left: auto; margin-right: auto;">
     <h1 style="font-weight: 800; margin-bottom: 1.5rem;">404 - 此条目尚不存在</h1>
     
-    <div style="min-height: 80px; margin-bottom: 2rem; text-align: left; display: inline-block; width: 100%; max-width: 320px;">
+    <div style="min-height: 100px; margin-bottom: 2rem; text-align: left; display: inline-block; width: auto; max-width: 100%;">
         <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6; min-height: 1.6em;">字幕始于空白的轴线，百科成于点滴的积累。</p>
-        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color); min-height: 1.2em;">何不亲手填补这块空白？<span id="cursor"></span></p>
+        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color); min-height: 1.5em; margin: 0;">何不亲手填补这块空白？</p>
+        <span id="cursor"></span>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
@@ -20,6 +21,7 @@
 </article>
 
 <style>
+    /* 样式对齐 */
     .gh-btn-primary { background-color: #1f883d; }
     .gh-btn-primary:hover { background-color: #1a7a35; }
     [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
@@ -27,14 +29,14 @@
     .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; }
     [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
     
-    /* 优化：光标颜色自适应主题文字颜色 */
+    /* 自适应光标 */
     #cursor {
       display: inline-block;
       width: 2px;
-      height: 1.1rem;
+      height: 1em;
       vertical-align: middle;
-      margin-left: 4px;
-      background-color: var(--md-default-fg-color); /* 自适应颜色 */
+      margin-left: 3px;
+      background-color: var(--md-default-fg-color);
       animation: blink 0.8s infinite;
       visibility: hidden;
     }
@@ -43,7 +45,7 @@
 
 <script>
     (function() {
-      // 1. URL 逻辑
+      // 1. 动态 URL
       var currentPath = window.location.pathname;
       var pathSegments = currentPath.split('/').filter(Boolean);
       var pageName = pathSegments.pop() || "";
@@ -52,7 +54,7 @@
         document.getElementById('gh-create-btn').href = "https://github.com/login?return_to=" + encodeURIComponent(targetUrl);
       }
 
-      // 2. 键入逻辑
+      // 2. 键入动画核心逻辑
       var l1 = document.getElementById('type-line-1');
       var l2 = document.getElementById('type-line-2');
       var cur = document.getElementById('cursor');
@@ -60,20 +62,18 @@
       var txt1 = l1.textContent.trim();
       var txt2 = l2.textContent.replace('|', '').trim();
 
+      // 初始化：清空并挂载光标到第一行
       l1.textContent = '';
       l2.textContent = '';
-      l2.appendChild(cur);
+      l1.appendChild(cur);
       cur.style.visibility = 'visible';
 
       function typeEffect(element, text, speed, callback) {
         var i = 0;
         function step() {
           if (i < text.length) {
-            if (element === l2) {
-                element.insertBefore(document.createTextNode(text.charAt(i)), cur);
-            } else {
-                element.textContent += text.charAt(i);
-            }
+            // 始终插在光标前面
+            element.insertBefore(document.createTextNode(text.charAt(i)), cur);
             i++;
             setTimeout(step, speed);
           } else if (callback) {
@@ -83,9 +83,12 @@
         step();
       }
 
+      // 执行序列：打完第一行 -> 移动光标 -> 打第二行
       setTimeout(function() {
         typeEffect(l1, txt1, 60, function() {
           setTimeout(function() {
+            // 关键：将光标从第一行末尾移动到第二行开头
+            l2.appendChild(cur); 
             typeEffect(l2, txt2, 90);
           }, 400);
         });
