@@ -1,50 +1,38 @@
 {# ========================================================================== #}
-{# 1. 变量与配置定义 (集中管理，方便修改) #}
+{# 1. 变量定义 #}
 {# ========================================================================== #}
 {% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
 {% set file_path = page.file.src_uri %}
 {% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
+{# 编辑链接 #}
 {% set target_edit_url = repo_url ~ "/" ~ wiki_page ~ "/_edit" %}
 {% set login_edit_url = "https://github.com/login?return_to=" ~ (target_edit_url | urlencode) %}
+{# 历史链接 #}
 {% set history_url = repo_url ~ "/" ~ wiki_page ~ "/_history" %}
 
-{# SVG 图标路径提取 #}
+{# SVG 图标路径 (提取复用) #}
 {% set icon_edit = "M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z" %}
 {% set icon_history = "M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z" %}
 
 {# ========================================================================== #}
-{# 2. 导航栏结构 (逻辑：JS版默认隐藏 + NoScript版兜底) #}
+{# 2. 导航栏 (只写一套代码，同时兼容 JS 和 No-JS) #}
 {# ========================================================================== #}
 <nav class="md-content__articles custom-actions-nav">
   
-  {# --- 按钮 A: 编辑 (Edit) --- #}
-  {# JS 版本：带 ID，用于绑定弹窗事件 #}
-  <a href="{{ login_edit_url }}" id="action-edit" title="贡献与编辑" class="md-content__button md-icon js-mount">
+  {# 按钮 A: 编辑 (默认是跳转链接) #}
+  <a href="{{ login_edit_url }}" id="action-edit" title="贡献与编辑" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="{{ icon_edit }}"></path></svg>
   </a>
-  {# No-JS 版本：直接跳转 #}
-  <noscript>
-    <a href="{{ login_edit_url }}" title="贡献与编辑" class="md-content__button md-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="{{ icon_edit }}"></path></svg>
-    </a>
-  </noscript>
 
-  {# --- 按钮 B: 历史 (History) --- #}
-  {# JS 版本：无特殊事件，但为了同步显示逻辑，同样由 JS 唤醒 #}
-  <a href="{{ history_url }}" title="查看编辑历史" class="md-content__button md-icon js-mount">
+  {# 按钮 B: 历史 (总是跳转链接) #}
+  <a href="{{ history_url }}" title="查看编辑历史" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="{{ icon_history }}"></path></svg>
   </a>
-  {# No-JS 版本 #}
-  <noscript>
-    <a href="{{ history_url }}" title="查看编辑历史" class="md-content__button md-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="{{ icon_history }}"></path></svg>
-    </a>
-  </noscript>
 
 </nav>
 
 {# ========================================================================== #}
-{# 3. 交互弹窗组件 #}
+{# 3. 弹窗组件 #}
 {# ========================================================================== #}
 <dialog id="edit-dialog" class="custom-dialog">
   <div class="dialog-header">
@@ -66,34 +54,30 @@
     </ul>
   </div>
 
-  <button onclick="this.closest('dialog').close()" class="gh-btn-secondary">取消</button>
+  <button id="close-dialog-btn" class="gh-btn-secondary">取消</button>
 </dialog>
 
 {# ========================================================================== #}
-{# 4. CSS 样式 (分离结构与表现) #}
+{# 4. 样式 #}
 {# ========================================================================== #}
 <style>
-  /* 导航栏容器 */
+  /* 容器定位 */
   .custom-actions-nav {
     float: right;
     display: flex;
     gap: 8px;
     position: relative;
-    pointer-events: none; /* 防止容器遮挡点击 */
+    pointer-events: none; /* 让鼠标穿透容器 */
   }
   
-  /* 按钮基础样式补丁 */
+  /* 恢复按钮点击 */
   .custom-actions-nav .md-content__button {
     color: var(--md-icon-fg-color);
-    pointer-events: auto; /* 恢复按钮点击 */
+    pointer-events: auto; 
+    cursor: pointer;
   }
 
-  /* 核心：JS 挂载类 - 默认隐藏，防止双重渲染 */
-  .js-mount {
-    display: none; 
-  }
-
-  /* 弹窗样式优化 */
+  /* 弹窗样式 */
   .custom-dialog {
     border: 1px solid var(--md-divider-color);
     border-radius: 12px;
@@ -101,7 +85,6 @@
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     width: 90%;
     max-width: 360px;
-    font-family: inherit;
     background: var(--md-default-bg-color);
     color: var(--md-default-fg-color);
   }
@@ -115,14 +98,13 @@
   .dialog-footer ul { font-size: 0.8rem; padding-left: 1.2rem; line-height: 2; margin: 0; }
   .dialog-footer a { color: var(--md-typeset-a-color); text-decoration: none; }
 
-  /* 按钮颜色体系 */
+  /* 按钮颜色 */
   .gh-btn-primary { background-color: #1f883d; color: #fff !important; }
   .gh-btn-primary:hover { background-color: #1a7a35; }
   
   .gh-btn-secondary { margin-top: 20px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--md-divider-color); cursor: pointer; background-color: #f6f8fa; color: #24292f; }
   .gh-btn-secondary:hover { background-color: #f3f4f6; }
 
-  /* 深色模式适配 */
   [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
   [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
   [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7; border-color: #444c56; }
@@ -130,25 +112,35 @@
 </style>
 
 {# ========================================================================== #}
-{# 5. 统一激活脚本 #}
+{# 5. 脚本 (渐进增强逻辑) #}
 {# ========================================================================== #}
 <script>
   (function() {
-    // 1. 唤醒所有 "JS挂载" 的按钮 (包括编辑和历史)
-    // 这一步确保了按钮只有在脚本运行时才出现，避免了与原生按钮的视觉冲突
-    var mountedBtns = document.querySelectorAll('.js-mount');
-    mountedBtns.forEach(function(btn) {
-      btn.style.display = 'inline-block';
-    });
-
-    // 2. 为特定的 "编辑按钮" 绑定弹窗事件
     var editBtn = document.getElementById('action-edit');
     var editDialog = document.getElementById('edit-dialog');
+    var closeBtn = document.getElementById('close-dialog-btn');
     
-    if (editBtn && editDialog) {
+    // 仅当 JS 正常加载，且找到相关元素时，才进行拦截
+    if (editBtn && editDialog && closeBtn) {
+      
+      // 1. 拦截编辑按钮点击
       editBtn.addEventListener('click', function(e) {
-        e.preventDefault(); // 阻止默认跳转
-        editDialog.showModal(); // 唤起弹窗
+        // 只有这里我们阻止默认跳转，改为打开弹窗
+        // 如果这行代码因为JS被禁用而不执行，浏览器会自动跳转 href 链接
+        e.preventDefault(); 
+        editDialog.showModal();
+      });
+
+      // 2. 绑定取消按钮
+      closeBtn.addEventListener('click', function() {
+        editDialog.close();
+      });
+
+      // 3. 点击弹窗外部也可关闭 (可选优化)
+      editDialog.addEventListener('click', function(e) {
+        if (e.target === editDialog) {
+          editDialog.close();
+        }
       });
     }
   })();
