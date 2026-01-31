@@ -129,3 +129,56 @@ body:has(dialog[open]) {
   font-weight: 700;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
+
+
+/* 1. 强制左侧内容垂直堆叠 */
+.footer-left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* 2. 导航链接样式 */
+.md-footer-custom-nav {
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.md-footer-custom-nav a {
+  color: var(--md-footer-fg-color);
+  text-decoration: none;
+}
+
+.md-footer-custom-nav .sep {
+  margin: 0 0.3rem;
+  opacity: 0.3;
+}
+
+/* 3. 版权行微调 */
+.md-copyright__highlight {
+  margin: 0 !important;
+  font-size: 0.65rem;
+  opacity: 0.7;
+}
+
+.license-link {
+  font-weight: bold;
+  color: inherit;
+}
+
+/* 4. 移动端适配：当屏幕窄时，整体居中 */
+@media screen and (max-width: 47.9375em) {
+  .md-footer-meta__inner {
+    display: flex;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  
+  .footer-left-column {
+    align-items: center;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}
