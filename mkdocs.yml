@@ -12,7 +12,7 @@ edit_uri: https://github.com/MontageSubs/wiki/wiki/
 # ==========================================================================
 theme:
   name: material
-  custom_dir: docs/site/overrides  # 确保此目录下有 partials/copyright.html
+  custom_dir: docs/site/overrides  # main.html
   language: zh
   logo: site/assets/montagesubs_logo-512.jpg
   favicon: site/assets/favicon.ico
@@ -34,6 +34,7 @@ theme:
   hide:
     - footer.powered
 
+  # 调色板：支持自动/手动切换深色模式
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
@@ -66,7 +67,6 @@ plugins:
       pipeline: []
       indexing: 'full'
       separator: '[\s\-\.\u200b\uff0c\u3002\uff01\u3001\uff1f]+'
-
 # ==========================================================================
 # 4. Markdown 扩展增强
 # ==========================================================================
@@ -91,35 +91,22 @@ extra_css:
   - site/stylesheets/extra.css
 
 extra:
-  # --- 自定义页脚导航 (用于 overrides/partials/copyright.html) ---
-  footer_nav:
-    - name: "关于我们"
-      link: "关于我们"
-    - name: "隐私政策"
-      link: "隐私政策"
-    - name: "服务协议"
-      link: "服务协议"
-    - name: "参与贡献"
-      link: "参与贡献"
-
-  # --- 右侧社交矩阵 ---
   social:
-    - icon: fontawesome/solid/house
-      link: https://montagesubs.github.io
-      name: "官方网站"
     - icon: fontawesome/brands/github
-      link: https://github.com/MontageSubs
-      name: "GitHub 组织"
+      link: https://montagesubs.github.io
     - icon: fontawesome/solid/paper-plane
       link: https://t.me/s/MTSubs
-      name: "Telegram 频道"
     - icon: fontawesome/brands/weibo
       link: https://weibo.com/u/8358891788
-      name: "官方微博"
+    - icon: fontawesome/brands/bluesky
+      link: https://bsky.app/profile/montagesubs.bsky.social
 
 # ==========================================================================
-# 6. 站点导航
+# 6. 页脚与导航
 # ==========================================================================
+copyright: |
+  Copyright &copy; 2026 <a href="https://montagesubs.github.io">MontageSubs</a>
+
 nav:
   - 首页: index.md
   - 新增条目: https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new
