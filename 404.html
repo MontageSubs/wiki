@@ -356,16 +356,12 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <article class="md-content__inner md-typeset" style="text-align: center; margin-top: 4rem; max-width: 450px; margin-left: auto; margin-right: auto;">
+<article class="md-content__inner md-typeset" style="text-align: center; margin-top: 4rem; max-width: 450px; margin-left: auto; margin-right: auto;">
     <h1 style="font-weight: 800; margin-bottom: 1.5rem;">404 - 此条目尚不存在</h1>
     
     <div style="min-height: 80px; margin-bottom: 2rem;">
-        <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6;">
-            字幕始于空白的轴线，百科成于点滴的积累。
-        </p>
-        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color);">
-            何不亲手填补这块空白？<span id="cursor">|</span>
-        </p>
+        <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6;">字幕始于空白的轴线，百科成于点滴的积累。</p>
+        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color);">何不亲手填补这块空白？<span id="cursor">|</span></p>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -376,10 +372,9 @@
         返回首页
       </a>
     </div>
-  </article>
+</article>
 
-  <style>
-    /* 核心样式复用 */
+<style>
     .gh-btn-primary { background-color: #1f883d; }
     .gh-btn-primary:hover { background-color: #1a7a35; }
     [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
@@ -387,72 +382,72 @@
     .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; }
     [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
     
-    /* 光标闪烁动画 */
     #cursor {
       display: inline-block;
       width: 2px;
       margin-left: 2px;
       animation: blink 0.8s infinite;
       color: var(--md-primary-fg-color);
+      visibility: hidden; /* 初始隐藏，打字开始后再显示 */
     }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-  </style>
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+</style>
 
-  <script>
+<script>
     (function() {
-      // 1. 获取路径与 URL (同之前逻辑)
+      // 1. 立即处理 URL 逻辑
       var currentPath = window.location.pathname;
       var pathSegments = currentPath.split('/').filter(Boolean);
       var pageName = pathSegments.pop() || "";
-      if (pageName) {
+      if (pageName && pageName !== "wiki") {
         var targetUrl = "https://github.com/MontageSubs/wiki/wiki/" + pageName;
         document.getElementById('gh-create-btn').href = "https://github.com/login?return_to=" + encodeURIComponent(targetUrl);
       }
 
       // 2. 键入效果逻辑
-      var line1 = document.getElementById('type-line-1');
-      var line2 = document.getElementById('type-line-2');
-      var text1 = line1.innerText;
-      var text2 = line2.innerText.replace('|', '').trim(); // 移除初始光标符
-      
-      // 清空文字准备打字
-      line1.innerText = '';
-      line2.innerText = '';
-      var cursor = document.getElementById('cursor');
-      line2.appendChild(cursor); // 将光标放回第二行末尾
+      var l1 = document.getElementById('type-line-1');
+      var l2 = document.getElementById('type-line-2');
+      var cur = document.getElementById('cursor');
 
-      function typeWriter(element, text, speed, callback) {
+      // 备份文字内容
+      var txt1 = l1.textContent;
+      var txt2 = l2.textContent.replace('|', '').trim();
+
+      // 清空容器开始动画
+      l1.textContent = '';
+      l2.textContent = '';
+      l2.appendChild(cur);
+      cur.style.visibility = 'visible';
+
+      function typeEffect(element, text, speed, callback) {
         var i = 0;
-        function type() {
+        function step() {
           if (i < text.length) {
-            // 如果是第二行，确保光标始终在末尾
-            if (element === line2) {
-              element.insertBefore(document.createTextNode(text.charAt(i)), cursor);
+            // 如果是带光标的那一行，插在光标前面
+            if (element === l2) {
+                element.insertBefore(document.createTextNode(text.charAt(i)), cur);
             } else {
-              element.innerText += text.charAt(i);
+                element.textContent += text.charAt(i);
             }
             i++;
-            setTimeout(type, speed);
+            setTimeout(step, speed);
           } else if (callback) {
             callback();
           }
         }
-        type();
+        step();
       }
 
-      // 开始动画序列
+      // 执行动画序列
       setTimeout(function() {
-        typeWriter(line1, text1, 70, function() {
+        typeEffect(l1, txt1, 50, function() {
           setTimeout(function() {
-            typeWriter(line2, text2, 100);
-          }, 500); // 第一句打完停顿 0.5 秒
+            typeEffect(l2, txt2, 80);
+          }, 400);
         });
-      }, 300); // 页面加载后 0.3 秒开始
+      }, 200);
     })();
-  </script>
+</script>
 
               </article>
             </div>
