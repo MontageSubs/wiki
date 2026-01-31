@@ -4,16 +4,16 @@
 <article class="md-content__inner md-typeset" style="text-align: center; margin-top: 4rem; max-width: 450px; margin-left: auto; margin-right: auto;">
     <h1 style="font-weight: 800; margin-bottom: 1.5rem;">404 - 此条目尚不存在</h1>
     
-    <div style="min-height: 80px; margin-bottom: 2rem;">
-        <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6;">字幕始于空白的轴线，百科成于点滴的积累。</p>
-        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color);">何不亲手填补这块空白？<span id="cursor">|</span></p>
+    <div style="min-height: 80px; margin-bottom: 2rem; text-align: left; display: inline-block; width: 100%; max-width: 320px;">
+        <p id="type-line-1" style="color: var(--md-default-fg-color--light); font-size: 0.85rem; margin-bottom: 0.5rem; line-height: 1.6; min-height: 1.6em;">字幕始于空白的轴线，百科成于点滴的积累。</p>
+        <p id="type-line-2" style="font-weight: 600; font-size: 1.1rem; color: var(--md-default-fg-color); min-height: 1.2em;">何不亲手填补这块空白？<span id="cursor"></span></p>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 12px;">
-      <a id="gh-create-btn" href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15);">
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+      <a id="gh-create-btn" href="https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15); width: 100%; max-width: 300px;">
         使用 GitHub 创建此条目
       </a>
-      <a href="{{ '' | url }}" class="gh-btn-secondary" style="padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); text-align: center; text-decoration: none; display: block;">
+      <a href="{{ '' | url }}" class="gh-btn-secondary" style="padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); text-align: center; text-decoration: none; display: block; width: 100%; max-width: 300px;">
         返回首页
       </a>
     </div>
@@ -27,20 +27,23 @@
     .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; }
     [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
     
+    /* 优化：光标颜色自适应主题文字颜色 */
     #cursor {
       display: inline-block;
       width: 2px;
-      margin-left: 2px;
+      height: 1.1rem;
+      vertical-align: middle;
+      margin-left: 4px;
+      background-color: var(--md-default-fg-color); /* 自适应颜色 */
       animation: blink 0.8s infinite;
-      color: var(--md-primary-fg-color);
-      visibility: hidden; /* 初始隐藏，打字开始后再显示 */
+      visibility: hidden;
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 </style>
 
 <script>
     (function() {
-      // 1. 立即处理 URL 逻辑
+      // 1. URL 逻辑
       var currentPath = window.location.pathname;
       var pathSegments = currentPath.split('/').filter(Boolean);
       var pageName = pathSegments.pop() || "";
@@ -49,16 +52,14 @@
         document.getElementById('gh-create-btn').href = "https://github.com/login?return_to=" + encodeURIComponent(targetUrl);
       }
 
-      // 2. 键入效果逻辑
+      // 2. 键入逻辑
       var l1 = document.getElementById('type-line-1');
       var l2 = document.getElementById('type-line-2');
       var cur = document.getElementById('cursor');
 
-      // 备份文字内容
-      var txt1 = l1.textContent;
+      var txt1 = l1.textContent.trim();
       var txt2 = l2.textContent.replace('|', '').trim();
 
-      // 清空容器开始动画
       l1.textContent = '';
       l2.textContent = '';
       l2.appendChild(cur);
@@ -68,7 +69,6 @@
         var i = 0;
         function step() {
           if (i < text.length) {
-            // 如果是带光标的那一行，插在光标前面
             if (element === l2) {
                 element.insertBefore(document.createTextNode(text.charAt(i)), cur);
             } else {
@@ -83,14 +83,13 @@
         step();
       }
 
-      // 执行动画序列
       setTimeout(function() {
-        typeEffect(l1, txt1, 50, function() {
+        typeEffect(l1, txt1, 60, function() {
           setTimeout(function() {
-            typeEffect(l2, txt2, 80);
+            typeEffect(l2, txt2, 90);
           }, 400);
         });
-      }, 200);
+      }, 300);
     })();
 </script>
 {% endblock %}
