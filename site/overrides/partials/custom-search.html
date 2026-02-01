@@ -1,0 +1,113 @@
+{% extends "partials/search.html" %}
+
+{% block repository %}
+  {{ super() }}
+
+  {# --- 1. 组件专用 CSS 样式 --- #}
+  <style>
+    /* 调整 Meta 容器为弹性布局，使按钮靠右 */
+    .md-search-result__meta {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100%;
+      min-height: 2rem; /* 防止高度塌陷 */
+    }
+
+    /* GitHub 风格创建按钮 */
+    .md-search-result__create-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      line-height: 1.2rem;
+      border-radius: 6px;
+      background-color: #1f883d;
+      color: #ffffff !important;
+      border: 1px solid rgba(27, 31, 35, 0.15);
+      transition: background-color 0.2s;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .md-search-result__create-btn:hover {
+      background-color: #1a7a35;
+      text-decoration: none !important;
+    }
+
+    /* 暗色模式适配 */
+    [data-md-color-scheme="slate"] .md-search-result__create-btn {
+      background-color: #238636;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    [data-md-color-scheme="slate"] .md-search-result__create-btn:hover {
+      background-color: #2ea043;
+    }
+
+    /* 移动端微调：防止按钮过大挤压文字 */
+    @media screen and (max-width: 30em) {
+      .md-search-result__create-btn {
+        padding: 2px 8px;
+        font-size: 0.6rem;
+      }
+    }
+  </style>
+
+  {# --- 2. HTML 结构注入 --- #}
+  {# 预埋按钮，初始隐藏 #}
+  <a href="" 
+     id="gh-create-entry-btn" 
+     class="md-search-result__create-btn" 
+     style="display: none;" 
+     target="_blank">
+    创建条目
+  </a>
+
+  {# --- 3. 核心逻辑脚本 --- #}
+  <script id="search-extension-script">
+    (function() {
+      const REPO_WIKI_URL = "https://github.com/MontageSubs/wiki/wiki/";
+
+      function setupCreateButton() {
+        // 这里的选择器需严格对应你提供的 HTML 结构
+        const resultMeta = document.querySelector(".md-search-result__meta");
+        const searchInput = document.querySelector(".md-search__input");
+        const createBtn = document.getElementById("gh-create-entry-btn");
+
+        if (!resultMeta || !searchInput || !createBtn) return;
+
+        // 监听搜索结果 DOM 的变化
+        const observer = new MutationObserver(() => {
+          const query = searchInput.value.trim();
+          // 只有当显示“没有找到”且有输入内容时才激活
+          const isNoResult = resultMeta.textContent.includes("没有找到");
+
+          if (isNoResult && query.length > 0) {
+            createBtn.href = REPO_WIKI_URL + encodeURIComponent(query) + "/_edit";
+            // 确保按钮被动态移动到 meta 容器内（实现对齐逻辑）
+            if (!resultMeta.contains(createBtn)) {
+              resultMeta.appendChild(createBtn);
+            }
+            createBtn.style.display = "inline-flex";
+          } else {
+            createBtn.style.display = "none";
+          }
+        });
+
+        observer.observe(resultMeta, { childList: true, characterData: true, subtree: true });
+      }
+
+      // 初次加载执行
+      setupCreateButton();
+
+      // 关键：适配 MkDocs Instant Loading
+      // 当页面即时切换后，重新运行监听逻辑
+      if (window.app$) {
+        app$.subscribe(function() {
+          setupCreateButton();
+        });
+      }
+    })();
+  </script>
+{% endblock %}
