@@ -73,8 +73,18 @@
 </header>
 
 <style>
-  .hd-action-container label[for="hd-action-toggle"] {
-    display: inline-flex !important;
+  .hd-action-container {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+  .hd-action-container label[title]::after {
+    white-space: nowrap !important;
+    width: max-content !important;
+    max-width: none !important;
+  }
+  .hd-action-container label[title] {
+    word-break: keep-all !important;
     white-space: nowrap !important;
   }
   .hd-action-wrapper { position: relative; display: flex; align-items: center; }
