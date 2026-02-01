@@ -1,0 +1,30 @@
+{% extends "partials/header.html" %}
+
+{% block config %}
+  {{ super() }}
+
+  <a href="https://github.com/login?return_to=https://github.com/MontageSubs/wiki/wiki/Home" 
+     title="贡献新条目" 
+     class="md-header__button md-icon gh-header-create-btn"
+     target="_blank">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+      <path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z"></path>
+    </svg>
+  </a>
+
+  <style>
+    /* 默认状态：颜色、透明度与亮度图标完全一致 */
+    .gh-header-create-btn {
+      transition: color 0.25s, background-color 0.25s;
+    }
+
+    /* 审美关键点：悬停时才显露 GitHub 身份 */
+    .gh-header-create-btn:hover {
+      color: #1f883d !important; /* 亮色模式：GitHub 绿 */
+    }
+
+    [data-md-color-scheme="slate"] .gh-header-create-btn:hover {
+      color: #3fb950 !important; /* 暗色模式：更亮的 GitHub 绿，确保对比度 */
+    }
+  </style>
+{% endblock %}
