@@ -24,14 +24,12 @@
     text-decoration: none !important;
   }
 
-  /* 亮色模式配色 */
   :root {
     --search-create-bg: #1f883d;
     --search-create-hover: #1c8139;
     --search-create-active: #197935;
   }
   
-  /* 暗色模式配色 */
   [data-md-color-scheme="slate"] {
     --search-create-bg: #238636;
     --search-create-hover: #29903b;
@@ -81,7 +79,7 @@
         const isNoResult = resultMeta.textContent.includes("没有找到");
 
         if (isNoResult && query.length > 0) {
-          /* 构建带有登录跳转逻辑的 URL */
+
           const targetUrl = BASE_URL + encodeURIComponent(query);
           createBtn.href = LOGIN_PREFIX + encodeURIComponent(targetUrl);
           
@@ -99,7 +97,6 @@
 
     setupCreateButton();
 
-    /* 适配即时加载 */
     if (window.app$) {
       app$.subscribe(function() {
         setupCreateButton();
