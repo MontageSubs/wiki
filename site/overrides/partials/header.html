@@ -23,7 +23,32 @@
         </div>
       </div>
     </div>
-
+    <div class="header-action-wrapper">
+      <input type="checkbox" id="header-action-toggle" autocomplete="off" hidden aria-hidden="true">
+      <label for="header-action-toggle" class="action-overlay-mask"></label>
+      <div class="action-container">
+        <label for="header-action-toggle" class="md-header__button md-icon" title="创建新条目">
+          {% include ".icons/material/plus.svg" %}
+        </label>
+        <aside class="gh-popup-menu" aria-hidden="true">
+          <div class="gh-popup-arrow"></div>
+          <div class="gh-popup-box">
+            <div class="gh-popup-header">
+              <strong>参与百科贡献</strong>
+              <p>一本众创、共建、同享的字幕百科</p>
+            </div>
+            <div class="gh-popup-body">
+              <a href="{{ login_new_url }}" class="gh-btn-github" target="_blank">使用 GitHub 创建新条目</a>
+              <nav class="gh-links-nav">
+                <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
+                <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
+                <a href="{{ '贡献指南/' | url }}">贡献指南</a>
+              </nav>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
     <form class="md-header__option" data-md-component="palette">
       {% for option in config.theme.palette %}
         {% set primary = option.primary | replace(" ", "-") | lower %}
@@ -36,37 +61,6 @@
         {% endif %}
       {% endfor %}
     </form>
-
-    <div class="header-action-wrapper">
-      <input type="checkbox" id="header-action-toggle" autocomplete="off" hidden aria-hidden="true">
-      <label for="header-action-toggle" class="action-overlay-mask"></label>
-      
-      <div class="action-container">
-        <label for="header-action-toggle" class="md-header__button md-icon" title="创建新条目">
-          {% include ".icons/material/plus.svg" %}
-        </label>
-
-        <aside class="gh-popup-menu" aria-hidden="true">
-          <div class="gh-popup-arrow"></div>
-          <div class="gh-popup-box">
-            <div class="gh-popup-header">
-              <strong>参与百科贡献</strong>
-              <p>一本众创、共建、同享的字幕百科</p>
-            </div>
-            
-            <div class="gh-popup-body">
-              <a href="{{ login_new_url }}" class="gh-btn-github" target="_blank">使用 GitHub 创建新条目</a>
-              
-              <nav class="gh-links-nav">
-                <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
-                <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
-                <a href="{{ '贡献指南/' | url }}">贡献指南</a>
-              </nav>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </div>
 
     <label class="md-header__button md-icon" for="__search">
       {% include ".icons/material/magnify.svg" %}
@@ -85,15 +79,9 @@
 </header>
 
 <style>
-    /* 基础容器 */
-  .header-action-wrapper { 
-    position: relative; 
-    display: flex; 
-    align-items: center; 
-    margin-right: 12px;   /* 1. 增加这个值可以把 + 号和弹窗整体往左推 */
-    overflow: visible;    /* 2. 必须可见，否则右移的弹窗会被切断 */
-  }
-
+  /* 基础容器布局 */
+  .header-action-wrapper { position: relative; display: flex; align-items: center; }
+  
   /* 菜单显示/隐藏状态逻辑 */
   #header-action-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
   #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
@@ -104,32 +92,24 @@
     z-index: 100; background: transparent;
   }
 
-  /* 弹出菜单 */
+  /* 弹出菜单面板布局与动画 */
   .gh-popup-menu {
-    display: none; 
-    position: absolute; 
-    top: 100%; 
-    right: -25px;
-    margin-top: 8px; 
-    width: 260px; 
-    z-index: 101;
+    display: none; position: absolute; top: 100%; right: -10px;
+    margin-top: 8px; width: 260px; z-index: 101;
     filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
     animation: popup-anim-desktop 0.2s ease-out;
   }
 
-  /* 三角形 */
+  /* 顶部修饰箭头定位 */
   .gh-popup-arrow {
-    position: absolute; 
-    top: -6px; 
-    right: 32px;
-    width: 12px; 
-    height: 12px;
+    position: absolute; top: -6px; right: 30px; 
+    width: 12px; height: 12px;
     background: var(--md-default-bg-color);
     border-top: 1px solid var(--md-divider-color);
     border-left: 1px solid var(--md-divider-color);
-    transform: rotate(45deg); 
-    z-index: 102;
+    transform: rotate(45deg); z-index: 102;
   }
+  [data-md-color-scheme="slate"] .gh-popup-arrow { background: #2e323e; }
 
   /* 弹出框内容容器样式 */
   .gh-popup-box {
@@ -175,7 +155,6 @@
   @media screen and (max-width: 480px) {
     .action-overlay-mask { background: rgba(0, 0, 0, 0.4); display: none; }
     #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
-    
     .gh-popup-menu {
       position: fixed; top: 50%; left: 50%; right: auto;
       width: 85vw; max-width: 320px; margin: 0;
