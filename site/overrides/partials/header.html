@@ -1,0 +1,66 @@
+{# 彻底覆写 Header 结构，完全遵循官方 UI 规范 #}
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
+    
+    {# 1. Logo #}
+    <a href="{{ config.site_url | default(nav.homepage.url, true) | url }}" title="{{ config.site_name }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
+      {% include "partials/logo.html" %}
+    </a>
+
+    {# 2. 移动端菜单按钮 #}
+    <label class="md-header__button md-icon" for="__drawer">
+      {% include ".icons/material/menu.svg" %}
+    </label>
+
+    {# 3. 标题 #}
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">{{ config.site_name }}</span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">{% if page and page.title %}{{ page.title }}{% endif %}</span>
+        </div>
+      </div>
+    </div>
+
+    {# 4. 亮度调节 #}
+    <form class="md-header__option" data-md-component="palette">
+      {% for option in config.theme.palette %}
+        {% set primary = option.primary | replace(" ", "-") | lower %}
+        {% set accent  = option.accent  | replace(" ", "-") | lower %}
+        <input class="md-option" data-md-color-media="{{ option.media }}" data-md-color-scheme="{{ option.scheme }}" data-md-color-primary="{{ primary }}" data-md-color-accent="{{ accent }}" {% if option.toggle %} aria-label="{{ option.toggle.name }}" {% else %} aria-hidden="true" {% endif %} type="radio" name="__palette" id="__palette_{{ loop.index }}">
+        {% if option.toggle %}
+          <label class="md-header__button md-icon" title="{{ option.toggle.name }}" for="__palette_{{ loop.index0 or loop.length }}" hidden>
+            {% include ".icons/" ~ option.toggle.icon ~ ".svg" %}
+          </label>
+        {% endif %}
+      {% endfor %}
+    </form>
+
+    {# --- 官方风格创建按钮：无自定义颜色，完全遵循主题配置 --- #}
+    <a href="https://github.com/login?return_to=https://github.com/MontageSubs/wiki/wiki/Home" 
+       title="贡献新条目" 
+       class="md-header__button md-icon" 
+       target="_blank">
+      {% include ".icons/material/plus.svg" %}
+    </a>
+
+    {# 5. 搜索按钮 #}
+    <label class="md-header__button md-icon" for="__search">
+      {% include ".icons/material/magnify.svg" %}
+    </label>
+
+    {# 6. 搜索框 #}
+    <div class="md-search" data-md-component="search" role="dialog">
+      {% include "partials/search.html" %}
+    </div>
+
+    {# 7. 仓库信息 #}
+    {% if config.repo_url %}
+      <div class="md-header__source">
+        {% include "partials/source.html" %}
+      </div>
+    {% endif %}
+  </nav>
+</header>
