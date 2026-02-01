@@ -66,12 +66,12 @@
 
   /* 辅助链接组 */
   .gh-links-nav {
-    margin-top: 6px; padding-top: 12px;
+    margin-top: 4px; padding-top: 12px;
     border-top: 1px solid var(--md-divider-color);
     display: flex; flex-direction: column; gap: 0px;
   }
   .gh-links-nav a {
-    display: block; padding: 4px 0; font-size: 0.75rem; text-align: center;
+    display: block; padding: 2px 0; font-size: 0.75rem; text-align: center;
     color: var(--md-default-fg-color); text-decoration: none;
   }
   .gh-links-nav a:hover { 
@@ -88,7 +88,6 @@
       top: 50%; left: 50%; right: auto;
       width: 85vw; max-width: 320px;
       margin: 0;
-      /* 核心修复：使用 translate(-50%, -50%) 居中并重置 desktop 动画 */
       transform: translate(-50%, -50%);
       animation: popup-anim-mobile 0.25s ease-out;
     }
