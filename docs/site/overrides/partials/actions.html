@@ -16,7 +16,7 @@
         {% include ".icons/material/file-document-edit-outline.svg" %}
       </label>
       
-      <a href="{{ repo_url }}/wiki/{{ wiki_page }}/_history" class="icon-btn-trigger" title="查看编辑历史">
+      <a href="{{ repo_url }}/wiki/{{ wiki_page }}/_history" class="icon-btn-trigger" target="_blank" rel="noopener" title="查看编辑历史">
         {% include ".icons/material/history.svg" %}
       </a>
     </div>
@@ -30,8 +30,7 @@
         </div>
         
         <div class="gh-popup-body">
-          <a href="{{ login_edit_url }}" class="gh-btn-github">使用 GitHub 账号编辑</a>
-          
+          <a href="{{ login_edit_url }}" class="gh-btn-github" target="_blank" rel="noopener">使用 GitHub 账号编辑</a>
           <nav class="gh-links-nav">
             <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
             <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
