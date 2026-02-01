@@ -108,53 +108,71 @@
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 </style> <blockquote> <p>💡 脚本下载地址：<a href=https://github.com/NickCollect/MontageSubs-Aegisub-Scripts>点击进入仓库</a></p> </blockquote> <h1 id=aegisub>🎨 Aegisub 特效脚本库实战手册</h1> <blockquote> <p><strong>“字幕后期不应只是枯燥的搬砖，而是赋予文字生命力的艺术。”</strong></p> </blockquote> <p>作为一名常年游走在阴阳两界的深夜修仙级后期，我深知手动调校 ASS 标签的痛苦。为了对抗繁琐的重复劳动，我开发并优化了这套脚本库。它不仅是工具，更是一套成熟的自动化方案，专门解决那些“手打不可能完成”的视觉特效。</p> <hr> <h2 id=lua>📽️ 字幕后期科普：为什么我们需要 Lua 脚本？</h2> <p>在 ASS (Advanced Substation Alpha) 字幕格式中，任何动态效果的背后都是大量的底层代码。</p> <ul> <li><strong>对抗重复劳动</strong>：脚本是 Aegisub 的“大脑”，能在毫秒内替你完成上万次的手动标签输入，比如给 100 行字幕同时加模糊效果。</li> <li><strong>实现非线性动效</strong>：原生 Aegisub 无法直接做出“霓虹灯闪烁”或“信号干扰”效果。脚本通过“切帧技术（Frame-by-Frame）”，将一行字幕碎成几十个短片段并注入随机参数，从而打破静态束缚。</li> <li><strong>完美适配 Mac 环境</strong>：针对 Mac 用户长期面临的 GUI 崩溃痛点，本库所有脚本均采用纯文本输入界面，确保在 macOS 上绝不卡死或白屏。</li> </ul> <hr> <h2 id=_1>🛠️ 脚本详细清单与应用场景</h2> <h3 id=1>1. 样式增强：告别“搬砖”式调参</h3> <ul> <li><strong>Quick Border &amp; Blur (批量边框模糊)</strong></li> <li><strong>核心价值</strong>：一键重置并应用边框和模糊，逻辑干净。</li> <li> <p><strong>技术细节</strong>：会自动清理冗余标签，防止出现 <code>{\bord2\bord5}</code> 这种会导致渲染逻辑冲突的垃圾代码。</p> </li> <li> <p><strong>Batch Move (批量位移)</strong></p> </li> <li><strong>应用场景</strong>：当发现整段字幕位置偏差时，可按像素精确进行全局偏移。</li> </ul> <h3 id=2>2. 动效大师：赋予文字视觉冲击力</h3> <ul> <li><strong>Pro Gradient Smart Pos (智能垂直渐变 v10.0)</strong></li> <li><strong>解决痛点</strong>：传统渐变脚本在移动位置（<code>\pos</code>）后极易产生切割错位。</li> <li> <p><strong>黑科技</strong>：版本 10.0 引入了坐标自动反推逻辑，能完美识别位置标签，实现丝滑且精准的色彩分层。</p> </li> <li> <p><strong>Neon Flicker (霓虹灯闪烁)</strong></p> </li> <li> <p><strong>视觉效果</strong>：模拟电流不稳。通过极高频随机切换透明度（<code>\alpha</code>），让文字呈现极具质感的闪烁感。</p> </li> <li> <p><strong>Text Shaker (文字震动)</strong></p> </li> <li><strong>应用背景</strong>：模拟吼叫、地震或剧烈镜头晃动。</li> <li> <p><strong>实现原理</strong>：在每一帧注入随机的坐标位移，产生高频震颤视觉。</p> </li> <li> <p><strong>Typewriter (打字机特效)</strong></p> </li> <li><strong>背景</strong>：带节奏感的跳出方式能极大增加“互动感”，也常见于也常见于影视剧电脑打字和手机短信类型特效。</li> <li><strong>技术特色</strong>：针对 Mac 优化，支持自定义打字速度，让每一行对白都带有“呼吸感”。</li> </ul> <h3 id=3>3. 进阶排版：强迫症的终极福利</h3> <ul> <li><strong>Split By Character (一键拆字)</strong></li> <li><strong>痛点</strong>：想做逐字跳出效果，但手动拆分后字间距（Kernings）全乱了，怎么都对不齐。</li> <li><strong>方案</strong>：采用“透明遮罩法”，不改变原字位置，只通过透明度控制显隐。这是保证排版原汁原味的最佳技术解。</li> <li><strong>注意</strong>：本自动化只能处理带pos效果的字幕。</li> </ul> <hr> <h2 id=_2>💡 给小白的入坑建议</h2> <ol> <li><strong>别被代码吓到</strong>：你不需要懂 Lua 编程，你只需要知道在什么画面情绪下调用对应的脚本。</li> <li><strong>保留备份是基本功</strong>：尤其是使用“切帧类”脚本（震动、故障、闪烁）时，务必勾选 <strong>"Keep Original Line"</strong>，给自己留条撤退的后路。</li> <li><strong>多看预览</strong>：特效不是越多越好，善用脚本中的“强度（Intensity）”和“概率（Probability）”参数来微调你的作品。</li> </ol> <hr> <p><strong>怎么样，是不是觉得手里的 Aegisub 突然变强了？如果你在使用过程中发现任何 Bug，或者有新的特效点子，欢迎和我交流！</strong></p> <hr> <aside class=md-source-file> <span class=md-source-file__fact> <span class=md-icon title=最后更新> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg> </span> <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年2月1日 07:45:40 UTC">2026年2月1日 07:45:40</span> </span> </aside> </article> </div> <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script> </div> <button type=button class="md-top md-icon" data-md-component=top hidden> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg> 回到页面顶部 </button> </main> <footer class=md-footer> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid custom-footer-container"> <div class="footer-col left-col"> <div class="footer-row-item footer-row-cc"> <span class=cc-license>百科文字内容在 <a href=/wiki/CC-BY-SA-4.0许可证>CC BY-SA 4.0</a> 许可下提供</span> </div> <div class="footer-row-item footer-row-nav"> <nav class=footer-nav> <a href=/wiki/关于我们>关于我们</a> <span class=nav-sep>|</span> <a href=/wiki/隐私政策>隐私政策</a> <span class=nav-sep>|</span> <a href=/wiki/服务协议>服务协议</a> <span class=nav-sep>|</span> <a href=/wiki/参与贡献>参与贡献</a> </nav> </div> </div> <div class="footer-col right-col"> <div class="footer-row-item footer-row-social md-social"> <a href=https://montagesubs.github.io target=_blank rel=noopener class=md-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 25.5-20.6 46.1-46.1 46.1H354.1V333.8h-132.2v160.1H73.6c-25.5 0-46.1-20.6-46.1-46.1l.7-160.2H32c-18 0-32-14.1-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-10 24-10s17 3 24 10l251.4 223.5c7 7 10 15 10 24z"></path></svg> </a> <a href=https://t.me/s/MTSubs target=_blank rel=noopener class=md-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 576 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M536.4-26.3c9.8-3.5 20.6-1 28 6.3s9.8 18.2 6.3 28l-178 496.9c-5 13.9-18.1 23.1-32.8 23.1-14.2 0-27-8.6-32.3-21.7l-64.2-158c-4.5-11-2.5-23.6 5.2-32.6l94.5-112.4c5.1-6.1 4.7-15-.9-20.6s-14.6-6-20.6-.9l-112.4 94.3c-9.1 7.6-21.6 9.6-32.6 5.2L38.1 216.8c-13.1-5.3-21.7-18.1-21.7-32.3 0-14.7 9.2-27.8 23.1-32.8z"/></svg> </a> <a href=https://weibo.com/u/8358891788 target=_blank rel=noopener class=md-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 512 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M407 177.6c7.6-24-13.4-46.8-37.4-41.7-22 4.8-28.8-28.1-7.1-32.8 50.1-10.9 92.3 37.1 76.5 84.8-6.8 21.2-38.8 10.8-32-10.3M214.8 446.7C108.5 446.7 0 395.3 0 310.4c0-44.3 28-95.4 76.3-143.7C176 67 279.5 65.8 249.9 161c-4 13.1 12.3 5.7 12.3 6 79.5-33.6 140.5-16.8 114 51.4-3.7 9.4 1.1 10.9 8.3 13.1 135.7 42.3 34.8 215.2-169.7 215.2m143.7-146.3c-5.4-55.7-78.5-94-163.4-85.7-84.8 8.6-148.8 60.3-143.4 116s78.5 94 163.4 85.7c84.8-8.6 148.8-60.3 143.4-116M347.9 35.1c-25.9 5.6-16.8 43.7 8.3 38.3 72.3-15.2 134.8 52.8 111.7 124-7.4 24.2 29.1 37 37.4 12 31.9-99.8-55.1-195.9-157.4-174.3m-78.5 311c-17.1 38.8-66.8 60-109.1 46.3-40.8-13.1-58-53.4-40.3-89.7 17.7-35.4 63.1-55.4 103.4-45.1 42 10.8 63.1 50.2 46 88.5m-86.3-30c-12.9-5.4-30 .3-38 12.9-8.3 12.9-4.3 28 8.6 34 13.1 6 30.8.3 39.1-12.9 8-13.1 3.7-28.3-9.7-34m32.6-13.4c-5.1-1.7-11.4.6-14.3 5.4-2.9 5.1-1.4 10.6 3.7 12.9 5.1 2 11.7-.3 14.6-5.4 2.8-5.2 1.1-10.9-4-12.9"/></svg> </a> <a href=https://bsky.app/profile/montagesubs.bsky.social target=_blank rel=noopener class=md-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 576 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3 3.4.4 6.7.9 10 1.3M288 227.1c-26.1-50.7-97.1-145.2-163.1-191.8C61.6-9.4 37.5-1.7 21.6 5.5 3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7 3.3-.5 6.6-.9 10-1.4-3.3.5-6.6 1-10 1.4-93.9 14-177.3 48.2-67.9 169.9C220.6 589.1 265.1 437.8 288 361.1c22.9 76.7 49.2 222.5 185.6 103.4 102.4-103.4 28.1-156-65.8-169.9-3.3-.4-6.7-.8-10-1.3 3.4.4 6.7.9 10 1.3 64.1 7.1 133.6-15.1 153.2-80.7C566.9 194 576 75 576 58.4s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8C385.1 81.9 314.1 176.4 288 227.1"/></svg> </a> <a href=https://github.com/MontageSubs target=_blank rel=noopener class=md-social__link> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 512 512"><!-- Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg> </a> </div> <div class="footer-row-item footer-row-brand brand-group-wrapper"> <a href=https://montagesubs.github.io/ class=group-name>蒙太奇字幕组 (MontageSubs)</a> <span class=slogan>用爱发电 ❤️ Powered by Love</span> </div> </div> </div> </div> </footer> </div> <div class=md-dialog data-md-component=dialog> <div class="md-dialog__inner md-typeset"></div> </div> <script id=__config type=application/json>{"annotate": null, "base": "..", "features": ["announce.dismiss", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.tooltips", "search.share", "navigation.instant", "navigation.instant.prefetch"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script> <script src=../assets/javascripts/bundle.79ae519e.min.js></script> <style>
-  /* 强制 Meta 容器使用 Flex 布局以实现左右对齐 */
   .md-search-result__meta {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     width: 100%;
-    min-height: 32px;
+    min-height: 28px;
   }
 
-  /* GitHub 风格创建按钮 */
   .md-search-result__create-btn {
     display: inline-flex;
     align-items: center;
-    padding: 2px 10px;
-    font-size: 0.65rem;
+    padding: 2px 8px;
+    font-size: 0.6rem;
     font-weight: 600;
-    line-height: 1.2rem;
-    border-radius: 6px;
-    background-color: #1f883d;
+    line-height: 1rem;
+    border-radius: 4px;
     color: #ffffff !important;
     border: 1px solid rgba(27, 31, 35, 0.15);
-    transition: background-color 0.2s;
+    transition: background-color 0.1s;
     white-space: nowrap;
     cursor: pointer;
     margin-left: 10px;
-  }
-
-  .md-search-result__create-btn:hover {
-    background-color: #1a7a35;
     text-decoration: none !important;
   }
 
-  /* 深色模式适配 */
-  [data-md-color-scheme="slate"] .md-search-result__create-btn {
-    background-color: #238636;
-    border-color: rgba(255, 255, 255, 0.1);
+  /* 亮色模式配色 */
+  :root {
+    --search-create-bg: #1f883d;
+    --search-create-hover: #1c8139;
+    --search-create-active: #197935;
+  }
+  
+  /* 暗色模式配色 */
+  [data-md-color-scheme="slate"] {
+    --search-create-bg: #238636;
+    --search-create-hover: #29903b;
+    --search-create-active: #2e9a40;
+  }
+
+  .md-search-result__create-btn {
+    background-color: var(--search-create-bg);
+  }
+  .md-search-result__create-btn:hover {
+    background-color: var(--search-create-hover);
+  }
+  .md-search-result__create-btn:active {
+    background-color: var(--search-create-active);
+  }
+
+  @media screen and (max-width: 30em) {
+    .md-search-result__create-btn {
+      padding: 1px 6px;
+      font-size: 0.55rem;
+    }
   }
 </style> <a href id=gh-create-entry-btn class=md-search-result__create-btn style="display: none;" target=_blank> 创建条目 </a> <script>
   (function() {
-    const REPO_WIKI_URL = "https://github.com/MontageSubs/wiki/wiki/";
+    const BASE_URL = "https://github.com/MontageSubs/wiki/wiki/";
+    const LOGIN_PREFIX = "https://github.com/login?return_to=";
 
     function setupCreateButton() {
       const resultMeta = document.querySelector(".md-search-result__meta");
       const searchInput = document.querySelector(".md-search__input");
       const createBtn = document.getElementById("gh-create-entry-btn");
 
-      // 如果按钮在页面跳转后丢失，重新从 body 获取（或者由于 include，它可能在 DOM 其它位置）
       if (!resultMeta || !searchInput || !createBtn) return;
 
       const observer = new MutationObserver(() => {
@@ -162,8 +180,10 @@
         const isNoResult = resultMeta.textContent.includes("没有找到");
 
         if (isNoResult && query.length > 0) {
-          createBtn.href = REPO_WIKI_URL + encodeURIComponent(query) + "/_edit";
-          // 动态移动按钮到提示文字旁边
+          /* 构建带有登录跳转逻辑的 URL */
+          const targetUrl = BASE_URL + encodeURIComponent(query);
+          createBtn.href = LOGIN_PREFIX + encodeURIComponent(targetUrl);
+          
           if (!resultMeta.contains(createBtn)) {
             resultMeta.appendChild(createBtn);
           }
@@ -176,14 +196,13 @@
       observer.observe(resultMeta, { childList: true, characterData: true, subtree: true });
     }
 
-    // 初始化执行
     setupCreateButton();
 
-    // 适配 Instant Loading (MkDocs 核心事件)
+    /* 适配即时加载 */
     if (window.app$) {
       app$.subscribe(function() {
         setupCreateButton();
       });
     }
   })();
-                                            </script> </body> </html>
+</script> </body> </html>
