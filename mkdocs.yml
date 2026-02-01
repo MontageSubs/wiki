@@ -77,6 +77,8 @@ plugins:
       minify_js: true
       minify_css: true
       html_minifier_ignore_comments: true
+  - awesome-pages
+
 # ==========================================================================
 # 4. Markdown 扩展增强
 # ==========================================================================
@@ -118,6 +120,6 @@ extra:
       link: https://github.com/MontageSubs
       name: GitHub
 
-nav:
-  - 首页: index.md
-  - 新增条目: https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new
+#nav:
+#  - 首页: index.md
+#  - 新增条目: https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new
