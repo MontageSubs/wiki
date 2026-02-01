@@ -12,23 +12,35 @@
     z-index: 100; background: transparent;
   }
 
-  /* 弹出菜单面板布局与动画 */
+  /* 弹出菜单面板：通过 margin-right 负值强制向右平移 */
   .gh-popup-menu {
-    display: none; position: absolute; top: 100%; right: -25px;
-    margin-top: 8px; width: 260px; z-index: 101;
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0 !important;
+    margin-right: -15px !important;  /* 调整此值：负值越大，整体越靠右 */
+    margin-top: 8px;
+    width: 260px;
+    z-index: 101;
+    transform: none !important;
     filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
     animation: popup-anim-desktop 0.2s ease-out;
   }
 
-  /* 顶部修饰箭头定位 */
+  /* 顶部修饰箭头定位：基于面板右边缘 */
   .gh-popup-arrow {
-    position: absolute; top: -6px; right: 30px; 
-    width: 12px; height: 12px;
+    position: absolute;
+    top: -6px;
+    right: 35px !important;         /* 调整此值：数值越大，三角越靠面板左侧 */
+    width: 12px;
+    height: 12px;
     background: var(--md-default-bg-color);
     border-top: 1px solid var(--md-divider-color);
     border-left: 1px solid var(--md-divider-color);
-    transform: rotate(45deg); z-index: 102;
+    transform: rotate(45deg) !important;
+    z-index: 102;
   }
+
   [data-md-color-scheme="slate"] .gh-popup-arrow { background: #2e323e; }
 
   /* 弹出框内容容器样式 */
