@@ -1,4 +1,3 @@
-{# 彻底覆写 Header 结构，修复 404 抖动并优化细节 #}
 {% set repo_url = "https://github.com/MontageSubs/wiki" %}
 {% set target_new_url = repo_url ~ "/wiki/_new" %}
 {% set login_new_url = "https://github.com/login?return_to=" ~ (target_new_url | urlencode) %}
@@ -6,17 +5,14 @@
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
     
-    {# 1. Logo #}
     <a href="{{ config.site_url | default(nav.homepage.url, true) | url }}" title="{{ config.site_name }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
       {% include "partials/logo.html" %}
     </a>
 
-    {# 2. 移动端菜单按钮 #}
     <label class="md-header__button md-icon" for="__drawer">
       {% include ".icons/material/menu.svg" %}
     </label>
 
-    {# 3. 标题 #}
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
@@ -28,7 +24,6 @@
       </div>
     </div>
 
-    {# 4. 亮度调节：更换更像太阳的 weather-sunny 图标 #}
     <form class="md-header__option" data-md-component="palette">
       {% for option in config.theme.palette %}
         {% set primary = option.primary | replace(" ", "-") | lower %}
@@ -36,18 +31,12 @@
         <input class="md-option" data-md-color-media="{{ option.media }}" data-md-color-scheme="{{ option.scheme }}" data-md-color-primary="{{ primary }}" data-md-color-accent="{{ accent }}" {% if option.toggle %} aria-label="{{ option.toggle.name }}" {% else %} aria-hidden="true" {% endif %} type="radio" name="__palette" id="__palette_{{ loop.index }}">
         {% if option.toggle %}
           <label class="md-header__button md-icon" title="{{ option.toggle.name }}" for="__palette_{{ loop.index0 or loop.length }}" hidden>
-            {% if option.toggle.icon == "material/brightness-7" or option.toggle.icon == "material/weather-sunny" %}
-               {# 强行替换为标准的太阳图标 #}
-               {% include ".icons/material/weather-sunny.svg" %}
-            {% else %}
-               {% include ".icons/" ~ option.toggle.icon ~ ".svg" %}
-            {% endif %}
+            {% include ".icons/" ~ option.toggle.icon ~ ".svg" %}
           </label>
         {% endif %}
       {% endfor %}
     </form>
 
-    {# --- 5. 交互式创建按钮 --- #}
     <div class="header-action-wrapper">
       <input type="checkbox" id="header-action-toggle" autocomplete="off" hidden aria-hidden="true">
       <label for="header-action-toggle" class="action-overlay-mask"></label>
@@ -66,8 +55,7 @@
             </div>
             
             <div class="gh-popup-body">
-              {# 文案建议：突出“Wiki”属性，增强语义 #}
-              <a href="{{ login_new_url }}" class="gh-btn-github">在 GitHub 上创建新条目</a>
+              <a href="{{ login_new_url }}" class="gh-btn-github" target="_blank">在 GitHub 上创建新条目</a>
               
               <nav class="gh-links-nav">
                 <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
@@ -80,17 +68,14 @@
       </div>
     </div>
 
-    {# 6. 搜索按钮 #}
     <label class="md-header__button md-icon" for="__search">
       {% include ".icons/material/magnify.svg" %}
     </label>
 
-    {# 7. 搜索框：修正了嵌套 div 的 Bug #}
     <div class="md-search" data-md-component="search" role="dialog">
       {% include "partials/search.html" %}
     </div>
 
-    {# 8. 仓库信息 #}
     {% if config.repo_url %}
       <div class="md-header__source">
         {% include "partials/source.html" %}
@@ -100,25 +85,30 @@
 </header>
 
 <style>
+  /* 基础容器布局 */
   .header-action-wrapper { position: relative; display: flex; align-items: center; }
+  
+  /* 菜单显示/隐藏状态逻辑 */
   #header-action-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
   #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
 
+  /* 交互遮罩 */
   .action-overlay-mask {
     display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 100; background: transparent;
   }
 
+  /* 弹出菜单面板布局与动画 */
   .gh-popup-menu {
-    display: none; position: absolute; top: 100%; right: -10px;
+    display: none; position: absolute; top: 100%; right: -14px;
     margin-top: 8px; width: 260px; z-index: 101;
     filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
     animation: popup-anim-desktop 0.2s ease-out;
   }
 
-  /* 细节二：三角形向左移动 4px (原本 right: 20px -> 24px) */
+  /* 顶部修饰箭头定位 */
   .gh-popup-arrow {
-    position: absolute; top: -6px; right: 24px; 
+    position: absolute; top: -6px; right: 21px; 
     width: 12px; height: 12px;
     background: var(--md-default-bg-color);
     border-top: 1px solid var(--md-divider-color);
@@ -127,6 +117,7 @@
   }
   [data-md-color-scheme="slate"] .gh-popup-arrow { background: #2e323e; }
 
+  /* 弹出框内容容器样式 */
   .gh-popup-box {
     background: var(--md-default-bg-color); border: 1px solid var(--md-divider-color);
     border-radius: 12px; overflow: hidden; position: relative; z-index: 103;
@@ -134,9 +125,11 @@
   }
   [data-md-color-scheme="slate"] .gh-popup-box { background: #2e323e; }
 
+  /* 标题与描述文本对齐 */
   .gh-popup-header strong { display: block; font-size: 0.8rem; color: var(--md-default-fg-color); text-align: center; }
   .gh-popup-header p { margin: 6px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.4; text-align: center; }
 
+  /* GitHub 操作按钮配色方案 */
   .gh-btn-github {
     display: block; text-align: center; padding: 10px; border-radius: 6px;
     font-size: 0.75rem; font-weight: 600; text-decoration: none;
@@ -146,6 +139,7 @@
   [data-md-color-scheme="slate"] .gh-btn-github { background-color: #238636; }
   [data-md-color-scheme="slate"] .gh-btn-github:hover { background-color: #29903b; }
 
+  /* 指南链接列表导航 */
   .gh-links-nav {
     margin-top: 6px; padding-top: 12px;
     border-top: 1px solid var(--md-divider-color);
@@ -157,23 +151,20 @@
   }
   .gh-links-nav a:hover { color: var(--md-accent-fg-color); background-color: var(--md-default-bg-color--lightest); border-radius: 4px; }
 
+  /* 桌面端弹出动画 */
   @keyframes popup-anim-desktop {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* 细节三：修复 404 移动端闪现逻辑 */
+  /* 移动端全屏适配与垂直居中动画 */
   @media screen and (max-width: 480px) {
     .action-overlay-mask { background: rgba(0, 0, 0, 0.4); display: none; }
     #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
     
     .gh-popup-menu {
-      position: fixed; 
-      top: 50%; left: 50%;
-      right: auto;
-      width: 85vw; max-width: 320px;
-      margin: 0;
-      /* 核心修复：初始态也保持在中心，仅改变透明度和缩放，防止坐标跳变 */
+      position: fixed; top: 50%; left: 50%; right: auto;
+      width: 85vw; max-width: 320px; margin: 0;
       transform: translate(-50%, -50%);
       animation: popup-anim-mobile 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
     }
