@@ -39,6 +39,7 @@ jobs:
           pip install \
             mkdocs-material \
             jieba \
+            mkdocs-awesome-pages-plugin \
             mkdocs-git-revision-date-localized-plugin \
             mkdocs-minify-plugin
 
