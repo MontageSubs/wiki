@@ -12,44 +12,31 @@
       <a href="{{ '' | url }}" class="gh-btn-secondary">返回首页</a>
     </div>
 </article>
-
 <style>
-    /* 增加 max-width 确保在窄屏下不溢出，并增加换行支持 */
     .type-line { display: inline-block; text-align: left; white-space: nowrap; position: relative; min-height: 1.5em; max-width: 100%; box-sizing: border-box; }
     @media screen and (max-width: 480px) { .type-line { white-space: normal; word-break: break-all; } }
-
-    /* 按钮基础与颜色方案对齐 */
-    .gh-btn-primary, .gh-btn-secondary { width: 280px; max-width: 100%; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15); transition: background-color 0.2s; }
-    
-    /* 亮色模式配色 */
+    .gh-btn-primary, .gh-btn-secondary { width: 280px; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15); transition: opacity 0.2s; }
     .gh-btn-primary { background-color: #1f883d; color: #ffffff !important; }
     .gh-btn-primary:hover { background-color: #1c8139; }
-    
-    /* 暗色模式配色 (Slate) */
+    .gh-btn-primary:active { background-color: #197935; }
     [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
     [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #29903b; }
-
+    [data-md-color-scheme="slate"] .gh-btn-primary:active { background-color: #2e9a40; }
     .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; }
     [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
-    
     #cursor { display: inline-block; width: 2px; height: 1.1em; background-color: var(--md-default-fg-color); vertical-align: middle; margin-left: 4px; animation: blink 0.8s infinite; visibility: hidden; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 </style>
-
 <script>
     (function() {
-      // 1. 链接逻辑
       const name = window.location.pathname.split('/').filter(Boolean).pop() || "";
       if (name && name !== "wiki") {
         const target = `https://github.com/MontageSubs/wiki/wiki/${name}`;
         document.getElementById('gh-create-btn').href = `https://github.com/login?return_to=${encodeURIComponent(target)}`;
       }
-      // 2. 键入动画核心逻辑
       const wrapper = document.getElementById('type-wrapper');
       const cur = document.getElementById('cursor');
-      const lines = [document.getElementById('line-1'), document.getElementById('line-2')];            
-
-      // 锁定高度与宽度，由于 CSS 中加了 max-width: 100%，此处测量值在手机端会自动适应
+      const lines = [document.getElementById('line-1'), document.getElementById('line-2')];
       wrapper.style.height = wrapper.offsetHeight + 'px'; 
       const content = lines.map(el => {
         el.style.width = el.offsetWidth + 'px';
@@ -57,7 +44,6 @@
         el.textContent = '';
         return txt;
       });
-
       async function type(idx) {
         if (idx >= lines.length) return;
         const el = lines[idx];
