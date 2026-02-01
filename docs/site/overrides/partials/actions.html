@@ -5,8 +5,8 @@
 {% set target_edit_url = repo_url ~ "/wiki/" ~ wiki_page ~ "/_edit" %}
 {% set login_edit_url = "https://github.com/login?return_to=" ~ (target_edit_url | urlencode) %}
 
-<div class="action-wrapper" data-search-ignore>
-  <input type="checkbox" id="action-menu-toggle" autocomplete="off" hidden>
+<div class="action-wrapper" data-search-ignore role="complementary">
+  <input type="checkbox" id="action-menu-toggle" autocomplete="off" hidden aria-hidden="true">
   
   <label for="action-menu-toggle" class="action-overlay-mask"></label>
 
@@ -33,9 +33,9 @@
           <a href="{{ login_edit_url }}" class="gh-btn-github">使用 GitHub 编辑此条目</a>
           
           <nav class="gh-links-nav">
-            <a href="https://montagesubs.github.io/wiki/百科贡献指南">百科语法指南</a>
-            <a href="https://montagesubs.github.io/wiki/GitHub-帮助指南">GitHub 帮助指南</a>
-            <a href="https://montagesubs.github.io/wiki/贡献指南">贡献指南</a>
+            <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
+            <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
+            <a href="{{ '贡献指南/' | url }}">贡献指南</a>
           </nav>
         </div>
       </div>
