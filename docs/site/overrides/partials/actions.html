@@ -1,69 +1,251 @@
-{% set repo_url = "https://github.com/MontageSubs/wiki/wiki" %}
-{% set wiki_page = page.file.src_uri | replace("index.md", "Home") | replace(".md", "") %}
+{# --- 1. 逻辑与配置区 --- #}
+{% set repo_url = "https://github.com/MontageWiki/wiki/wiki" %}
+{% set file_path = page.file.src_uri %}
+{% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
 {% set target_edit_url = repo_url ~ "/" ~ wiki_page ~ "/_edit" %}
 {% set login_edit_url = "https://github.com/login?return_to=" ~ (target_edit_url | urlencode) %}
-{% set history_url = repo_url ~ "/" ~ wiki_page ~ "/_history" %}
 
-<nav data-action-nav class="md-content__articles" style="float: right; display: flex; gap: 8px; position: relative; pointer-events: none;">
-  <a href="{{ login_edit_url }}" id="edit-btn" title="贡献与编辑" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
+{# 在此处自定义下拉菜单中的快捷链接，会自动适应行数 #}
+{% set quick_links = [
+  {"title": "百科语法指南", "url": repo_url ~ "/百科语法指南"},
+  {"title": "GitHub 帮助指南", "url": repo_url ~ "/GitHub-帮助指南"},
+  {"title": "贡献指南", "url": repo_url ~ "/贡献指南"}
+] %}
+
+{# --- 2. HTML 结构区 --- #}
+{# 使用 data-search-ignore 防止 MkDocs 索引此区域内的文字 #}
+<div class="md-content__articles action-wrapper" data-search-ignore>
+  
+  {# 2.1 编辑按钮 #}
+  {# 关键点：href 设为真实编辑链接，确保 No-JS 模式下可直接跳转 #}
+  {# id="action-edit-trigger" 用于 JS 拦截 #}
+  <a href="{{ login_edit_url }}" 
+     id="action-edit-trigger" 
+     title="贡献与编辑" 
+     class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
   </a>
-  <a href="{{ history_url }}" title="查看编辑历史" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"></path></svg>
+
+  {# 2.2 弹出菜单 (默认隐藏) #}
+  {# aria-hidden="true" 告诉搜索引擎和屏幕阅读器忽略此内容 #}
+  <div id="action-popup" class="gh-popup-container" hidden aria-hidden="true">
+    <div class="gh-popup-box">
+      <div class="gh-popup-header">
+        <strong>参与百科贡献</strong>
+        <p>一本众创、共建、同享的字幕百科</p>
+      </div>
+      <div class="gh-popup-body">
+        {# 弹窗内的核心动作按钮 #}
+        <a href="{{ login_edit_url }}" class="gh-btn-primary">
+          使用 GitHub 账号编辑
+        </a>
+        
+        {# 快捷链接列表 #}
+        {% if quick_links %}
+        <ul class="gh-links-list">
+          {% for link in quick_links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {# 2.3 查看历史按钮 #}
+  <a href="{{ repo_url }}/{{ wiki_page }}/_history" 
+     title="查看编辑历史" 
+     class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
   </a>
-</nav>
 
-<dialog id="edit-dialog" style="border: 1px solid var(--md-divider-color); border-radius: 12px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 90%; max-width: 360px; font-family: inherit; background: var(--md-default-bg-color); color: var(--md-default-fg-color);">
-  <div style="text-align: center; margin-bottom: 20px;">
-    <h3 style="margin: 0; font-size: 1.2rem; color: var(--md-default-fg-color); font-weight: 700;">参与百科贡献</h3>
-    <p style="font-size: 0.8rem; color: var(--md-default-fg-color--light); margin-top: 8px; line-height: 1.5;">一本众创、共建、同享的字幕百科</p>
-  </div>
-  <div style="display: flex; flex-direction: column; gap: 10px;">
-    <a href="{{ login_edit_url }}" class="gh-btn-primary" style="color: #ffffff !important; padding: 12px; border-radius: 6px; text-align: center; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; border: 1px solid rgba(27, 31, 35, 0.15);">使用 GitHub 账号编辑</a>
-  </div>
-  <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--md-divider-color);">
-    <ul style="font-size: 0.8rem; padding-left: 1.2rem; line-height: 2; margin: 0;">
-      <li><a href="{{ repo_url }}/百科语法指南" style="color: var(--md-typeset-a-color); text-decoration: none;">百科语法指南</a></li>
-      <li><a href="{{ repo_url }}/GitHub-帮助指南" style="color: var(--md-typeset-a-color); text-decoration: none;">GitHub 帮助指南</a></li>
-      <li><a href="{{ repo_url }}/贡献指南" style="color: var(--md-typeset-a-color); text-decoration: none;">贡献指南</a></li>
-    </ul>
-  </div>
-  <button onclick="this.closest('dialog').close()" class="gh-btn-secondary" style="margin-top: 20px; width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--md-divider-color); background: var(--md-default-bg-color); color: var(--md-default-fg-color);">取消</button>
-</dialog>
+</div>
 
+{# --- 3. CSS 样式区 --- #}
 <style>
-  .gh-btn-primary { background-color: #1f883d; }
-  .gh-btn-primary:hover { background-color: #1a7a35; }
-  [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
-  [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
-  .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; transition: background-color 0.2s; }
-  .gh-btn-secondary:hover { background-color: #f3f4f6; }
-  [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
-  [data-md-color-scheme="slate"] .gh-btn-secondary:hover { background-color: #262c36; border-color: #768390; }
+  /* 基础容器布局：右浮动，Flex对齐 */
+  .action-wrapper {
+    float: right;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 按钮间距 */
+    position: relative; /* 为绝对定位的弹窗提供锚点 */
+    z-index: 10; /* 基础层级，低于页眉 */
+  }
+
+  /* 弹出层容器定位 */
+  .gh-popup-container {
+    position: absolute;
+    top: 100%;
+    right: 0; /* 右对齐 */
+    margin-top: 10px;
+    width: 260px; /* 宽度适中，适配手机 */
+    z-index: 100; /* 高于正文，但低于 header(通常是250+) */
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+    
+    /* 动画效果 (可选) */
+    transform-origin: top right;
+    animation: popup-fade-in 0.1s ease-out;
+  }
+
+  @keyframes popup-fade-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* 弹出层外观：GitHub 风格盒子 */
+  .gh-popup-box {
+    background-color: var(--md-default-bg-color); /* 自动适配深浅色背景 */
+    color: var(--md-default-fg-color); /* 自动适配文字颜色 */
+    border: 1px solid var(--md-divider-color);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  /* 顶部小三角 (指向编辑按钮) */
+  .gh-popup-container::before, .gh-popup-container::after {
+    content: "";
+    position: absolute;
+    right: 12px; /* 根据图标位置微调 */
+    border-style: solid;
+    pointer-events: none;
+  }
+  /* 边框三角 */
+  .gh-popup-container::before {
+    top: -8px;
+    border-width: 0 8px 8px 8px;
+    border-color: transparent transparent var(--md-divider-color) transparent;
+  }
+  /* 背景三角 */
+  .gh-popup-container::after {
+    top: -7px;
+    border-width: 0 8px 8px 8px;
+    border-color: transparent transparent var(--md-default-bg-color) transparent;
+  }
+
+  /* 弹窗头部 */
+  .gh-popup-header {
+    padding: 12px 16px;
+    background-color: var(--md-default-bg-color--lightest); /* 浅灰/深灰背景 */
+    border-bottom: 1px solid var(--md-divider-color);
+  }
+  .gh-popup-header strong {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--md-default-fg-color);
+  }
+  .gh-popup-header p {
+    margin: 4px 0 0;
+    font-size: 0.65rem;
+    color: var(--md-default-fg-color--light);
+    line-height: 1.4;
+  }
+
+  /* 弹窗主体 */
+  .gh-popup-body {
+    padding: 16px;
+  }
+
+  /* GitHub 绿色按钮 */
+  .gh-btn-primary {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #2da44e;
+    color: #ffffff !important;
+    text-align: center;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(27,31,35,0.15);
+    transition: 0.2s;
+  }
+  .gh-btn-primary:hover {
+    background-color: #2c974b;
+    text-decoration: none;
+  }
+  /* 深色模式下的绿色按钮调整 */
+  [data-md-color-scheme="slate"] .gh-btn-primary {
+    background-color: #238636;
+    border-color: rgba(240,246,252,0.1);
+  }
+  [data-md-color-scheme="slate"] .gh-btn-primary:hover {
+    background-color: #2ea043;
+  }
+
+  /* 链接列表 */
+  .gh-links-list {
+    margin: 12px 0 0;
+    padding: 12px 0 0;
+    list-style: none;
+    border-top: 1px solid var(--md-divider-color);
+  }
+  .gh-links-list li a {
+    display: block;
+    padding: 4px 0;
+    font-size: 0.75rem;
+    color: var(--md-typeset-a-color);
+    text-decoration: none;
+  }
+  .gh-links-list li a:hover {
+    color: var(--md-accent-fg-color);
+    text-decoration: underline;
+  }
+
+  /* 移动端适配：防止弹出层溢出屏幕 */
+  @media screen and (max-width: 400px) {
+    .gh-popup-container {
+      right: -50px; /* 稍微向左偏移 */
+      width: 240px;
+    }
+    .gh-popup-container::before, .gh-popup-container::after {
+      right: 62px; /* 修正三角位置 */
+    }
+  }
 </style>
 
+{# --- 4. JavaScript 交互区 --- #}
 <script>
-  (function() {
-    var setup = function() {
-      // 解决即时加载导致的按钮堆积
-      var navs = document.querySelectorAll('nav[data-action-nav]');
-      if (navs.length > 1) {
-        for (var i = 0; i < navs.length - 1; i++) navs[i].remove();
-      }
-
-      var editBtn = document.getElementById('edit-btn');
-      var dialog = document.getElementById('edit-dialog');
+(function() {
+  var trigger = document.getElementById('action-edit-trigger');
+  var popup = document.getElementById('action-popup');
+  
+  if (trigger && popup) {
+    // 1. 点击编辑按钮事件
+    trigger.addEventListener('click', function(e) {
+      // 阻止默认跳转行为（No-JS时会跳转，JS存在时则执行此处）
+      e.preventDefault();
+      // 阻止冒泡，防止立即触发 document 的关闭事件
+      e.stopPropagation();
       
-      if (editBtn && dialog) {
-        // 先移除旧监听器确保唯一
-        editBtn.onclick = null; 
-        editBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          dialog.showModal();
-        });
+      // 切换显示状态
+      if (popup.hidden) {
+        popup.hidden = false;
+      } else {
+        popup.hidden = true;
       }
-    };
-    setup();
-    if (typeof subscribe === "function") subscribe(setup);
-  })();
+    });
+
+    // 2. 点击弹窗内部防止关闭
+    popup.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+
+    // 3. 点击页面空白处关闭
+    document.addEventListener('click', function() {
+      if (!popup.hidden) {
+        popup.hidden = true;
+      }
+    });
+    
+    // 4. 按下 ESC 键关闭 (无障碍优化)
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape" && !popup.hidden) {
+        popup.hidden = true;
+      }
+    });
+  }
+})();
 </script>
