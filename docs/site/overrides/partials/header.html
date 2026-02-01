@@ -1,4 +1,8 @@
-{# 彻底覆写 Header 结构，完全遵循官方 UI 规范 #}
+{# 彻底覆写 Header 结构，集成交互式弹出菜单 #}
+{% set repo_url = "https://github.com/MontageSubs/wiki" %}
+{% set target_new_url = repo_url ~ "/wiki/_new" %}
+{% set login_new_url = "https://github.com/login?return_to=" ~ (target_new_url | urlencode) %}
+
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
     
@@ -38,25 +42,49 @@
       {% endfor %}
     </form>
 
-    {# --- 官方风格创建按钮：无自定义颜色，完全遵循主题配置 --- #}
-    <a href="https://github.com/login?return_to=https://github.com/MontageSubs/wiki/wiki/Home" 
-       title="贡献新条目" 
-       class="md-header__button md-icon" 
-       target="_blank">
-      {% include ".icons/material/plus.svg" %}
-    </a>
+    {# --- 5. 交互式创建按钮 (精确还原 actions 逻辑) --- #}
+    <div class="header-action-wrapper">
+      <input type="checkbox" id="header-action-toggle" autocomplete="off" hidden aria-hidden="true">
+      <label for="header-action-toggle" class="action-overlay-mask"></label>
+      
+      <div class="action-container">
+        <label for="header-action-toggle" class="md-header__button md-icon" title="创建新条目">
+          {% include ".icons/material/plus.svg" %}
+        </label>
 
-    {# 5. 搜索按钮 #}
+        <aside class="gh-popup-menu" aria-hidden="true">
+          <div class="gh-popup-arrow"></div>
+          <div class="gh-popup-box">
+            <div class="gh-popup-header">
+              <strong>参与百科贡献</strong>
+              <p>一本众创、共建、同享的字幕百科</p>
+            </div>
+            
+            <div class="gh-popup-body">
+              <a href="{{ login_new_url }}" class="gh-btn-github">使用 GitHub 创建此条目</a>
+              
+              <nav class="gh-links-nav">
+                <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
+                <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
+                <a href="{{ '贡献指南/' | url }}">贡献指南</a>
+              </nav>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    {# 6. 搜索按钮 #}
     <label class="md-header__button md-icon" for="__search">
       {% include ".icons/material/magnify.svg" %}
     </label>
 
-    {# 6. 搜索框 #}
+    {# 7. 搜索框本体 #}
     <div class="md-search" data-md-component="search" role="dialog">
       {% include "partials/search.html" %}
     </div>
 
-    {# 7. 仓库信息 #}
+    {# 8. 仓库信息 #}
     {% if config.repo_url %}
       <div class="md-header__source">
         {% include "partials/source.html" %}
@@ -64,3 +92,90 @@
     {% endif %}
   </nav>
 </header>
+
+<style>
+  /* 核心容器定位 */
+  .header-action-wrapper { position: relative; display: flex; align-items: center; }
+  
+  /* 状态控制 */
+  #header-action-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
+  #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
+
+  /* 遮罩背景 */
+  .action-overlay-mask {
+    display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 100; background: transparent;
+  }
+
+  /* 弹出菜单样式 - 精确还原 actions */
+  .gh-popup-menu {
+    display: none; position: absolute; top: 100%; right: -10px;
+    margin-top: 8px; width: 260px; z-index: 101;
+    filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
+    animation: popup-anim-desktop 0.2s ease-out;
+  }
+
+  .gh-popup-arrow {
+    position: absolute; top: -6px; right: 20px; 
+    width: 12px; height: 12px;
+    background: var(--md-default-bg-color);
+    border-top: 1px solid var(--md-divider-color);
+    border-left: 1px solid var(--md-divider-color);
+    transform: rotate(45deg); z-index: 102;
+  }
+  [data-md-color-scheme="slate"] .gh-popup-arrow { background: #2e323e; }
+
+  .gh-popup-box {
+    background: var(--md-default-bg-color); border: 1px solid var(--md-divider-color);
+    border-radius: 12px; overflow: hidden; position: relative; z-index: 103;
+    padding: 18px; line-height: normal;
+  }
+  [data-md-color-scheme="slate"] .gh-popup-box { background: #2e323e; }
+
+  .gh-popup-header { text-align: center; }
+  .gh-popup-header strong { display: block; font-size: 0.8rem; color: var(--md-default-fg-color); }
+  .gh-popup-header p { margin: 6px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.4; }
+
+  .gh-btn-github {
+    display: block; text-align: center; padding: 10px; border-radius: 6px;
+    font-size: 0.75rem; font-weight: 600; text-decoration: none;
+    margin-top: 20px; background-color: #1f883d; color: #fff !important;
+  }
+  .gh-btn-github:hover { background-color: #1c8139; }
+  .gh-btn-github:active { background-color: #197935; }
+  [data-md-color-scheme="slate"] .gh-btn-github { background-color: #238636; }
+  [data-md-color-scheme="slate"] .gh-btn-github:hover { background-color: #29903b; }
+  [data-md-color-scheme="slate"] .gh-btn-github:active { background-color: #2e9a40; }
+
+  .gh-links-nav {
+    margin-top: 6px; padding-top: 12px;
+    border-top: 1px solid var(--md-divider-color);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .gh-links-nav a {
+    display: block; padding: 4px 0; font-size: 0.75rem; text-align: center;
+    color: var(--md-default-fg-color); text-decoration: none;
+  }
+  .gh-links-nav a:hover { 
+    color: var(--md-accent-fg-color); 
+    background-color: var(--md-default-bg-color--lightest);
+    border-radius: 4px;
+  }
+
+  /* 动画 */
+  @keyframes popup-anim-desktop {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 移动端特殊适配 */
+  @media screen and (max-width: 480px) {
+    .action-overlay-mask { background: rgba(0, 0, 0, 0.4); }
+    .gh-popup-menu {
+      position: fixed; top: 50%; left: 50%; right: auto;
+      width: 85vw; max-width: 320px; margin: 0;
+      transform: translate(-50%, -50%);
+    }
+    .gh-popup-arrow { display: none; }
+  }
+</style>
