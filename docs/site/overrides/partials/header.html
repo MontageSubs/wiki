@@ -85,9 +85,15 @@
 </header>
 
 <style>
-  /* 基础容器布局 */
-  .header-action-wrapper { position: relative; display: flex; align-items: center; }
-  
+    /* 基础容器 */
+  .header-action-wrapper { 
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+    margin-right: 12px;   /* 1. 增加这个值可以把 + 号和弹窗整体往左推 */
+    overflow: visible;    /* 2. 必须可见，否则右移的弹窗会被切断 */
+  }
+
   /* 菜单显示/隐藏状态逻辑 */
   #header-action-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
   #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
@@ -98,24 +104,32 @@
     z-index: 100; background: transparent;
   }
 
-  /* 弹出菜单面板布局与动画 */
+  /* 弹出菜单 */
   .gh-popup-menu {
-    display: none; position: absolute; top: 100%; right: -10px;
-    margin-top: 8px; width: 260px; z-index: 101;
+    display: none; 
+    position: absolute; 
+    top: 100%; 
+    right: -25px;
+    margin-top: 8px; 
+    width: 260px; 
+    z-index: 101;
     filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
     animation: popup-anim-desktop 0.2s ease-out;
   }
 
-  /* 顶部修饰箭头定位 */
+  /* 三角形 */
   .gh-popup-arrow {
-    position: absolute; top: -6px; right: 0px; 
-    width: 12px; height: 12px;
+    position: absolute; 
+    top: -6px; 
+    right: 32px;
+    width: 12px; 
+    height: 12px;
     background: var(--md-default-bg-color);
     border-top: 1px solid var(--md-divider-color);
     border-left: 1px solid var(--md-divider-color);
-    transform: rotate(45deg); z-index: 102;
+    transform: rotate(45deg); 
+    z-index: 102;
   }
-  [data-md-color-scheme="slate"] .gh-popup-arrow { background: #2e323e; }
 
   /* 弹出框内容容器样式 */
   .gh-popup-box {
