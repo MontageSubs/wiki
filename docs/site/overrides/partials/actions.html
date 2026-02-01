@@ -6,42 +6,37 @@
 {% set login_edit_url = "https://github.com/login?return_to=" ~ (target_edit_url | urlencode) %}
 
 <div class="action-wrapper" data-search-ignore>
-  {# CSS 状态控制器 #}
   <input type="checkbox" id="action-menu-toggle" hidden>
   
-  {# 全屏遮罩：仅在手机模式下变暗背景 #}
   <label for="action-menu-toggle" class="action-overlay-mask"></label>
 
   <div class="action-container">
     <div class="action-icons-row">
-      {# 交互触发按钮 #}
       <label for="action-menu-toggle" class="icon-btn-trigger" title="贡献与编辑">
         {% include ".icons/material/file-document-edit-outline.svg" %}
       </label>
       
-      {# 历史查看链接 #}
       <a href="{{ repo_url }}/wiki/{{ wiki_page }}/_history" class="icon-btn-trigger" title="查看编辑历史">
         {% include ".icons/material/history.svg" %}
       </a>
     </div>
 
-    {# 弹出式功能菜单 #}
     <aside class="gh-popup-menu" aria-hidden="true">
       <div class="gh-popup-arrow"></div>
       <div class="gh-popup-box">
-        {# 标题与描述：采用居中排版 #}
+        {# 头部标题组：保持内部紧凑 #}
         <div class="gh-popup-header">
           <strong>参与百科贡献</strong>
           <p>一本众创、共建、同享的字幕百科</p>
         </div>
         
         <div class="gh-popup-body">
-          {# Github 风格按钮 #}
+          {# 核心操作按钮 #}
           <a href="{{ login_edit_url }}" class="gh-btn-github">使用 GitHub 账号编辑</a>
           
-          {# 辅助链接列表：无图标、无点缀线 #}
+          {# Wiki 风格链接列表 #}
           <nav class="gh-links-nav">
-            <a href="https://montagesubs.github.io/wiki/百科贡献指南">百科语法指南</a>
+            <a href="https://montagesubs.github.io/wiki/百科语法指南">百科语法指南</a>
             <a href="https://montagesubs.github.io/wiki/GitHub-帮助指南">GitHub 帮助指南</a>
             <a href="https://montagesubs.github.io/wiki/贡献指南">贡献指南</a>
           </nav>
@@ -53,11 +48,10 @@
 
 {# --- 3. CSS 样式区 --- #}
 <style>
-  /* 基础结构 */
+  /* 基础布局容器 */
   .action-wrapper { float: right; position: relative; z-index: 1; }
-  .action-container { position: relative; }
 
-  /* 顶部图标按钮 */
+  /* 功能按钮样式 */
   .icon-btn-trigger {
     width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
     color: var(--md-default-fg-color) !important; opacity: 0.7; cursor: pointer; transition: 0.2s;
@@ -66,11 +60,7 @@
   .icon-btn-trigger svg { width: 100%; height: 100%; fill: currentColor; }
   .action-icons-row { display: flex; gap: 12px; align-items: center; padding: 6px; }
 
-  /* 状态切换逻辑 */
-  #action-menu-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
-  #action-menu-toggle:checked ~ .action-overlay-mask { display: block; }
-
-  /* 遮罩层逻辑：手机端启用背景变暗，桌面端禁用 */
+  /* 状态切换遮罩 */
   .action-overlay-mask {
     display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 100; background: transparent;
@@ -79,7 +69,7 @@
     .action-overlay-mask { background: rgba(0, 0, 0, 0.4); }
   }
 
-  /* 菜单容器布局 */
+  /* 菜单核心容器 */
   .gh-popup-menu {
     display: none; position: absolute; top: 100%; right: 0;
     margin-top: 10px; width: 260px; z-index: 101;
@@ -87,9 +77,9 @@
     animation: popup-anim 0.2s ease-out;
   }
 
-  /* 桌面端水滴三角定位 */
+  /* 桌面端定位三角：精准向左偏移 */
   .gh-popup-arrow {
-    position: absolute; top: -6px; right: 45px; /* 进一步向左偏移 */
+    position: absolute; top: -6px; right: 47px; 
     width: 12px; height: 12px;
     background: var(--md-default-bg-color);
     border-top: 1px solid var(--md-divider-color);
@@ -98,20 +88,22 @@
   }
   [data-md-color-scheme="slate"] .gh-popup-arrow { background: #2e323e; }
 
-  /* 菜单内容盒模型 */
+  /* 菜单背景盒模型 */
   .gh-popup-box {
     background: var(--md-default-bg-color); border: 1px solid var(--md-divider-color);
     border-radius: 12px; overflow: hidden; position: relative; z-index: 103;
   }
   [data-md-color-scheme="slate"] .gh-popup-box { background: #2e323e; }
 
-  /* 文本区域排版：居中显示 */
-  .gh-popup-header { padding: 16px 16px 12px; text-align: center; }
+  /* 文本排版间距标准定义 */
+  .gh-popup-header { padding: 18px 16px 0; text-align: center; }
   .gh-popup-header strong { display: block; font-size: 0.8rem; }
-  .gh-popup-header p { margin: 4px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.5; }
-  .gh-popup-body { padding: 0 16px 16px; }
+  .gh-popup-header p { margin: 4px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.4; }
+  
+  /* 模块间垂直间距标准：设置为 18px */
+  .gh-popup-body { padding: 18px 16px 18px; }
 
-  /* Github 品牌风格按钮 */
+  /* Github 风格操作按钮 */
   .gh-btn-github {
     display: block; text-align: center; padding: 10px; border-radius: 6px;
     font-size: 0.75rem; font-weight: 600; text-decoration: none;
@@ -121,18 +113,26 @@
   [data-md-color-scheme="slate"] .gh-btn-github { background-color: #238636; }
   [data-md-color-scheme="slate"] .gh-btn-github:hover { background-color: #29903b; }
 
-  /* 纯文本链接导航 */
+  /* Wiki 正文链接风格导航 */
   .gh-links-nav {
-    margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--md-divider-color);
-    display: flex; flex-direction: column; gap: 4px;
+    margin-top: 18px; /* 应用间距标准 */
+    padding-top: 12px;
+    border-top: 1px solid var(--md-divider-color);
+    display: flex; flex-direction: column; 
+    gap: 4px; /* 收紧链接间的行间距 */
   }
   .gh-links-nav a {
-    display: block; padding: 6px 0; font-size: 0.75rem; text-align: center;
-    color: var(--md-typeset-a-color); text-decoration: none;
+    display: block; padding: 4px 0; font-size: 0.75rem; text-align: center;
+    color: var(--md-typeset-a-color); /* 采用文章正文链接配色方案 */
+    text-decoration: none;
   }
   .gh-links-nav a:hover { text-decoration: underline; }
 
-  /* 移动端模态窗适配 */
+  /* 开关交互响应 */
+  #action-menu-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
+  #action-menu-toggle:checked ~ .action-overlay-mask { display: block; }
+
+  /* 移动端模态居中 */
   @media screen and (max-width: 480px) {
     .gh-popup-menu {
       position: fixed; top: 50%; left: 50%; right: auto;
@@ -142,15 +142,9 @@
     .gh-popup-arrow { display: none; }
   }
 
-  /* 动画效果 */
+  /* 弹出动画 */
   @keyframes popup-anim {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @media screen and (max-width: 480px) {
-    @keyframes popup-anim {
-      from { opacity: 0; transform: translate(-50%, -45%); }
-      to { opacity: 1; transform: translate(-50%, -50%); }
-    }
-  }
-    </style>
+</style>
