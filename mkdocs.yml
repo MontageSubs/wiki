@@ -28,7 +28,6 @@ theme:
     - search.highlight
     - content.code.copy
     - content.tooltips
-    - search.share
     - navigation.instant  # 开启即时加载，体验极速
     - navigation.instant.prefetch # 预取链接，鼠标悬停时就开始后台加载
     
