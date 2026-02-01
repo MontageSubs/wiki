@@ -1,137 +1,162 @@
-{# --- 1. 配置与官方图标引用 --- #}
+{# --- 1. 配置区 --- #}
 {% set repo_url = "https://github.com/MontageSubs/wiki" %}
 {% set file_path = page.file.src_uri %}
 {% set wiki_page = file_path | replace("index.md", "Home") | replace(".md", "") %}
 {% set target_edit_url = repo_url ~ "/wiki/" ~ wiki_page ~ "/_edit" %}
 {% set login_edit_url = "https://github.com/login?return_to=" ~ (target_edit_url | urlencode) %}
 
-<div class="custom-actions-component" data-search-ignore>
-  <details class="action-details-group">
+{# 快捷链接配置：支持任意数量，菜单会自动伸缩 [要求十] #}
+{% set quick_links = [
+  {"title": "百科语法指南", "url": "https://montagesubs.github.io/wiki/百科贡献指南"},
+  {"title": "GitHub 帮助指南", "url": "https://montagesubs.github.io/wiki/GitHub-帮助指南"},
+  {"title": "贡献指南", "url": "https://montagesubs.github.io/wiki/贡献指南"}
+] %}
+
+{# --- 2. HTML 结构区 --- #}
+<div class="action-wrapper" data-search-ignore>
+  <details class="action-group-details">
     
-    {# 2. 使用原生插槽位置，由主题自动对齐 L1 #}
-    <summary class="md-content__button md-icon" title="贡献与编辑">
-      {# 点击空白处关闭的透明层 #}
-      <div class="click-outside-provider"></div>
+    {# 2.1 组合按钮区 #}
+    <summary class="action-combined-summary">
+      {# 点击空白处收起的核心：展开时生成的全屏透明遮罩 [要求五] #}
+      <div class="overlay-close-detector"></div>
       
-      <div class="action-inner-icons">
-        {# 使用官方图标引用 [要求五] #}
-        <span class="icon-span">{% include ".icons/material/file-document-edit-outline.svg" %}</span>
+      <div class="icons-row">
+        {# 使用主题内置图标，确保颜色与官方一致 [要求五：逻辑优化] #}
+        <div class="icon-item" title="贡献与编辑">
+          {% include ".icons/material/file-document-edit-outline.svg" %}
+        </div>
         
-        <a href="{{ repo_url }}/wiki/{{ wiki_page }}/_history" class="icon-span" title="查看编辑历史">
+        <a href="{{ repo_url }}/wiki/{{ wiki_page }}/_history" class="icon-item" title="查看编辑历史">
           {% include ".icons/material/history.svg" %}
         </a>
       </div>
     </summary>
 
-    {# 3. 弹出菜单：SEO 隔离与视觉美化 #}
-    <aside class="gh-popup-container" aria-hidden="true">
-      <div class="gh-popup-arrow"></div>
+    {# 2.2 弹出菜单：使用 aside + aria-hidden 严格屏蔽爬虫 [要求七] #}
+    <aside class="gh-popup-container" aria-hidden="true" role="none">
+      <div class="gh-popup-arrow"></div> {# 水滴三角 #}
       <div class="gh-popup-box">
         <div class="gh-popup-header">
           <strong>参与百科贡献</strong>
           <p>一本众创、共建、同享的字幕百科</p>
         </div>
         <div class="gh-popup-body">
-          {# GitHub 专用配色 [要求三] #}
+          {# GitHub 风格动态配色按钮 [要求八] #}
           <a href="{{ login_edit_url }}" class="gh-btn-primary">使用 GitHub 账号编辑</a>
           
+          {# 动态列表：高度自适应 [要求十] #}
+          {% if quick_links %}
           <nav class="gh-links-nav">
-            <a href="https://montagesubs.github.io/wiki/百科贡献指南">百科语法指南</a>
-            <a href="https://montagesubs.github.io/wiki/GitHub-帮助指南">GitHub 帮助指南</a>
-            <a href="https://montagesubs.github.io/wiki/贡献指南">贡献指南</a>
+            {% for link in quick_links %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+            {% endfor %}
           </nav>
+          {% endif %}
         </div>
       </div>
     </aside>
   </details>
 </div>
 
-{# --- 4. CSS 样式增强 --- #}
+{# --- 3. CSS 样式区 --- #}
 <style>
-  /* 1. 位置定义：回归主题 L1 同步 [要求一] */
-  .custom-actions-component {
+  /* 基础容器：移除自定义位移，由主题默认对齐 [要求一] */
+  .action-wrapper {
     float: right;
-    margin-left: 8px;
-    line-height: 0; /* 消除空隙 */
     z-index: 1;
+    position: relative;
   }
 
-  /* 2. 圆角矩形包裹：加宽 2px [要求三] */
-  .action-details-group summary.md-content__button {
+  .action-group-details { position: relative; display: inline-block; }
+
+  /* 圆角矩形：加宽 padding 避免挤压 [要求三] */
+  .action-combined-summary {
     display: flex !important;
     align-items: center;
-    padding: 2px 10px !important; /* 宽度增加 */
-    height: 32px; /* 匹配主题默认高度 */
-    background: transparent;
-    border-radius: 6px;
+    padding: 2px 10px !important; /* 增加左右内边距 */
     cursor: pointer;
     list-style: none;
-    transition: background 0.25s;
+    border-radius: 6px;
+    outline: none;
+    height: 32px; /* 显式高度对齐 L1 */
   }
-  .action-details-group summary::-webkit-details-marker { display: none; }
+  .action-combined-summary::-webkit-details-marker { display: none; }
+  .action-combined-summary::before, .action-combined-summary::after { content: none !important; }
 
-  /* 3. 图标颜色一致性 [要求五] */
-  .action-inner-icons { display: flex; gap: 12px; align-items: center; }
-  .icon-span { 
+  /* 图标颜色一致性修复 [要求五] */
+  .icons-row { display: flex; gap: 12px; align-items: center; }
+  .icon-item { 
     width: 20px; height: 20px; 
-    color: var(--md-default-fg-color--light); /* 强制使用主题次要文字颜色，确保一致 */
+    color: var(--md-default-fg-color--light); 
+    opacity: 0.8; transition: 0.2s; 
     display: flex; align-items: center;
   }
-  .icon-span svg { fill: currentColor; }
-  .icon-span:hover { color: var(--md-default-fg-color); }
+  .icon-item:hover { color: var(--md-default-fg-color); opacity: 1; }
+  .icon-item svg { fill: currentColor; width: 100%; height: 100%; }
 
-  /* 4. 弹出菜单容器：微调颜色区分 [要求六] */
+  /* 点击空白处收起逻辑 [要求五] */
+  .action-group-details[open] .overlay-close-detector {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -1;
+    background: transparent;
+  }
+
+  /* 弹出菜单定位与自适应 [要求六、十] */
   .gh-popup-container {
     position: absolute;
     top: 100%; right: 0;
     margin-top: 12px;
     width: 250px;
+    max-width: 85vw; /* 窄屏适配 [要求六] */
     z-index: 100;
-    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.2));
-    animation: popup-slide 0.2s ease-out;
+    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.15));
+    animation: popup-in 0.15s ease-out;
+  }
+
+  /* 水滴三角：向左微调 3px 以对齐编辑按钮中心 [要求二、四] */
+  .gh-popup-arrow {
+    position: absolute;
+    top: -6px;
+    right: 41px; /* 微调：38px + 3px */
+    width: 12px; height: 12px;
+    background: var(--md-default-bg-color--lightest);
+    border-top: 1px solid var(--md-divider-color);
+    border-left: 1px solid var(--md-divider-color);
+    transform: rotate(45deg);
   }
 
   .gh-popup-box {
-    /* 亮色微发灰，深色微变浅 [要求六] */
+    /* 颜色微差：亮色发灰，暗色微亮 [要求六] */
     background-color: var(--md-default-bg-color--lightest); 
     border: 1px solid var(--md-divider-color);
     border-radius: 8px;
     overflow: hidden;
   }
   [data-md-color-scheme="slate"] .gh-popup-box {
-    background-color: #2e323e; /* 比默认背景色略浅一点点 */
+    background-color: #2e323e; /* 暗色模式下比背景稍浅 */
   }
 
-  /* 5. 水滴三角：向左移动 3px [要求二] */
-  .gh-popup-arrow {
-    position: absolute;
-    top: -6px;
-    right: 41px; /* 原 38px + 3px */
-    width: 12px; height: 12px;
-    background-color: inherit;
-    border-top: 1px solid var(--md-divider-color);
-    border-left: 1px solid var(--md-divider-color);
-    transform: rotate(45deg);
-  }
-
-  /* 6. 文字排版美化 [要求四、七] */
-  .gh-popup-header { padding: 16px 20px; } /* 增加内边距 [要求七] */
-  .gh-popup-header strong { display: block; font-size: 0.8rem; margin-bottom: 6px; }
-  .gh-popup-header p { margin: 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.5; }
-
-  .gh-popup-body { padding: 0 16px 16px; }
+  /* 文字排版：增加头部间距 [要求七] */
+  .gh-popup-header { padding: 16px 20px; border-bottom: 1px solid var(--md-divider-color); }
+  .gh-popup-header strong { display: block; font-size: 0.8rem; }
+  .gh-popup-header p { margin: 4px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.5; }
   
-  /* GitHub 风格按钮 [要求三] */
+  .gh-popup-body { padding: 16px; }
+
+  /* GitHub 配色按钮方案 [要求八、三] */
   .gh-btn-primary {
     display: block; text-align: center; padding: 8px; border-radius: 6px;
     font-size: 0.75rem; font-weight: 600; text-decoration: none;
     background-color: #1f883d; color: white !important;
+    transition: background-color 0.2s;
   }
   .gh-btn-primary:hover { background-color: #1c8139; }
   [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
   [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #29903b; }
 
-  /* 正文超链接风格 [要求四] */
+  /* 链接排版：直接采用正文链接样式 [要求四] */
   .gh-links-nav {
     margin-top: 12px; padding-top: 12px;
     border-top: 1px solid var(--md-divider-color);
@@ -139,19 +164,16 @@
   }
   .gh-links-nav a {
     font-size: 0.75rem;
-    color: var(--md-typeset-a-color); /* 采用正文链接色 */
+    color: var(--md-typeset-a-color);
     text-decoration: none;
   }
   .gh-links-nav a:hover { text-decoration: underline; }
 
-  /* 7. 点击外部收起 */
-  .action-details-group[open] .click-outside-provider {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: -1; cursor: default;
-  }
+  @keyframes popup-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-  @keyframes popup-slide {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* 窄屏适配 [要求六] */
+  @media screen and (max-width: 400px) {
+    .gh-popup-container { right: -10px; width: 220px; }
+    .gh-popup-arrow { right: 51px; }
   }
-</style>
+                      </style>
