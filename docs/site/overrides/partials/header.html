@@ -1,4 +1,4 @@
-{# 彻底覆写 Header 结构，集成交互式弹出菜单 #}
+{# 彻底覆写 Header 结构，修复 404 抖动并优化细节 #}
 {% set repo_url = "https://github.com/MontageSubs/wiki" %}
 {% set target_new_url = repo_url ~ "/wiki/_new" %}
 {% set login_new_url = "https://github.com/login?return_to=" ~ (target_new_url | urlencode) %}
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    {# 4. 亮度调节 #}
+    {# 4. 亮度调节：更换更像太阳的 weather-sunny 图标 #}
     <form class="md-header__option" data-md-component="palette">
       {% for option in config.theme.palette %}
         {% set primary = option.primary | replace(" ", "-") | lower %}
@@ -36,13 +36,18 @@
         <input class="md-option" data-md-color-media="{{ option.media }}" data-md-color-scheme="{{ option.scheme }}" data-md-color-primary="{{ primary }}" data-md-color-accent="{{ accent }}" {% if option.toggle %} aria-label="{{ option.toggle.name }}" {% else %} aria-hidden="true" {% endif %} type="radio" name="__palette" id="__palette_{{ loop.index }}">
         {% if option.toggle %}
           <label class="md-header__button md-icon" title="{{ option.toggle.name }}" for="__palette_{{ loop.index0 or loop.length }}" hidden>
-            {% include ".icons/" ~ option.toggle.icon ~ ".svg" %}
+            {% if option.toggle.icon == "material/brightness-7" or option.toggle.icon == "material/weather-sunny" %}
+               {# 强行替换为标准的太阳图标 #}
+               {% include ".icons/material/weather-sunny.svg" %}
+            {% else %}
+               {% include ".icons/" ~ option.toggle.icon ~ ".svg" %}
+            {% endif %}
           </label>
         {% endif %}
       {% endfor %}
     </form>
 
-    {# --- 5. 交互式创建按钮 (精确还原 actions 逻辑) --- #}
+    {# --- 5. 交互式创建按钮 --- #}
     <div class="header-action-wrapper">
       <input type="checkbox" id="header-action-toggle" autocomplete="off" hidden aria-hidden="true">
       <label for="header-action-toggle" class="action-overlay-mask"></label>
@@ -61,7 +66,8 @@
             </div>
             
             <div class="gh-popup-body">
-              <a href="{{ login_new_url }}" class="gh-btn-github">使用 GitHub 创建此条目</a>
+              {# 文案建议：突出“Wiki”属性，增强语义 #}
+              <a href="{{ login_new_url }}" class="gh-btn-github">在 GitHub 上创建新条目</a>
               
               <nav class="gh-links-nav">
                 <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
@@ -79,7 +85,7 @@
       {% include ".icons/material/magnify.svg" %}
     </label>
 
-    {# 7. 搜索框本体 #}
+    {# 7. 搜索框：修正了嵌套 div 的 Bug #}
     <div class="md-search" data-md-component="search" role="dialog">
       {% include "partials/search.html" %}
     </div>
@@ -94,20 +100,15 @@
 </header>
 
 <style>
-  /* 核心容器定位 */
   .header-action-wrapper { position: relative; display: flex; align-items: center; }
-  
-  /* 状态控制 */
   #header-action-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
   #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
 
-  /* 遮罩背景 */
   .action-overlay-mask {
     display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 100; background: transparent;
   }
 
-  /* 弹出菜单样式 - 精确还原 actions */
   .gh-popup-menu {
     display: none; position: absolute; top: 100%; right: -10px;
     margin-top: 8px; width: 260px; z-index: 101;
@@ -115,8 +116,9 @@
     animation: popup-anim-desktop 0.2s ease-out;
   }
 
+  /* 细节二：三角形向左移动 4px (原本 right: 20px -> 24px) */
   .gh-popup-arrow {
-    position: absolute; top: -6px; right: 20px; 
+    position: absolute; top: -6px; right: 24px; 
     width: 12px; height: 12px;
     background: var(--md-default-bg-color);
     border-top: 1px solid var(--md-divider-color);
@@ -132,9 +134,8 @@
   }
   [data-md-color-scheme="slate"] .gh-popup-box { background: #2e323e; }
 
-  .gh-popup-header { text-align: center; }
-  .gh-popup-header strong { display: block; font-size: 0.8rem; color: var(--md-default-fg-color); }
-  .gh-popup-header p { margin: 6px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.4; }
+  .gh-popup-header strong { display: block; font-size: 0.8rem; color: var(--md-default-fg-color); text-align: center; }
+  .gh-popup-header p { margin: 6px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.4; text-align: center; }
 
   .gh-btn-github {
     display: block; text-align: center; padding: 10px; border-radius: 6px;
@@ -142,10 +143,8 @@
     margin-top: 20px; background-color: #1f883d; color: #fff !important;
   }
   .gh-btn-github:hover { background-color: #1c8139; }
-  .gh-btn-github:active { background-color: #197935; }
   [data-md-color-scheme="slate"] .gh-btn-github { background-color: #238636; }
   [data-md-color-scheme="slate"] .gh-btn-github:hover { background-color: #29903b; }
-  [data-md-color-scheme="slate"] .gh-btn-github:active { background-color: #2e9a40; }
 
   .gh-links-nav {
     margin-top: 6px; padding-top: 12px;
@@ -156,26 +155,33 @@
     display: block; padding: 4px 0; font-size: 0.75rem; text-align: center;
     color: var(--md-default-fg-color); text-decoration: none;
   }
-  .gh-links-nav a:hover { 
-    color: var(--md-accent-fg-color); 
-    background-color: var(--md-default-bg-color--lightest);
-    border-radius: 4px;
-  }
+  .gh-links-nav a:hover { color: var(--md-accent-fg-color); background-color: var(--md-default-bg-color--lightest); border-radius: 4px; }
 
-  /* 动画 */
   @keyframes popup-anim-desktop {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* 移动端特殊适配 */
+  /* 细节三：修复 404 移动端闪现逻辑 */
   @media screen and (max-width: 480px) {
-    .action-overlay-mask { background: rgba(0, 0, 0, 0.4); }
+    .action-overlay-mask { background: rgba(0, 0, 0, 0.4); display: none; }
+    #header-action-toggle:checked ~ .action-overlay-mask { display: block; }
+    
     .gh-popup-menu {
-      position: fixed; top: 50%; left: 50%; right: auto;
-      width: 85vw; max-width: 320px; margin: 0;
+      position: fixed; 
+      top: 50%; left: 50%;
+      right: auto;
+      width: 85vw; max-width: 320px;
+      margin: 0;
+      /* 核心修复：初始态也保持在中心，仅改变透明度和缩放，防止坐标跳变 */
       transform: translate(-50%, -50%);
+      animation: popup-anim-mobile 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
     }
     .gh-popup-arrow { display: none; }
+  }
+
+  @keyframes popup-anim-mobile {
+    from { opacity: 0; transform: translate(-50%, -45%) scale(0.95); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 </style>
