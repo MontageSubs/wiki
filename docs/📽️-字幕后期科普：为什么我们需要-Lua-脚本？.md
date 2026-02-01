@@ -1,4 +1,4 @@
-
+> 💡 脚本下载地址：[点击进入仓库](https://github.com/NickCollect/MontageSubs-Aegisub-Scripts)
 # 🎨 Aegisub 特效脚本库实战手册
 
 > **“字幕后期不应只是枯燥的搬砖，而是赋予文字生命力的艺术。”**
