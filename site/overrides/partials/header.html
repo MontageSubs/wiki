@@ -73,7 +73,10 @@
 </header>
 
 <style>
-  [data-md-component="header"] [title] { white-space: nowrap; }
+  .hd-action-container label[for="hd-action-toggle"] {
+    display: inline-flex !important;
+    white-space: nowrap !important;
+  }
   .hd-action-wrapper { position: relative; display: flex; align-items: center; }
   .md-header__option { margin-right: 12px; }
   #hd-action-toggle:checked ~ .hd-action-container .hd-popup-menu { display: block; }
