@@ -5,23 +5,12 @@
 {% set history_url = repo_url ~ "/" ~ wiki_page ~ "/_history" %}
 
 <nav data-action-nav class="md-content__articles" style="float: right; display: flex; gap: 8px; position: relative; pointer-events: none;">
-  <a href="{{ login_edit_url }}" id="edit-btn-js" title="贡献与编辑" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto; display: none;">
+  <a href="{{ login_edit_url }}" id="edit-btn" title="贡献与编辑" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
   </a>
-  <noscript>
-    <a href="{{ login_edit_url }}" title="贡献与编辑" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
-    </a>
-  </noscript>
-
-  <a href="{{ history_url }}" id="history-btn-js" title="查看编辑历史" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto; display: none;">
+  <a href="{{ history_url }}" title="查看编辑历史" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"></path></svg>
   </a>
-  <noscript>
-    <a href="{{ history_url }}" title="查看编辑历史" class="md-content__button md-icon" style="color: var(--md-icon-fg-color); pointer-events: auto;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"></path></svg>
-    </a>
-  </noscript>
 </nav>
 
 <dialog id="edit-dialog" style="border: 1px solid var(--md-divider-color); border-radius: 12px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); width: 90%; max-width: 360px; font-family: inherit; background: var(--md-default-bg-color); color: var(--md-default-fg-color);">
@@ -46,28 +35,33 @@
   .gh-btn-primary { background-color: #1f883d; }
   .gh-btn-primary:hover { background-color: #1a7a35; }
   [data-md-color-scheme="slate"] .gh-btn-primary { background-color: #238636; }
+  [data-md-color-scheme="slate"] .gh-btn-primary:hover { background-color: #2ea043; }
   .gh-btn-secondary { background-color: #f6f8fa; color: #24292f !important; transition: background-color 0.2s; }
+  .gh-btn-secondary:hover { background-color: #f3f4f6; }
   [data-md-color-scheme="slate"] .gh-btn-secondary { background-color: #212830; color: #adbac7 !important; border-color: #444c56; }
+  [data-md-color-scheme="slate"] .gh-btn-secondary:hover { background-color: #262c36; border-color: #768390; }
 </style>
 
 <script>
   (function() {
     var setup = function() {
+      // 解决即时加载导致的按钮堆积
       var navs = document.querySelectorAll('nav[data-action-nav]');
       if (navs.length > 1) {
         for (var i = 0; i < navs.length - 1; i++) navs[i].remove();
       }
-      var editBtn = document.getElementById('edit-btn-js');
-      var histBtn = document.getElementById('history-btn-js');
+
+      var editBtn = document.getElementById('edit-btn');
       var dialog = document.getElementById('edit-dialog');
-      if (editBtn) {
-        editBtn.style.display = 'inline-block';
-        editBtn.onclick = function(e) {
+      
+      if (editBtn && dialog) {
+        // 先移除旧监听器确保唯一
+        editBtn.onclick = null; 
+        editBtn.addEventListener('click', function(e) {
           e.preventDefault();
-          if (dialog) dialog.showModal();
-        };
+          dialog.showModal();
+        });
       }
-      if (histBtn) histBtn.style.display = 'inline-block';
     };
     setup();
     if (typeof subscribe === "function") subscribe(setup);
