@@ -6,7 +6,7 @@
 {% set login_edit_url = "https://github.com/login?return_to=" ~ (target_edit_url | urlencode) %}
 
 <div class="action-wrapper" data-search-ignore>
-  <input type="checkbox" id="action-menu-toggle" hidden>
+  <input type="checkbox" id="action-menu-toggle" autocomplete="off" hidden>
   
   <label for="action-menu-toggle" class="action-overlay-mask"></label>
 
@@ -30,7 +30,7 @@
         </div>
         
         <div class="gh-popup-body">
-          <a href="{{ login_edit_url }}" class="gh-btn-github">使用 GitHub 账号编辑</a>
+          <a href="{{ login_edit_url }}" class="gh-btn-github">使用 GitHub 编辑此条目</a>
           
           <nav class="gh-links-nav">
             <a href="https://montagesubs.github.io/wiki/百科贡献指南">百科语法指南</a>
