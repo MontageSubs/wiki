@@ -24,19 +24,16 @@
     <aside class="gh-popup-menu" aria-hidden="true">
       <div class="gh-popup-arrow"></div>
       <div class="gh-popup-box">
-        {# 头部标题组：保持内部紧凑 #}
         <div class="gh-popup-header">
           <strong>参与百科贡献</strong>
           <p>一本众创、共建、同享的字幕百科</p>
         </div>
         
         <div class="gh-popup-body">
-          {# 核心操作按钮 #}
           <a href="{{ login_edit_url }}" class="gh-btn-github">使用 GitHub 账号编辑</a>
           
-          {# Wiki 风格链接列表 #}
           <nav class="gh-links-nav">
-            <a href="https://montagesubs.github.io/wiki/百科语法指南">百科语法指南</a>
+            <a href="https://montagesubs.github.io/wiki/百科贡献指南">百科语法指南</a>
             <a href="https://montagesubs.github.io/wiki/GitHub-帮助指南">GitHub 帮助指南</a>
             <a href="https://montagesubs.github.io/wiki/贡献指南">贡献指南</a>
           </nav>
@@ -46,12 +43,11 @@
   </div>
 </div>
 
-{# --- 3. CSS 样式区 --- #}
 <style>
-  /* 基础布局容器 */
+  /* 基础容器 */
   .action-wrapper { float: right; position: relative; z-index: 1; }
 
-  /* 功能按钮样式 */
+  /* 顶部图标按钮 */
   .icon-btn-trigger {
     width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
     color: var(--md-default-fg-color) !important; opacity: 0.7; cursor: pointer; transition: 0.2s;
@@ -60,26 +56,25 @@
   .icon-btn-trigger svg { width: 100%; height: 100%; fill: currentColor; }
   .action-icons-row { display: flex; gap: 12px; align-items: center; padding: 6px; }
 
-  /* 状态切换遮罩 */
+  /* 状态切换与遮罩 */
+  #action-menu-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
+  #action-menu-toggle:checked ~ .action-overlay-mask { display: block; }
+
   .action-overlay-mask {
     display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     z-index: 100; background: transparent;
   }
-  @media screen and (max-width: 480px) {
-    .action-overlay-mask { background: rgba(0, 0, 0, 0.4); }
-  }
 
-  /* 菜单核心容器 */
+  /* 弹出菜单主容器 */
   .gh-popup-menu {
     display: none; position: absolute; top: 100%; right: 0;
     margin-top: 10px; width: 260px; z-index: 101;
     filter: drop-shadow(0 12px 30px rgba(0,0,0,0.15));
-    animation: popup-anim 0.2s ease-out;
   }
 
-  /* 桌面端定位三角：精准向左偏移 */
+  /* 桌面端三角定位：再次向左移动 1px (总计 48px) */
   .gh-popup-arrow {
-    position: absolute; top: -6px; right: 47px; 
+    position: absolute; top: -6px; right: 48px; 
     width: 12px; height: 12px;
     background: var(--md-default-bg-color);
     border-top: 1px solid var(--md-divider-color);
@@ -88,63 +83,81 @@
   }
   [data-md-color-scheme="slate"] .gh-popup-arrow { background: #2e323e; }
 
-  /* 菜单背景盒模型 */
+  /* 统一盒子边距：建立 18px 边距标准 */
   .gh-popup-box {
     background: var(--md-default-bg-color); border: 1px solid var(--md-divider-color);
     border-radius: 12px; overflow: hidden; position: relative; z-index: 103;
+    padding: 18px; /* 强制上下左右内边距完全一致 */
   }
   [data-md-color-scheme="slate"] .gh-popup-box { background: #2e323e; }
 
-  /* 文本排版间距标准定义 */
-  .gh-popup-header { padding: 18px 16px 0; text-align: center; }
+  /* 文本区域排版 */
+  .gh-popup-header { text-align: center; padding: 0; }
   .gh-popup-header strong { display: block; font-size: 0.8rem; }
   .gh-popup-header p { margin: 4px 0 0; font-size: 0.65rem; color: var(--md-default-fg-color--light); line-height: 1.4; }
   
-  /* 模块间垂直间距标准：设置为 18px */
-  .gh-popup-body { padding: 18px 16px 18px; }
-
-  /* Github 风格操作按钮 */
+  /* GitHub 按钮间距标准：与文字组底部间距为 18px */
   .gh-btn-github {
     display: block; text-align: center; padding: 10px; border-radius: 6px;
     font-size: 0.75rem; font-weight: 600; text-decoration: none;
+    margin-top: 18px; 
     background-color: #1f883d; color: #fff !important;
   }
   .gh-btn-github:hover { background-color: #1c8139; }
   [data-md-color-scheme="slate"] .gh-btn-github { background-color: #238636; }
   [data-md-color-scheme="slate"] .gh-btn-github:hover { background-color: #29903b; }
 
-  /* Wiki 正文链接风格导航 */
+  /* 链接导航间距标准：与按钮间距为 18px */
   .gh-links-nav {
-    margin-top: 18px; /* 应用间距标准 */
+    margin-top: 18px; 
     padding-top: 12px;
     border-top: 1px solid var(--md-divider-color);
     display: flex; flex-direction: column; 
-    gap: 4px; /* 收紧链接间的行间距 */
+    gap: 2px; /* 进一步缩小链接间行距 */
   }
   .gh-links-nav a {
     display: block; padding: 4px 0; font-size: 0.75rem; text-align: center;
-    color: var(--md-typeset-a-color); /* 采用文章正文链接配色方案 */
+    /* 采用正文配色方案：继承默认文本色并应用悬停交互 */
+    color: var(--md-default-fg-color); 
     text-decoration: none;
   }
-  .gh-links-nav a:hover { text-decoration: underline; }
-
-  /* 开关交互响应 */
-  #action-menu-toggle:checked ~ .action-container .gh-popup-menu { display: block; }
-  #action-menu-toggle:checked ~ .action-overlay-mask { display: block; }
-
-  /* 移动端模态居中 */
-  @media screen and (max-width: 480px) {
-    .gh-popup-menu {
-      position: fixed; top: 50%; left: 50%; right: auto;
-      transform: translate(-50%, -50%);
-      width: 85vw; max-width: 320px; margin-top: 0;
-    }
-    .gh-popup-arrow { display: none; }
+  .gh-links-nav a:hover { 
+    color: var(--md-accent-fg-color); 
+    background-color: var(--md-default-bg-color--lightest);
+    border-radius: 4px;
   }
 
-  /* 弹出动画 */
-  @keyframes popup-anim {
+  /* 桌面端显现动画：仅限纵向位移 */
+  @media screen and (min-width: 481px) {
+    #action-menu-toggle:checked ~ .action-container .gh-popup-menu {
+      animation: popup-fade-in 0.2s ease-out;
+    }
+  }
+
+  /* 移动端模态适配：修复位置漂移过度 */
+  @media screen and (max-width: 480px) {
+    .action-overlay-mask { background: rgba(0, 0, 0, 0.4); }
+    .gh-popup-menu {
+      position: fixed; top: 50%; left: 50%; right: auto;
+      transform: translate(-50%, -50%); /* 初始状态即在中心 */
+      width: 85vw; max-width: 320px; margin: 0;
+    }
+    .gh-popup-arrow { display: none; }
+    
+    #action-menu-toggle:checked ~ .action-container .gh-popup-menu {
+      animation: popup-center-in 0.2s ease-out;
+    }
+  }
+
+  /* 动画定义 */
+  @keyframes popup-fade-in {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 移动端动画：禁止从右下角切入，改为原地淡入微弹 */
+  @keyframes popup-center-in {
+    from { opacity: 0; transform: translate(-50%, -48%) scale(0.95); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 </style>
