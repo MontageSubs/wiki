@@ -5,3 +5,9 @@
   {# 搜索改进 #}
   {% include "partials/custom-search.html" %}
 {% endblock %}
+
+{% extends "base.html" %}
+
+{% block source_file %}
+  {% include "partials/custom-git-date.html" %}
+{% endblock %}
