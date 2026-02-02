@@ -66,11 +66,14 @@ plugins:
       indexing: 'full'
       separator: '[\s\-\.\u200b\uff0c\u3002\uff01\u3001\uff1f]+'
   - git-revision-date-localized:
-      type: datetime
-      custom_format: "%Y-%m-%d %H:%M:%S"
-      locale: zh
+      enable_creation_date: true
       enable_git_follow: true
-      show_authors: false
+      locale: zh
+      type: timeago             # 优先使用 timeago 显示 "1 小时前"
+      fallback_to_build_date: true
+  - git-authors:
+      show_contribution: true
+      show_line_count: true
   - minify:
       minify_html: true
       minify_js: true
