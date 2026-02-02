@@ -1,13 +1,35 @@
-<div style="display:none">
-  DEBUG INFO:
-  1: {{ page.meta.git_revision_date_localized }}
-  2: {{ page.meta.revision_date }}
-  3: {{ page.meta.last_update }}
-  4: {{ config.plugins['git-revision-date-localized'].enabled }}
-</div>
+<style>
+  /* 1. 挖掘日期：强制显示那个存有 "2026-02-01" 的节点 */
+  .md-source-file__fact .git-revision-date-localized-plugin-iso_date {
+    display: inline !important; /* 击碎插件的 display: none */
+    font-size: 0.7rem;
+    color: var(--md-default-fg-color--light);
+    margin-left: 4px;
+  }
 
-<aside class="md-source-file">
-  <span class="md-source-file__fact">
-    <span class="custom-date-text">测试：如果能看到这行字，说明 HTML 注入成功了</span>
-  </span>
-</aside>
+  /* 2. 注入文字：在对应的图标后面显示提示语 */
+  /* 利用图标的 title 属性精准匹配 */
+  .md-source-file__fact .md-icon[title="最后更新"]::after {
+    content: "最后更新：";
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
+
+  .md-source-file__fact .md-icon[title="创建日期"]::after {
+    content: "创建日期：";
+    font-size: 0.7rem;
+    margin-left: 4px;
+  }
+
+  /* 3. 清理：隐藏那个在 No-JS 下永远是空白的 timeago 容器 */
+  .md-source-file__fact .git-revision-date-localized-plugin-timeago {
+    display: none !important;
+  }
+
+  /* 4. 布局：确保它们排成漂亮的一行 */
+  .md-source-file__fact {
+    display: inline-flex !important;
+    align-items: center;
+    margin-right: 15px;
+  }
+</style>

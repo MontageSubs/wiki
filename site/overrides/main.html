@@ -1,26 +1,6 @@
 {% extends "base.html" %}
 
-{% block extrahead %}
+{% block source_file %}
   {{ super() }}
-  <meta name="diag-template-status" content="TEMPLATE_LOADED">
-{% endblock %}
-
-{# 放弃 source_file，改用 content 块 #}
-{% block content %}
-  {{ super() }} {# 先渲染原本的文章内容 #}
-
-  <hr> {# 分割线 #}
-  <div id="custom-footer-diagnostic" style="border: 2px solid green; padding: 10px; margin-top: 20px;">
-    <h3>[强制注入测试]</h3>
-    <ul>
-      <li>最后更新（变量1）: {{ page.meta.git_revision_date_localized }}</li>
-      <li>最后更新（变量2）: {{ page.meta.revision_date }}</li>
-      <li>最后更新（变量3）: {{ page.last_updated }}</li>
-    </ul>
-  </div>
-{% endblock %}
-
-{% block scripts %}
-  {{ super() }}
-  <div id="diag-script-block" style="display: none !important;">SCRIPTS_BLOCK_OK</div>
+  {% include "partials/custom-date.html" %}
 {% endblock %}
