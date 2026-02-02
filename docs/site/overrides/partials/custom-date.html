@@ -13,11 +13,10 @@
   }
 
   html.no-js body .md-source-file .git-revision-date-localized-plugin-iso_date::before {
-    /* 从 title 属性中提取完整时间字符串 */
     content: attr(title);
-    /* 恢复正常的文字大小显示 */
     font-size: 0.75rem; 
     color: var(--md-default-fg-color--light);
+    margin-left: 0.4rem; 
     vertical-align: middle;
   }
 
@@ -30,7 +29,7 @@
   html.no-js body .md-source-file__fact {
     display: inline-flex !important;
     align-items: center;
-    margin-right: 20px; /* 两个日期组之间的间距 */
+    margin-right: 0.75rem;
   }
 
   /* 4. 强制所有元素使用默认指针 */
@@ -39,18 +38,3 @@
     cursor: default !important;
   }
 </style>
-
-<script>
-  /* 这段脚本作为后备，确保如果用户鼠标停留在生成的长日期文字上，
-     浏览器依然能弹出原生的 title 提示框。
-  */
-  if (document.documentElement.classList.contains('no-js')) {
-    document.querySelectorAll('.git-revision-date-localized-plugin-iso_date').forEach(function(el) {
-        var parentTitle = el.getAttribute('title') || 
-                          el.parentElement.getAttribute('title');
-        if (parentTitle) {
-            el.setAttribute('title', parentTitle);
-        }
-    });
-  }
-</script>
