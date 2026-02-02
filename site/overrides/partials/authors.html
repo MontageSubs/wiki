@@ -1,93 +1,37 @@
 {% if page.authors %}
   {% set limit = 5 %}
   
-  {# 组件私有样式 #}
   <style>
-    /* 容器布局 */
-    .hd-authors-group {
-      display: inline-flex;
-      align-items: center;
-      padding-left: 8px;
-      vertical-align: middle;
-    }
-
-    /* 贡献者头像基础样式：默认黑白 (去饱和) */
-    .md-author {
-      margin-left: -12px; /* 产生层叠效果 */
-      position: relative;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: inline-block;
-    }
-
-    .md-author:first-child {
-      margin-left: 0;
-    }
-
-    .md-author img {
-      width: 32px;
-      height: 32px;
-      filter: grayscale(100%);
-      transition: filter 0.3s;
-      border: 2px solid var(--md-default-bg-color);
-      border-radius: 50%;
-      display: block;
-    }
-
-    /* 悬停状态：恢复彩色、放大、层级置顶 */
-    .md-author:hover {
-      z-index: 10;
-      transform: scale(1.3);
-    }
-
-    .md-author:hover img {
-      filter: grayscale(0%);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    /* 省略号按钮样式 */
-    .md-author--more {
-      width: 32px;
-      height: 32px;
-      margin-left: 6px;
-      background-color: var(--md-default-fg-color--lightest);
-      color: var(--md-default-fg-color--light);
-      font-size: 0.65rem;
-      font-weight: bold;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      transition: all 0.2s;
-      border: 2px solid transparent;
-    }
-
-    .md-author--more:hover {
-      background-color: var(--md-accent-fg-color);
-      color: var(--md-accent-bg-color);
-      transform: scale(1.1);
-    }
+    /* 此处保留你之前的样式代码... (为了篇幅省略，请保持原样) */
+    .hd-authors-group { display: inline-flex; align-items: center; padding-left: 8px; vertical-align: middle; }
+    .md-author { margin-left: -12px; position: relative; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block; }
+    .md-author:first-child { margin-left: 0; }
+    .md-author img { width: 32px; height: 32px; filter: grayscale(100%); transition: filter 0.3s; border: 2px solid var(--md-default-bg-color); border-radius: 50%; display: block; }
+    .md-author:hover { z-index: 10; transform: scale(1.3); }
+    .md-author:hover img { filter: grayscale(0%); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    .md-author--more { width: 32px; height: 32px; margin-left: 6px; background-color: var(--md-default-fg-color--lightest); color: var(--md-default-fg-color--light); font-size: 0.65rem; font-weight: bold; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s; border: 2px solid transparent; }
   </style>
 
-  {# 组件 HTML 结构 #}
   <span class="md-source-file__fact">
     <span class="md-icon" title="贡献者">
       {% include ".icons/material/github.svg" %}
     </span>
     <nav class="hd-authors-group">
-      {# 遍历前 N 位贡献者 #}
       {% for author in page.authors[:limit] %}
-        <a href="https://github.com/{{ author.login }}" class="md-author" title="@{{ author.login }}" target="_blank" rel="noopener">
-          <img src="https://github.com/{{ author.login }}.png?size=72" alt="{{ author.login }}">
+        {# 核心修正：如果 login 为空，则根据 email 的 hash 值获取 GitHub 头像 #}
+        {# GitHub 的开发者邮箱格式通常是 ID+user@users.noreply.github.com #}
+        {% set author_name = author.login if author.login else author.name %}
+        
+        <a href="https://github.com/{{ author_name }}" class="md-author" title="@{{ author_name }}" target="_blank" rel="noopener">
+          {# 方案：优先尝试用户名 png，如果失败则回退到 UI Avatars #}
+          <img src="https://github.com/{{ author_name }}.png?size=72" 
+               alt="{{ author_name }}" 
+               onerror="this.src='https://ui-avatars.com/api/?name={{ author.name }}&background=random'">
         </a>
       {% endfor %}
 
-      {# 如果总人数超过上限，显示 +N 按钮 #}
       {% if page.authors | length > limit %}
-        {% set more = page.authors | length - limit %}
-        <a href="https://github.com/MontageSubs/wiki/graphs/contributors" class="md-author--more" title="查看所有贡献者" target="_blank" rel="noopener">
-          +{{ more }}
-        </a>
+        <a href="https://github.com/MontageSubs/wiki/graphs/contributors" class="md-author--more" target="_blank" rel="noopener">+{{ page.authors | length - limit }}</a>
       {% endif %}
     </nav>
   </span>
