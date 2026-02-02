@@ -71,6 +71,8 @@ plugins:
       locale: zh
       type: timeago
       fallback_to_build_date: true
+  - sitemap:
+      lastmod_from_datetime: true
   - git-committers:
       repository: MontageSubs/wiki
       branch: infra
