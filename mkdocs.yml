@@ -6,7 +6,6 @@ site_description: 一本众创、共建、同享的字幕百科。
 site_author: MontageSubs
 site_url: https://montagesubs.github.io/wiki/
 edit_uri: https://github.com/MontageSubs/wiki/wiki/
-repo_url: https://github.com/MontageSubs/wiki
 
 # ==========================================================================
 # 2. 主题配置 (Material Theme)
@@ -75,6 +74,7 @@ plugins:
   - git-authors:
       show_contribution: true
       show_line_count: true
+      fallback: true
   - minify:
       minify_html: true
       minify_js: true
@@ -126,3 +126,4 @@ extra:
 #nav:
 #  - 首页: index.md
 #  - 新增条目: https://github.com/login?return_to=https%3A//github.com/MontageSubs/wiki/wiki/_new
+show_contribution: true
