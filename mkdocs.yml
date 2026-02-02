@@ -69,12 +69,8 @@ plugins:
       enable_creation_date: true
       enable_git_follow: true
       locale: zh
-      type: timeago             # 优先使用 timeago 显示 "1 小时前"
+      type: timeago
       fallback_to_build_date: true
-  - git-authors:
-      show_contribution: true
-      show_line_count: true
-      fallback: true
   - git-committers:
       repository: MontageSubs/wiki
       branch: infra
