@@ -226,56 +226,42 @@
     }
   })();
 </script> <style>
-  /* --- 仅在 No-JS 环境下生效 --- */
-  
-  /* 1. 基础可见性切换 */
+
+  /* 1. 强制显示长日期，并确保它是长格式 */
   html.no-js body .md-source-file .git-revision-date-localized-plugin-iso_date {
     display: inline !important;
     visibility: visible !important;
-    font-size: 0.75rem;
-    color: var(--md-default-fg-color--light);
+    /* 移除所有自定义装饰，回归最普通的文字样式 */
+    font-size: inherit;
+    color: inherit;
     margin-left: 4px;
-    cursor: help; /* 提示用户可以悬停查看完整 UTC */
+    opacity: 1 !important;
   }
 
-  /* 隐藏在 No-JS 下无法工作的 timeago 节点 */
+  /* 2. 隐藏在 No-JS 下失效的 timeago 占位符 */
   html.no-js body .git-revision-date-localized-plugin-timeago {
     display: none !important;
   }
 
-  /* 2. 悬停在图标（SVG 容器）上显示描述文字 */
-  /* 这里我们让文字在悬停时“推开”空间显示出来，而不是弹出 */
-  html.no-js body .md-icon[title="最后更新"]:hover::after {
-    content: "最后更新";
-    font-size: 0.7rem;
-    margin-left: 4px;
-    color: var(--md-default-fg-color);
-  }
-
-  html.no-js body .md-icon[title="创建日期"]:hover::after {
-    content: "创建日期";
-    font-size: 0.7rem;
-    margin-left: 4px;
-    color: var(--md-default-fg-color);
-  }
-
-  /* 3. 时间显示优化 */
-  /* 当用户悬停在日期数字上时，显示完整的 UTC 时间（利用插件已有的 title） */
-  /* 注意：插件生成的 title 已经包含了 UTC 字样，如你控制台所测 */
-  html.no-js body .git-revision-date-localized-plugin-iso_date:hover {
-    color: var(--md-typeset-color);
-    text-decoration: underline dotted; /* 引导用户看系统悬浮框 */
-  }
-
-  /* 4. 布局微调 */
+  /* 3. 修正排版：让图标和长日期并排固定显示 */
   html.no-js body .md-source-file__fact {
     display: inline-flex !important;
     align-items: center;
-    margin-right: 15px;
+    margin-right: 20px; /* 两个日期组之间的间距 */
   }
 
-  /* 屏蔽贡献者头像的 hover 干扰 */
-  html.no-js body .md-icon[title="贡献者"]:hover::after {
-    content: none !important;
+  html.no-js body .md-source-file__fact,
+  html.no-js body .md-source-file__fact * {
+    cursor: default !important;
   }
-</style> </body> </html>
+</style> <script>
+  if (document.documentElement.classList.contains('no-js')) {
+    document.querySelectorAll('.git-revision-date-localized-plugin-iso_date').forEach(function(el) {
+        var parentTitle = el.parentElement.getAttribute('title') || 
+                          el.closest('.md-source-file__fact').querySelector('.md-icon').getAttribute('title');
+        if (parentTitle) {
+            el.setAttribute('title', parentTitle);
+        }
+    });
+  }
+</script> </body> </html>
