@@ -1,32 +1,49 @@
 <style>
-  /* 仅在禁用 JavaScript 时生效 */
-  html:not(.js) .md-source-file__fact {
-    display: flex;
+  /* --- 1. 基础修正：确保容器可以并排显示 --- */
+  .md-source-file__fact {
+    display: inline-flex !important;
     align-items: center;
+    margin-right: 12px;
+  }
+
+  /* --- 2. 仅在禁用 JavaScript 时执行的显性显示逻辑 --- */
+  /* 通过 html:not(.js) 锁定环境 */
+  html:not(.js) .md-source-file__fact {
     gap: 4px;
   }
 
-  /* 针对“最后更新”和“创建日期”的图标，在后面注入 title 属性的内容 */
-  html:not(.js) .md-source-file__fact .md-icon::after {
-    /* 提取图标 title 属性的值，并加上冒号 */
-    content: attr(title) "：" attr(title); 
-    /* 修正逻辑：由于图标本身有 title，我们直接取其内容 */
-    content: attr(title) "：";
-    white-space: nowrap;
+  /* 针对“最后更新”图标：利用其自带的 title 属性注入冒号 */
+  html:not(.js) [title="最后更新"]::after {
+    content: "最后更新：";
     font-size: 0.65rem;
+    margin-left: 4px;
+    white-space: nowrap;
     color: var(--md-default-fg-color--light);
   }
 
-  /* 提取紧跟其后的 UTC 时间字符串 */
-  html:not(.js) .md-source-file__fact .git-revision-date-localized-plugin::after {
+  /* 针对“创建日期”图标：注入冒号 */
+  html:not(.js) [title="创建日期"]::after {
+    content: "创建日期：";
+    font-size: 0.65rem;
+    margin-left: 4px;
+    white-space: nowrap;
+    color: var(--md-default-fg-color--light);
+  }
+
+  /* 针对时间插件的容器：在 No-JS 下提取 title 属性里的完整 UTC 时间并显示 */
+  html:not(.js) .git-revision-date-localized-plugin::after {
     content: attr(title);
     font-size: 0.65rem;
     color: var(--md-default-fg-color--light);
+    display: inline-block;
   }
 
-  /* 隐藏在 No-JS 下失效的 timeago 和 iso_date 原始节点，防止布局混乱 */
-  html:not(.js) .git-revision-date-localized-plugin-timeago,
+  /* --- 3. 隐藏清理：只隐藏无 JS 时失效的空标签，绝不触碰头像 --- */
+  html:not(.js) .git-revision-date-localized-plugin .timeago,
   html:not(.js) .git-revision-date-localized-plugin-iso_date {
-    display: none;
+    display: none !important;
   }
+
+  /* 确保头像插件（如果是最后一位）不受影响 */
+  /* 我们不再使用 :last-child，而是靠上面的精准属性匹配来工作 */
 </style>
