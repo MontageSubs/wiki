@@ -1,44 +1,13 @@
-<style>
-  /* 1. 核心修复：强制显示 ISO 日期 */
-  /* 使用 body 增加权重，确保覆盖 timeago.css */
-  .no-js .md-source-file .git-revision-date-localized-plugin-iso_date,
-  html:not(.js) .md-source-file .git-revision-date-localized-plugin-iso_date {
-    display: inline !important;
-    font-size: 0.75rem;
-    color: var(--md-default-fg-color--light);
-    margin-left: 4px;
-  }
+<div style="display:none">
+  DEBUG INFO:
+  1: {{ page.meta.git_revision_date_localized }}
+  2: {{ page.meta.revision_date }}
+  3: {{ page.meta.last_update }}
+  4: {{ config.plugins['git-revision-date-localized'].enabled }}
+</div>
 
-  /* 2. 在图标后添加冒号文本 */
-  /* 针对“最后更新” */
-  .no-js .md-icon[title="最后更新"]::after,
-  html:not(.js) .md-icon[title="最后更新"]::after {
-    content: "最后更新：";
-    font-size: 0.75rem;
-    margin-left: 4px;
-    color: var(--md-default-fg-color--light);
-  }
-
-  /* 针对“创建日期” */
-  .no-js .md-icon[title="创建日期"]::after,
-  html:not(.js) .md-icon[title="创建日期"]::after {
-    content: "创建日期：";
-    font-size: 0.75rem;
-    margin-left: 4px;
-    color: var(--md-default-fg-color--light);
-  }
-
-  /* 3. 布局微调：防止元素上下错位 */
-  .no-js .md-source-file__fact,
-  html:not(.js) .md-source-file__fact {
-    display: inline-flex !important;
-    align-items: center;
-    vertical-align: middle;
-  }
-
-  /* 4. 安全保护：确保贡献者头像不被误伤 */
-  .no-js .md-icon[title="贡献者"]::after,
-  html:not(.js) .md-icon[title="贡献者"]::after {
-    content: none !important;
-  }
-</style>
+<aside class="md-source-file">
+  <span class="md-source-file__fact">
+    <span class="custom-date-text">测试：如果能看到这行字，说明 HTML 注入成功了</span>
+  </span>
+</aside>
