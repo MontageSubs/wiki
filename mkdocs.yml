@@ -6,6 +6,7 @@ site_description: 一本众创、共建、同享的字幕百科。
 site_author: MontageSubs
 site_url: https://montagesubs.github.io/wiki/
 edit_uri: https://github.com/MontageSubs/wiki/wiki/
+repo_url: https://github.com/MontageSubs/wiki
 
 # ==========================================================================
 # 2. 主题配置 (Material Theme)
