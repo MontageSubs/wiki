@@ -2,6 +2,10 @@
 
 {% block scripts %}
   {{ super() }}
-  {# 搜索改进 #}
   {% include "partials/custom-search.html" %}
+{% endblock %}
+
+{% block source_file %}
+  {{ super() }}
+  {% include "partials/contributors.html" %}
 {% endblock %}
