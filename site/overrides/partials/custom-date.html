@@ -1,50 +1,44 @@
 <style>
-  /* --- 1. JS 禁用环境下的通用调整 --- */
-  /* 当 HTML 标签不包含 js 类时，说明是 no-js 环境 */
-  html:not(.js) .md-source-file__fact {
-    display: inline-flex !important;
-    align-items: center;
-    gap: 4px;
-    margin-right: 12px;
+  /* 1. 强制在 No-JS 环境下显示原本被 timeago.css 隐藏的日期 */
+  html:not(.js) .git-revision-date-localized-plugin-iso_date {
+    display: inline !important;
+    font-size: 0.65rem;
+    color: var(--md-default-fg-color--light);
   }
 
-  /* --- 2. 注入“最后更新：”文本 --- */
-  /* 匹配 title 为“最后更新”的图标，并在其后显示冒号 */
+  /* 2. 在“最后更新”图标后注入冒号 */
   html:not(.js) .md-source-file__fact .md-icon[title="最后更新"]::after {
     content: "最后更新：";
     font-size: 0.65rem;
     margin-left: 4px;
     color: var(--md-default-fg-color--light);
-    white-space: nowrap;
   }
 
-  /* --- 3. 注入“创建日期：”文本 --- */
-  /* 匹配 title 为“创建日期”的图标 */
+  /* 3. 在“创建日期”图标后注入冒号 */
   html:not(.js) .md-source-file__fact .md-icon[title="创建日期"]::after {
     content: "创建日期：";
     font-size: 0.65rem;
     margin-left: 4px;
     color: var(--md-default-fg-color--light);
-    white-space: nowrap;
   }
 
-  /* --- 4. 显性显示 title 属性中的 UTC 时间 --- */
-  /* 针对时间插件的 span，将其隐藏的 title 属性内容直接显示出来 */
-  html:not(.js) .git-revision-date-localized-plugin::after {
-    content: attr(title); /* 关键：提取 2026年x月x日... */
+  /* 4. 如果你想在 No-JS 下显示完整的 UTC 时间（从 title 提取），取消下面这段注释 */
+  html:not(.js) .git-revision-date-localized-plugin-timeago::after {
+    content: attr(title);
     font-size: 0.65rem;
     color: var(--md-default-fg-color--light);
+    display: inline-block;
   }
 
-  /* --- 5. 清理隐藏 --- */
-  /* 隐藏原本用于 JS 填充的空标签，避免不必要的占位 */
-  html:not(.js) .git-revision-date-localized-plugin .timeago,
-  html:not(.js) .git-revision-date-localized-plugin-iso_date {
-    display: none !important;
-  }
-
-  /* 明确头像区域（贡献者）不进行任何 after 注入，保持现状 */
+  /* 5. 确保这一套逻辑不会对“贡献者”部分产生任何影响 */
   html:not(.js) .md-source-file__fact .md-icon[title="贡献者"]::after {
     content: none !important;
+  }
+
+  /* 6. 解决并排布局问题 */
+  html:not(.js) .md-source-file__fact {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 2px;
   }
 </style>
