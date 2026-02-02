@@ -1,49 +1,50 @@
 <style>
-  /* --- 1. 基础修正：确保容器可以并排显示 --- */
-  .md-source-file__fact {
+  /* --- 1. JS 禁用环境下的通用调整 --- */
+  /* 当 HTML 标签不包含 js 类时，说明是 no-js 环境 */
+  html:not(.js) .md-source-file__fact {
     display: inline-flex !important;
     align-items: center;
+    gap: 4px;
     margin-right: 12px;
   }
 
-  /* --- 2. 仅在禁用 JavaScript 时执行的显性显示逻辑 --- */
-  /* 通过 html:not(.js) 锁定环境 */
-  html:not(.js) .md-source-file__fact {
-    gap: 4px;
-  }
-
-  /* 针对“最后更新”图标：利用其自带的 title 属性注入冒号 */
-  html:not(.js) [title="最后更新"]::after {
+  /* --- 2. 注入“最后更新：”文本 --- */
+  /* 匹配 title 为“最后更新”的图标，并在其后显示冒号 */
+  html:not(.js) .md-source-file__fact .md-icon[title="最后更新"]::after {
     content: "最后更新：";
     font-size: 0.65rem;
     margin-left: 4px;
-    white-space: nowrap;
     color: var(--md-default-fg-color--light);
+    white-space: nowrap;
   }
 
-  /* 针对“创建日期”图标：注入冒号 */
-  html:not(.js) [title="创建日期"]::after {
+  /* --- 3. 注入“创建日期：”文本 --- */
+  /* 匹配 title 为“创建日期”的图标 */
+  html:not(.js) .md-source-file__fact .md-icon[title="创建日期"]::after {
     content: "创建日期：";
     font-size: 0.65rem;
     margin-left: 4px;
-    white-space: nowrap;
     color: var(--md-default-fg-color--light);
+    white-space: nowrap;
   }
 
-  /* 针对时间插件的容器：在 No-JS 下提取 title 属性里的完整 UTC 时间并显示 */
+  /* --- 4. 显性显示 title 属性中的 UTC 时间 --- */
+  /* 针对时间插件的 span，将其隐藏的 title 属性内容直接显示出来 */
   html:not(.js) .git-revision-date-localized-plugin::after {
-    content: attr(title);
+    content: attr(title); /* 关键：提取 2026年x月x日... */
     font-size: 0.65rem;
     color: var(--md-default-fg-color--light);
-    display: inline-block;
   }
 
-  /* --- 3. 隐藏清理：只隐藏无 JS 时失效的空标签，绝不触碰头像 --- */
+  /* --- 5. 清理隐藏 --- */
+  /* 隐藏原本用于 JS 填充的空标签，避免不必要的占位 */
   html:not(.js) .git-revision-date-localized-plugin .timeago,
   html:not(.js) .git-revision-date-localized-plugin-iso_date {
     display: none !important;
   }
 
-  /* 确保头像插件（如果是最后一位）不受影响 */
-  /* 我们不再使用 :last-child，而是靠上面的精准属性匹配来工作 */
+  /* 明确头像区域（贡献者）不进行任何 after 注入，保持现状 */
+  html:not(.js) .md-source-file__fact .md-icon[title="贡献者"]::after {
+    content: none !important;
+  }
 </style>
