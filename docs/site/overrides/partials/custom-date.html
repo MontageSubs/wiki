@@ -1,14 +1,24 @@
 <style>
+  /* --- 仅在 No-JS 环境下执行的“原始复原”逻辑 --- */
 
-  /* 1. 强制显示长日期，并确保它是长格式 */
+  /* 1. 挖掘并显示长日期：通过提取 title 属性实现 */
   html.no-js body .md-source-file .git-revision-date-localized-plugin-iso_date {
     display: inline !important;
     visibility: visible !important;
-    /* 移除所有自定义装饰，回归最普通的文字样式 */
-    font-size: inherit;
+    opacity: 1 !important;
+    /* 核心：将原本的短日期文字字号设为 0 隐藏 */
+    font-size: 0 !important;
     color: inherit;
     margin-left: 4px;
-    opacity: 1 !important;
+  }
+
+  html.no-js body .md-source-file .git-revision-date-localized-plugin-iso_date::before {
+    /* 从 title 属性中提取完整时间字符串 */
+    content: attr(title);
+    /* 恢复正常的文字大小显示 */
+    font-size: 0.75rem; 
+    color: var(--md-default-fg-color--light);
+    vertical-align: middle;
   }
 
   /* 2. 隐藏在 No-JS 下失效的 timeago 占位符 */
@@ -23,6 +33,7 @@
     margin-right: 20px; /* 两个日期组之间的间距 */
   }
 
+  /* 4. 强制所有元素使用默认指针 */
   html.no-js body .md-source-file__fact,
   html.no-js body .md-source-file__fact * {
     cursor: default !important;
@@ -30,10 +41,13 @@
 </style>
 
 <script>
+  /* 这段脚本作为后备，确保如果用户鼠标停留在生成的长日期文字上，
+     浏览器依然能弹出原生的 title 提示框。
+  */
   if (document.documentElement.classList.contains('no-js')) {
     document.querySelectorAll('.git-revision-date-localized-plugin-iso_date').forEach(function(el) {
-        var parentTitle = el.parentElement.getAttribute('title') || 
-                          el.closest('.md-source-file__fact').querySelector('.md-icon').getAttribute('title');
+        var parentTitle = el.getAttribute('title') || 
+                          el.parentElement.getAttribute('title');
         if (parentTitle) {
             el.setAttribute('title', parentTitle);
         }
