@@ -42,7 +42,6 @@ jobs:
             mkdocs-git-revision-date-localized-plugin \
             mkdocs-minify-plugin \
             mkdocs-awesome-pages-plugin \
-            mkdocs-git-authors-plugin \
             mkdocs-git-committers-plugin-2
 
       - name: Build and Push to GitHub Pages
