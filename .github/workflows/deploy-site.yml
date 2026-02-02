@@ -41,7 +41,8 @@ jobs:
             jieba \
             mkdocs-git-revision-date-localized-plugin \
             mkdocs-minify-plugin \
-            mkdocs-awesome-pages-plugin
+            mkdocs-awesome-pages-plugin \
+            mkdocs-git-authors-plugin
 
       - name: Build and Push to GitHub Pages
         run: |
