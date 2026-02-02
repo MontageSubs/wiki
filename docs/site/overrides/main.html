@@ -2,8 +2,14 @@
 
 {% block scripts %}
   {{ super() }}
-  {# 搜索改进 #}
   {% include "partials/custom-search.html" %}
+  
+  <div id="no-js-diagnostic" style="display:none">
+    TEMPLATE_LOAD_SUCCESS
+  </div>
 {% endblock %}
 
-<div class="debug-global">测试：如果在块外面能看到，说明块没被渲染</div>
+{% block source_file %}
+  {{ super() }}
+  <div class="test-marker">IF_YOU_SEE_THIS_SOURCE_FILE_BLOCK_WORKS</div>
+{% endblock %}
