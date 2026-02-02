@@ -33,7 +33,8 @@ jobs:
             jieba \
             mkdocs-git-revision-date-localized-plugin \
             mkdocs-minify-plugin \
-            mkdocs-awesome-pages-plugin
+            mkdocs-awesome-pages-plugin \
+            mkdocs-git-authors-plugin
 
       - name: Replay Wiki History
         id: replay
