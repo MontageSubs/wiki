@@ -32,7 +32,8 @@ jobs:
             mkdocs-git-revision-date-localized-plugin \
             mkdocs-minify-plugin \
             mkdocs-awesome-pages-plugin \
-            mkdocs-git-authors-plugin
+            mkdocs-git-authors-plugin \
+            mkdocs-git-committers-plugin-2
 
       - name: Replay Wiki History
         id: replay
