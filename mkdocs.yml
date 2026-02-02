@@ -75,12 +75,17 @@ plugins:
       show_contribution: true
       show_line_count: true
       fallback: true
+  - git-committers:
+      repository: MontageSubs/wiki
+      branch: infra
+      docs_path: docs/
   - minify:
       minify_html: true
       minify_js: true
       minify_css: true
       html_minifier_ignore_comments: true
   - awesome-pages
+
 
 # ==========================================================================
 # 4. Markdown 扩展增强
