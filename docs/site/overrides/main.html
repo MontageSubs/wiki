@@ -6,8 +6,8 @@
   {% include "partials/custom-search.html" %}
 {% endblock %}
 
-{% extends "base.html" %}
-
 {% block source_file %}
-  {% include "partials/custom-git-date.html" %}
+  {{ super() }}
+  {# 时间改进 #}
+  {% include "partials/custom-date.html" %}
 {% endblock %}
