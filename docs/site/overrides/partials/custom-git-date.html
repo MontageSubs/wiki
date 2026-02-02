@@ -1,0 +1,32 @@
+<style>
+  /* 仅在禁用 JavaScript 时生效 */
+  html:not(.js) .md-source-file__fact {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* 针对“最后更新”和“创建日期”的图标，在后面注入 title 属性的内容 */
+  html:not(.js) .md-source-file__fact .md-icon::after {
+    /* 提取图标 title 属性的值，并加上冒号 */
+    content: attr(title) "：" attr(title); 
+    /* 修正逻辑：由于图标本身有 title，我们直接取其内容 */
+    content: attr(title) "：";
+    white-space: nowrap;
+    font-size: 0.65rem;
+    color: var(--md-default-fg-color--light);
+  }
+
+  /* 提取紧跟其后的 UTC 时间字符串 */
+  html:not(.js) .md-source-file__fact .git-revision-date-localized-plugin::after {
+    content: attr(title);
+    font-size: 0.65rem;
+    color: var(--md-default-fg-color--light);
+  }
+
+  /* 隐藏在 No-JS 下失效的 timeago 和 iso_date 原始节点，防止布局混乱 */
+  html:not(.js) .git-revision-date-localized-plugin-timeago,
+  html:not(.js) .git-revision-date-localized-plugin-iso_date {
+    display: none;
+  }
+    </style>
