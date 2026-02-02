@@ -1,46 +1,44 @@
 <style>
-  /* --- 1. JS 禁用状态下的精准显性化 --- */
-  
-  /* 强制显示 ISO 日期 (覆盖 timeago.css 的 display: none) */
-  html.no-js .git-revision-date-localized-plugin-iso_date {
+  /* 1. 核心修复：强制显示 ISO 日期 */
+  /* 使用 body 增加权重，确保覆盖 timeago.css */
+  .no-js .md-source-file .git-revision-date-localized-plugin-iso_date,
+  html:not(.js) .md-source-file .git-revision-date-localized-plugin-iso_date {
     display: inline !important;
-    font-size: 0.8em;
+    font-size: 0.75rem;
+    color: var(--md-default-fg-color--light);
+    margin-left: 4px;
+  }
+
+  /* 2. 在图标后添加冒号文本 */
+  /* 针对“最后更新” */
+  .no-js .md-icon[title="最后更新"]::after,
+  html:not(.js) .md-icon[title="最后更新"]::after {
+    content: "最后更新：";
+    font-size: 0.75rem;
     margin-left: 4px;
     color: var(--md-default-fg-color--light);
   }
 
-  /* 在“最后更新”图标后添加“最后更新：” */
-  html.no-js .md-icon[title="最后更新"]::after {
-    content: "最后更新：";
-    font-size: 13px; /* 匹配 Material 默认字体大小 */
-    margin-left: 4px;
-    vertical-align: middle;
-  }
-
-  /* 在“创建日期”图标后添加“创建日期：” */
-  html.no-js .md-icon[title="创建日期"]::after {
+  /* 针对“创建日期” */
+  .no-js .md-icon[title="创建日期"]::after,
+  html:not(.js) .md-icon[title="创建日期"]::after {
     content: "创建日期：";
-    font-size: 13px;
+    font-size: 0.75rem;
     margin-left: 4px;
-    vertical-align: middle;
+    color: var(--md-default-fg-color--light);
   }
 
-  /* --- 2. 布局优化 (确保不杀掉头像) --- */
-  
-  /* 仅针对日期 Fact 进行间距调整 */
-  html.no-js .md-source-file__fact {
+  /* 3. 布局微调：防止元素上下错位 */
+  .no-js .md-source-file__fact,
+  html:not(.js) .md-source-file__fact {
     display: inline-flex !important;
     align-items: center;
-    margin-right: 15px;
+    vertical-align: middle;
   }
 
-  /* 明确禁止“贡献者”图标产生任何后缀文字，确保头像不受干扰 */
-  html.no-js .md-icon[title="贡献者"]::after {
+  /* 4. 安全保护：确保贡献者头像不被误伤 */
+  .no-js .md-icon[title="贡献者"]::after,
+  html:not(.js) .md-icon[title="贡献者"]::after {
     content: none !important;
-  }
-
-  /* 隐藏 No-JS 下原本就是空白的 timeago 容器 */
-  html.no-js .git-revision-date-localized-plugin-timeago {
-    display: none !important;
   }
 </style>
