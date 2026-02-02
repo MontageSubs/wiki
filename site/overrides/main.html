@@ -2,13 +2,6 @@
 
 {% block scripts %}
   {{ super() }}
+  {# 搜索改进 #}
   {% include "partials/custom-search.html" %}
-{% endblock %}
-
-{% block source_file %}
-  {{ super() }}
-  {# 仅在有作者信息时加载自定义组件 #}
-  {% if page.authors %}
-    {% include "partials/contributors.html" %}
-  {% endif %}
 {% endblock %}
