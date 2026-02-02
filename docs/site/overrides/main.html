@@ -1,15 +1,29 @@
 {% extends "base.html" %}
 
-{% block scripts %}
+{# 诊断 1: 模板是否加载？ (这行字应该出现在 HTML 源码的最顶部区域) #}
+{% block extrahead %}
   {{ super() }}
-  {% include "partials/custom-search.html" %}
-  
-  <div id="no-js-diagnostic" style="display:none">
-    TEMPLATE_LOAD_SUCCESS
-  </div>
+  <meta name="diag-template-status" content="TEMPLATE_LOADED">
 {% endblock %}
 
+{# 诊断 2: source_file 块是否被渲染？ #}
 {% block source_file %}
+  <div id="diag-source-block" style="border: 5px solid red; padding: 20px; background: yellow; color: black !important; display: block !important;">
+    <h2>[诊断信息]</h2>
+    <ul>
+      <li><strong>插件变量 1:</strong> {{ page.meta.git_revision_date_localized | default("未获取到变量1") }}</li>
+      <li><strong>插件变量 2:</strong> {{ page.meta.revision_date | default("未获取到变量2") }}</li>
+      <li><strong>内置变量:</strong> {{ page.last_updated | default("未获取到内置变量") }}</li>
+    </ul>
+    <p>如果你能看到这个黄色区域，说明 source_file 块工作正常！</p>
+  </div>
+  {# 这里不写 super()，防止干扰 #}
+{% endblock %}
+
+{# 诊断 3: 底部 scripts 块是否被渲染？ #}
+{% block scripts %}
   {{ super() }}
-  <div class="test-marker">IF_YOU_SEE_THIS_SOURCE_FILE_BLOCK_WORKS</div>
+  <div id="diag-script-block" style="display: none !important;">
+    SCRIPTS_BLOCK_OK
+  </div>
 {% endblock %}
