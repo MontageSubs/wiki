@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% block source_file %}
+{% block scripts %}
   {{ super() }}
+  {% include "partials/custom-search.html" %}
   {% include "partials/custom-date.html" %}
 {% endblock %}
