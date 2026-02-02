@@ -7,5 +7,8 @@
 
 {% block source_file %}
   {{ super() }}
-  {% include "partials/contributors.html" %}
+  {# 仅在有作者信息时加载自定义组件 #}
+  {% if page.authors %}
+    {% include "partials/contributors.html" %}
+  {% endif %}
 {% endblock %}
