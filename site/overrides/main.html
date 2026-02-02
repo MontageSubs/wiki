@@ -5,3 +5,9 @@
   {# 搜索改进 #}
   {% include "partials/custom-search.html" %}
 {% endblock %}
+
+{% block source_file %}
+  {{ super() }}
+  {# 时间改进 #}
+  {% include "partials/custom-date.html" %}
+{% endblock %}
