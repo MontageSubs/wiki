@@ -221,31 +221,4 @@
   html.no-js body .md-source-file__fact * {
     cursor: default !important;
   }
-</style> <script>
-    (function() {
-      function injectTrigger() {
-        var container = document.querySelector("#hd-action-js-container .hd-action-container");
-        if (!container || container.querySelector(".md-header__button")) return;
-
-        // 动态创建触发按钮
-        var label = document.createElement("label");
-        label.setAttribute("for", "hd-action-toggle");
-        label.className = "md-header__button md-icon";
-        label.title = "新增条目";
-        label.innerHTML = '<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z"/></svg></span>';
-        
-        // 插入到 aside 之前
-        container.insertBefore(label, container.firstChild);
-      }
-
-      // 页面加载完成后立刻注入
-      window.requestAnimationFrame(injectTrigger);
-
-      // 兼容 Material 的 Instant Loading
-      if (window.app$) {
-        app$.subscribe(function() {
-          window.requestAnimationFrame(injectTrigger);
-        });
-      }
-    })();
-  </script> </body> </html>
+</style> </body> </html>
