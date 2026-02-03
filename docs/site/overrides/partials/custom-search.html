@@ -1,63 +1,7 @@
-<style>
-  .md-search-result__meta {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100%;
-    min-height: 28px;
-  }
-
-  .md-search-result__create-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    font-size: 0.6rem;
-    font-weight: 600;
-    line-height: 1rem;
-    border-radius: 4px;
-    color: #ffffff !important;
-    border: 1px solid rgba(27, 31, 35, 0.15);
-    transition: background-color 0.1s;
-    white-space: nowrap;
-    cursor: pointer;
-    margin-left: 10px;
-    text-decoration: none !important;
-  }
-
-  :root {
-    --search-create-bg: #1f883d;
-    --search-create-hover: #1c8139;
-    --search-create-active: #197935;
-  }
-  
-  [data-md-color-scheme="slate"] {
-    --search-create-bg: #238636;
-    --search-create-hover: #29903b;
-    --search-create-active: #2e9a40;
-  }
-
-  .md-search-result__create-btn {
-    background-color: var(--search-create-bg);
-  }
-  .md-search-result__create-btn:hover {
-    background-color: var(--search-create-hover);
-  }
-  .md-search-result__create-btn:active {
-    background-color: var(--search-create-active);
-  }
-
-  @media screen and (max-width: 30em) {
-    .md-search-result__create-btn {
-      padding: 1px 6px;
-      font-size: 0.55rem;
-    }
-  }
-</style>
-
-<a href="" 
-   id="gh-create-entry-btn" 
-   class="md-search-result__create-btn" 
-   style="display: none;" 
+<a href=""
+   id="gh-create-entry-btn"
+   class="md-search-result__create-btn"
+   style="display: none;"
    target="_blank">
   创建条目
 </a>
@@ -74,16 +18,22 @@
 
       if (!resultMeta || !searchInput || !createBtn) return;
 
+      // 防止重复绑定
+      if (resultMeta.dataset.hasObserver) return;
+      resultMeta.dataset.hasObserver = "true";
+
       const observer = new MutationObserver(() => {
         const query = searchInput.value.trim();
-        const isNoResult = resultMeta.textContent.includes("没有找到");
-
+        // 兼容不同的搜索结果提示文本
+        const isNoResult = resultMeta.textContent.includes("没有找到") || 
+                           resultMeta.textContent.includes("No results");
+        
         if (isNoResult && query.length > 0) {
-
           const targetUrl = BASE_URL + encodeURIComponent(query);
           createBtn.href = LOGIN_PREFIX + encodeURIComponent(targetUrl);
           
-          if (!resultMeta.contains(createBtn)) {
+          // 如果按钮不在 meta 容器里，把它搬进去
+          if (createBtn.parentElement !== resultMeta) {
             resultMeta.appendChild(createBtn);
           }
           createBtn.style.display = "inline-flex";
@@ -95,11 +45,14 @@
       observer.observe(resultMeta, { childList: true, characterData: true, subtree: true });
     }
 
+    // 尝试立即执行
     setupCreateButton();
 
+    // 监听 Material 主题的页面切换事件 (Instant Loading)
     if (window.app$) {
       app$.subscribe(function() {
-        setupCreateButton();
+        // 使用 setTimeout 确保 DOM 已经渲染完毕
+        setTimeout(setupCreateButton, 100);
       });
     }
   })();
