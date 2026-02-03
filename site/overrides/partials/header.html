@@ -2,6 +2,24 @@
 {% set target_new_url = repo_url ~ "/wiki/_new" %}
 {% set login_new_url = "https://github.com/login?return_to=" ~ (target_new_url | urlencode) %}
 
+<script>
+  (function() {
+    var palette = localStorage.getItem("__palette");
+    if (palette) {
+      try {
+        var data = JSON.parse(palette);
+        for (var key in data.color) {
+          document.documentElement.setAttribute("data-md-color-" + key, data.color[key]);
+        }
+      } catch (e) {
+      }
+    } else {
+      var isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute("data-md-color-scheme", isDark ? "slate" : "default");
+    }
+  })();
+</script>
+
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
     <a href="{{ config.site_url | default(nav.homepage.url, true) | url }}" title="{{ config.site_name }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
