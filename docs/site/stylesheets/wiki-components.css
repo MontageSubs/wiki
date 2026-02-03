@@ -126,6 +126,7 @@
   display: block;
   font-size: 0.8rem;
   text-align: center;
+  color: var(--md-default-fg-color);
 }
 
 .hd-popup-header p, .gh-popup-header p {
@@ -148,16 +149,16 @@
   margin-top: 20px;
   background-color: #1f883d;
   color: #fff !important;
+  transition: background-color 0.1s;
 }
 
-.hd-btn-github:hover, .gh-btn-github:hover { 
-  background-color: #1c8139; 
-}
+.hd-btn-github:hover, .gh-btn-github:hover { background-color: #1c8139; }
+.hd-btn-github:active, .gh-btn-github:active { background-color: #197935; }
 
 /* 深色模式下 GitHub 按钮色值微调 */
-[data-md-color-scheme="slate"] :is(.hd-btn-github, .gh-btn-github) { 
-  background-color: #238636; 
-}
+[data-md-color-scheme="slate"] :is(.hd-btn-github, .gh-btn-github) { background-color: #238636; }
+[data-md-color-scheme="slate"] :is(.hd-btn-github, .gh-btn-github):hover { background-color: #29903b; }
+[data-md-color-scheme="slate"] :is(.hd-btn-github, .gh-btn-github):active { background-color: #2e9a40; }
 
 /* --- 6. 导航链接组 --- */
 .hd-links-nav, .gh-links-nav {
@@ -186,12 +187,8 @@
 
 /* --- 7. 响应式布局调整与动画 --- */
 @media screen and (max-width: 480px) {
-  /* 移动端遮罩加深 */
-  :is(.hd-overlay-mask, .action-overlay-mask) { 
-    background: rgba(0, 0, 0, 0.4); 
-  }
+  :is(.hd-overlay-mask, .action-overlay-mask) { background: rgba(0, 0, 0, 0.4); }
 
-  /* 移动端弹窗居中 */
   :is(.hd-popup-menu, .gh-popup-menu) {
     position: fixed;
     top: 50%;
@@ -201,13 +198,11 @@
     max-width: 320px;
     margin: 0;
     transform: translate(-50%, -50%);
+    /* 保持更弹的曲线 */
     animation: popup-anim-mobile 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
   }
 
-  /* 移动端隐藏三角形 */
-  :is(.hd-popup-arrow, .gh-popup-arrow) { 
-    display: none; 
-  }
+  :is(.hd-popup-arrow, .gh-popup-arrow) { display: none; }
 }
 
 /* 桌面端入场动画 */
@@ -216,8 +211,14 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 移动端入场动画 (带轻微缩放) */
+/* 移动端入场动画 */
 @keyframes popup-anim-mobile {
-  from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  from { 
+    opacity: 0; 
+    transform: translate(-50%, -45%) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+  }
 }
