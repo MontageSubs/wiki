@@ -1,119 +1,33 @@
-{% set repo_url = "https://github.com/MontageSubs/wiki" %}
-{% set target_new_url = repo_url ~ "/wiki/_new" %}
-{% set login_new_url = "https://github.com/login?return_to=" ~ (target_new_url | urlencode) %}
+<div class="md-header__title" data-md-component="header-title">
+  </div>
 
-<header class="md-header" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
-
-    <!-- Logo -->
-    <a href="{{ config.site_url | default(nav.homepage.url, true) | url }}"
-       title="{{ config.site_name }}"
-       class="md-header__button md-logo"
-       aria-label="{{ config.site_name }}"
-       data-md-component="logo">
-      {% include "partials/logo.html" %}
-    </a>
-
-    <!-- Drawer -->
-    <label class="md-header__button md-icon" for="__drawer">
-      {% include ".icons/material/menu.svg" %}
-    </label>
-
-    <!-- Title -->
-    <div class="md-header__title" data-md-component="header-title">
-      <div class="md-header__ellipsis">
-        <div class="md-header__topic">
-          <span class="md-ellipsis">{{ config.site_name }}</span>
+<div id="hd-action-js-anchor"></div> <noscript>
+  <div class="hd-action-wrapper">
+    <input type="checkbox" id="hd-action-toggle" autocomplete="off" hidden aria-hidden="true">
+    <label for="hd-action-toggle" class="hd-overlay-mask"></label>
+    <div class="hd-action-container">
+      <label for="hd-action-toggle" class="md-header__button md-icon" title="新增条目">
+        {% include ".icons/material/plus.svg" %}
+      </label>
+      <aside class="hd-popup-menu" aria-hidden="true">
+        <div class="hd-popup-arrow"></div>
+        <div class="hd-popup-box">
+          <div class="hd-popup-header">
+            <strong>参与百科贡献</strong>
+            <p>一本众创、共建、同享的字幕百科</p>
+          </div>
+          <div class="hd-popup-body">
+            <a href="{{ login_new_url }}" class="hd-btn-github" target="_blank" rel="noopener">使用 GitHub 创建新条目</a>
+            <nav class="hd-links-nav">
+              <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
+              <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
+              <a href="{{ '贡献指南/' | url }}">贡献指南</a>
+            </nav>
+          </div>
         </div>
-        <div class="md-header__topic" data-md-component="header-topic">
-          <span class="md-ellipsis">
-            {% if page and page.title %}{{ page.title }}{% endif %}
-          </span>
-        </div>
-      </div>
+      </aside>
     </div>
+  </div>
+</noscript>
 
-    <!-- ===============================
-         JS 模式下的安全触发器
-         （无状态、仅 JS 接管）
-         =============================== -->
-    <button
-      id="hd-action-trigger"
-      class="md-header__button md-icon"
-      type="button"
-      title="新增条目"
-      aria-label="参与百科贡献">
-      {% include ".icons/material/plus.svg" %}
-    </button>
-
-    <!-- ===============================
-         no-JS 模式：完整 checkbox 方案
-         =============================== -->
-    <noscript>
-      <div class="hd-action-wrapper">
-        <input type="checkbox" id="hd-action-toggle" hidden>
-        <label for="hd-action-toggle" class="hd-overlay-mask"></label>
-        <div class="hd-action-container">
-          <label for="hd-action-toggle"
-                 class="md-header__button md-icon"
-                 title="新增条目">
-            {% include ".icons/material/plus.svg" %}
-          </label>
-          <aside class="hd-popup-menu">
-            <div class="hd-popup-arrow"></div>
-            <div class="hd-popup-box">
-              <div class="hd-popup-header">
-                <strong>参与百科贡献</strong>
-                <p>一本众创、共建、同享的字幕百科</p>
-              </div>
-              <div class="hd-popup-body">
-                <a href="{{ login_new_url }}"
-                   class="hd-btn-github"
-                   target="_blank"
-                   rel="noopener">
-                  使用 GitHub 创建新条目
-                </a>
-                <nav class="hd-links-nav">
-                  <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
-                  <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
-                  <a href="{{ '贡献指南/' | url }}">贡献指南</a>
-                </nav>
-              </div>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </noscript>
-
-    <!-- Palette / Search / Repo -->
-    <form class="md-header__option" data-md-component="palette">
-      {% for option in config.theme.palette %}
-        {% set primary = option.primary | replace(" ", "-") | lower %}
-        {% set accent  = option.accent  | replace(" ", "-") | lower %}
-        <input class="md-option"
-               data-md-color-media="{{ option.media }}"
-               data-md-color-scheme="{{ option.scheme }}"
-               data-md-color-primary="{{ primary }}"
-               data-md-color-accent="{{ accent }}"
-               type="radio"
-               name="__palette"
-               id="__palette_{{ loop.index }}">
-      {% endfor %}
-    </form>
-
-    <label class="md-header__button md-icon" for="__search">
-      {% include ".icons/material/magnify.svg" %}
-    </label>
-
-    <div class="md-search" data-md-component="search" role="dialog">
-      {% include "partials/search.html" %}
-    </div>
-
-    {% if config.repo_url %}
-      <div class="md-header__source">
-        {% include "partials/source.html" %}
-      </div>
-    {% endif %}
-
-  </nav>
-</header>
+<form class="md-header__option" data-md-component="palette">
