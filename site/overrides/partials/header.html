@@ -1,0 +1,78 @@
+{% set repo_url = "https://github.com/MontageSubs/wiki" %}
+{% set target_new_url = repo_url ~ "/wiki/_new" %}
+{% set login_new_url = "https://github.com/login?return_to=" ~ (target_new_url | urlencode) %}
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
+    
+    <a href="{{ config.site_url | default(nav.homepage.url, true) | url }}" title="{{ config.site_name }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
+      {% include "partials/logo.html" %}
+    </a>
+
+    <label class="md-header__button md-icon" for="__drawer">
+      {% include ".icons/material/menu.svg" %}
+    </label>
+
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic"><span class="md-ellipsis">{{ config.site_name }}</span></div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">{% if page and page.title %}{{ page.title }}{% endif %}</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="md-header__option" data-md-component="palette">
+      {% for option in config.theme.palette %}
+        <input class="md-option" data-md-color-media="{{ option.media }}" data-md-color-scheme="{{ option.scheme }}" data-md-color-primary="{{ option.primary | replace(' ', '-') | lower }}" data-md-color-accent="{{ option.accent | replace(' ', '-') | lower }}" {% if option.toggle %} aria-label="{{ option.toggle.name }}" {% else %} aria-hidden="true" {% endif %} type="radio" name="__palette" id="__palette_{{ loop.index }}">
+        {% if option.toggle %}
+          <label class="md-header__button md-icon" title="{{ option.toggle.name }}" for="__palette_{{ loop.index0 or loop.length }}" hidden>
+            {% include ".icons/" ~ option.toggle.icon ~ ".svg" %}
+          </label>
+        {% endif %}
+      {% endfor %}
+    </form>
+
+    <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+
+    <div class="header-action-wrapper" style="display: flex; align-items: center;">
+      <input type="checkbox" id="header-action-toggle" autocomplete="off" hidden aria-hidden="true">
+      <label for="header-action-toggle" class="action-overlay-mask"></label>
+      <div class="action-container">
+        <label for="header-action-toggle" class="md-header__button md-icon" title="新增条目">
+          {% include ".icons/material/plus.svg" %}
+        </label>
+        <aside class="gh-popup-menu" aria-hidden="true">
+          <div class="gh-popup-arrow"></div>
+          <div class="gh-popup-box">
+            <div class="gh-popup-header">
+              <strong>参与百科贡献</strong>
+              <p>一本众创、共建、同享的字幕百科</p>
+            </div>
+            <div class="gh-popup-body">
+              <a href="{{ login_new_url }}" class="gh-btn-github" target="_blank">使用 GitHub 创建新条目</a>
+              <nav class="gh-links-nav">
+                <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
+                <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
+                <a href="{{ '贡献指南/' | url }}">贡献指南</a>
+              </nav>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <label class="md-header__button md-icon" for="__search">
+      {% include ".icons/material/magnify.svg" %}
+    </label>
+    <div class="md-search" data-md-component="search" role="dialog">
+      {% include "partials/search.html" %}
+    </div>
+
+    {% if config.repo_url %}
+      <div class="md-header__source">
+        {% include "partials/source.html" %}
+      </div>
+    {% endif %}
+  </nav>
+</header>
