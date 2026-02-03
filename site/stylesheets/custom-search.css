@@ -1,4 +1,4 @@
-/* 强制调整搜索结果元数据区域布局 */
+/* 1. 搜索结果元数据布局 */
 .md-search-result__meta {
   display: flex !important;
   justify-content: space-between !important;
@@ -7,8 +7,9 @@
   min-height: 28px;
 }
 
-/* 创建条目按钮的基础样式 */
+/* 2. 创建条目按钮：防御性变量定义 */
 .md-search-result__create-btn {
+  /* 基础显示属性 */
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
@@ -23,8 +24,8 @@
   cursor: pointer;
   margin-left: 10px;
   text-decoration: none !important;
-  
-  /* 定义局部变量默认值 (对应 :root) */
+
+  /* 变量默认值 (浅色) */
   --search-create-bg: #1f883d;
   --search-create-hover: #1c8139;
   --search-create-active: #197935;
@@ -32,23 +33,28 @@
   background-color: var(--search-create-bg);
 }
 
-/* 深色模式适配 */
+/* 3. 深色模式：防御性锁定 */
+/* 策略 A: 属性真空期根据系统预判 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-md-color-scheme]) .md-search-result__create-btn {
+    --search-create-bg: #238636;
+    --search-create-hover: #29903b;
+    --search-create-active: #2e9a40;
+  }
+}
+
+/* 策略 B: 脚本生效后根据属性锁定 */
 [data-md-color-scheme="slate"] .md-search-result__create-btn {
   --search-create-bg: #238636;
   --search-create-hover: #29903b;
   --search-create-active: #2e9a40;
 }
 
-/* 交互状态 */
-.md-search-result__create-btn:hover {
-  background-color: var(--search-create-hover);
-}
+/* 4. 交互状态 */
+.md-search-result__create-btn:hover { background-color: var(--search-create-hover); }
+.md-search-result__create-btn:active { background-color: var(--search-create-active); }
 
-.md-search-result__create-btn:active {
-  background-color: var(--search-create-active);
-}
-
-/* 移动端微调 */
+/* 5. 移动端适配 */
 @media screen and (max-width: 30em) {
   .md-search-result__create-btn {
     padding: 1px 6px;

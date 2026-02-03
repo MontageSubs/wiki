@@ -1,3 +1,14 @@
+/* ==========================================================================
+   WIKI COMPONENTS (wiki-components.css)
+   包含：Header 新增按钮 (hd-) 与 页面编辑操作 (gh-) 
+   ========================================================================== */
+
+/* --- 0. 防御性锁定：防止自定义组件在加载瞬间回退到白色 --- */
+:root[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #1e2129 !important;
+  --md-default-fg-color: rgba(255, 255, 255, 0.82) !important;
+}
+
 /* --- 1. 基础布局与复用容器 --- */
 .hd-action-wrapper, .action-wrapper {
   position: relative;
@@ -5,11 +16,14 @@
   align-items: center;
 }
 
+/* 页面内操作按钮 (gh-) 的特殊定位 */
 .action-wrapper {
   float: right;
   z-index: 1;
+  line-height: normal;
 }
 
+/* 页面内按钮图标行 */
 .action-icons-row {
   display: flex;
   gap: 12px;
@@ -17,7 +31,7 @@
   padding: 6px;
 }
 
-/* --- 2. 统一触发按钮与图标 --- */
+/* --- 2. 统一触发按钮与图标渲染 --- */
 .icon-btn-trigger {
   width: 24px;
   height: 24px;
@@ -40,7 +54,7 @@
   fill: currentColor;
 }
 
-/* --- 3. 核心弹出菜单逻辑 (复用) --- */
+/* --- 3. 核心弹出菜单逻辑与状态控制 --- */
 .hd-popup-menu, .gh-popup-menu {
   display: none;
   position: absolute;
@@ -51,11 +65,11 @@
   animation: popup-anim-desktop 0.2s ease-out;
 }
 
-/* 差异化位置设置 */
+/* 细节：根据不同位置调整弹窗偏移 */
 .hd-popup-menu { right: -12px; margin-top: 8px; }
 .gh-popup-menu { right: 0; margin-top: 10px; }
 
-/* 状态控制 */
+/* 状态控制：Checkbox 联动逻辑 */
 #hd-action-toggle:checked ~ .hd-action-container .hd-popup-menu,
 #action-menu-toggle:checked ~ .action-container .gh-popup-menu,
 #hd-action-toggle:checked ~ .hd-overlay-mask,
@@ -63,7 +77,7 @@
   display: block;
 }
 
-/* --- 4. 遮罩层与箭头 (复用) --- */
+/* --- 4. 遮罩层与装饰三角形 --- */
 .hd-overlay-mask, .action-overlay-mask {
   display: none;
   position: fixed;
@@ -87,15 +101,16 @@
   z-index: 102;
 }
 
-/* 差异化箭头位置 */
+/* 细节：区分三角形的水平位置 */
 .hd-popup-arrow { right: 30px; }
 .gh-popup-arrow { right: 48px; }
 
+/* 深色模式下的三角形与背景色强制适配 */
 [data-md-color-scheme="slate"] :is(.hd-popup-arrow, .gh-popup-arrow, .hd-popup-box, .gh-popup-box) {
-  background: #2e323e;
+  background-color: #2e323e !important;
 }
 
-/* --- 5. 弹出框内容与按钮 (复用) --- */
+/* --- 5. 弹出框内部内容样式 --- */
 .hd-popup-box, .gh-popup-box {
   background: var(--md-default-bg-color);
   border: 1px solid var(--md-divider-color);
@@ -121,7 +136,7 @@
   text-align: center;
 }
 
-/* GitHub 风格按钮 (完全通用) */
+/* GitHub 风格操作按钮 */
 .hd-btn-github, .gh-btn-github {
   display: block;
   text-align: center;
@@ -135,10 +150,16 @@
   color: #fff !important;
 }
 
-.hd-btn-github:hover, .gh-btn-github:hover { background-color: #1c8139; }
-[data-md-color-scheme="slate"] :is(.hd-btn-github, .gh-btn-github) { background-color: #238636; }
+.hd-btn-github:hover, .gh-btn-github:hover { 
+  background-color: #1c8139; 
+}
 
-/* --- 6. 导航链接 --- */
+/* 深色模式下 GitHub 按钮色值微调 */
+[data-md-color-scheme="slate"] :is(.hd-btn-github, .gh-btn-github) { 
+  background-color: #238636; 
+}
+
+/* --- 6. 导航链接组 --- */
 .hd-links-nav, .gh-links-nav {
   margin-top: 6px;
   padding-top: 12px;
@@ -163,10 +184,14 @@
   border-radius: 4px;
 }
 
-/* --- 7. 响应式与动画 --- */
+/* --- 7. 响应式布局调整与动画 --- */
 @media screen and (max-width: 480px) {
-  :is(.hd-overlay-mask, .action-overlay-mask) { background: rgba(0, 0, 0, 0.4); }
-  
+  /* 移动端遮罩加深 */
+  :is(.hd-overlay-mask, .action-overlay-mask) { 
+    background: rgba(0, 0, 0, 0.4); 
+  }
+
+  /* 移动端弹窗居中 */
   :is(.hd-popup-menu, .gh-popup-menu) {
     position: fixed;
     top: 50%;
@@ -178,15 +203,20 @@
     transform: translate(-50%, -50%);
     animation: popup-anim-mobile 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
   }
-  
-  :is(.hd-popup-arrow, .gh-popup-arrow) { display: none; }
+
+  /* 移动端隐藏三角形 */
+  :is(.hd-popup-arrow, .gh-popup-arrow) { 
+    display: none; 
+  }
 }
 
+/* 桌面端入场动画 */
 @keyframes popup-anim-desktop {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* 移动端入场动画 (带轻微缩放) */
 @keyframes popup-anim-mobile {
   from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
   to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
