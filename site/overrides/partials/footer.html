@@ -88,8 +88,7 @@
             document.body.appendChild(dimmer);
             requestAnimationFrame(() => dimmer.style.opacity = '1');
 
-            const emojis = ['❤️', '💖', '💝', '💕', '🧡', '💛', '💚', '💙', '💜'];
-            // 采用你 extra.css 中的 47.9375em 断点逻辑
+            const emojis = ['❤️', '❤️', '❤️', '❤️', '❤️', '💖', '💝', '💕', '🧡', '💛', '💚', '💙', '💜'];
             const isMobile = window.matchMedia("(max-width: 47.9375em)").matches;
             
             const startX = e.clientX;
@@ -105,7 +104,6 @@
                 if (isMobile) {
                     angle = (Math.random() * 60 + 240) * (Math.PI / 180);
                 } else {
-                    // 左偏 5 度：135+5=140, 315+5=320 (广度保持不变)
                     angle = (Math.random() * 180 + 140) * (Math.PI / 180);
                 }
 
@@ -124,13 +122,11 @@
                 document.body.appendChild(el);
                 el.addEventListener('animationend', () => el.remove());
             }
-
-            // 3000ms 后准时解锁交互并移除背景
             setTimeout(() => {
                 dimmer.style.opacity = '0';
                 isRunning = false; 
                 setTimeout(() => dimmer.remove(), 300);
-            }, 3000);
+            }, 2800);
         }
     })();
   </script>
