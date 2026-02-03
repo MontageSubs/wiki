@@ -172,14 +172,20 @@ body:has(dialog[open]) {
 .md-social__link { width: 18px; height: 18px; }
 .md-social__link svg { fill: currentColor; }
 
-.brand-group-wrapper { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center;
-  gap: 3px;
-  margin-top: 12px;
+.brand-group-wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-top: 12px;
 }
 
+.brand-group-wrapper label {
+   display: flex;
+   flex-direction: column;
+   align-items: inherit;
+   gap: 3px;
+   cursor: pointer;
+}
 
 @media screen and (max-width: 47.9375em) { 
   .custom-footer-container { 
