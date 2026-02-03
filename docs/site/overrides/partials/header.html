@@ -16,7 +16,7 @@
       {% include "partials/logo.html" %}
     </a>
 
-    <!-- Drawer toggle -->
+    <!-- Drawer -->
     <label class="md-header__button md-icon" for="__drawer">
       {% include ".icons/material/menu.svg" %}
     </label>
@@ -36,17 +36,17 @@
     </div>
 
     <!-- ===============================
-         Contribution Action Trigger
-         （无状态，仅触发器）
+         新增条目按钮（安全触发器）
          =============================== -->
-    <label
+    <button
       id="hd-action-trigger"
       class="md-header__button md-icon"
+      type="button"
       title="新增条目"
       aria-label="参与百科贡献"
     >
       {% include ".icons/material/plus.svg" %}
-    </label>
+    </button>
 
     <!-- Palette -->
     <form class="md-header__option" data-md-component="palette">
