@@ -176,7 +176,7 @@ body:has(dialog[open]) {
   display: flex; 
   flex-direction: column; 
   align-items: center;
-  gap: 1px;
+  gap: 3px;
   margin-top: 12px;
 }
 
