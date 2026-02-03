@@ -10,6 +10,13 @@
   z-index: 1;
 }
 
+.action-icons-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 6px;
+}
+
 /* --- 2. 统一触发按钮与图标 --- */
 .icon-btn-trigger {
   width: 24px;
