@@ -1,0 +1,57 @@
+/* 强制调整搜索结果元数据区域布局 */
+.md-search-result__meta {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100%;
+  min-height: 28px;
+}
+
+/* 创建条目按钮的基础样式 */
+.md-search-result__create-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  line-height: 1rem;
+  border-radius: 4px;
+  color: #ffffff !important;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  transition: background-color 0.1s;
+  white-space: nowrap;
+  cursor: pointer;
+  margin-left: 10px;
+  text-decoration: none !important;
+  
+  /* 定义局部变量默认值 (对应 :root) */
+  --search-create-bg: #1f883d;
+  --search-create-hover: #1c8139;
+  --search-create-active: #197935;
+  
+  background-color: var(--search-create-bg);
+}
+
+/* 深色模式适配 */
+[data-md-color-scheme="slate"] .md-search-result__create-btn {
+  --search-create-bg: #238636;
+  --search-create-hover: #29903b;
+  --search-create-active: #2e9a40;
+}
+
+/* 交互状态 */
+.md-search-result__create-btn:hover {
+  background-color: var(--search-create-hover);
+}
+
+.md-search-result__create-btn:active {
+  background-color: var(--search-create-active);
+}
+
+/* 移动端微调 */
+@media screen and (max-width: 30em) {
+  .md-search-result__create-btn {
+    padding: 1px 6px;
+    font-size: 0.55rem;
+  }
+}
