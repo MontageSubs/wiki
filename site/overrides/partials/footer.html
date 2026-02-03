@@ -1,7 +1,22 @@
 <footer class="md-footer">
+  <style>
+    #no-js-heart-toggle { display: none; }
+    .static-heart { display: inline-block; will-change: transform; transition: color 0.3s; }
+    #no-js-heart-toggle:checked ~ label .static-heart {
+        animation: human-heartbeat 1.2s infinite ease-in-out;
+        color: #ff4d4f;
+    }
+    @keyframes human-heartbeat {
+        0% { transform: scale(1); }
+        14% { transform: scale(1.3); }
+        28% { transform: scale(1.1); }
+        42% { transform: scale(1.45); }
+        70% { transform: scale(1); }
+    }
+  </style>
+
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid custom-footer-container">
-      
       <div class="footer-col left-col">
         <div class="footer-row-item footer-row-cc">
           <span class="cc-license">百科文字内容在 <a href="{{ 'CC-BY-SA-4.0许可证' | url }}">CC BY-SA 4.0</a> 许可下提供</span>
@@ -15,7 +30,6 @@
           </nav>
         </div>
       </div>
-
       <div class="footer-col right-col">
         <div class="footer-row-item footer-row-social md-social">
           {% if config.extra.social %}
@@ -35,10 +49,13 @@
             {% endfor %}
           {% endif %}
         </div>
-        
+
         <div class="footer-row-item footer-row-brand brand-group-wrapper brand-trigger" style="cursor: pointer;">
-          <span class="group-name">蒙太奇字幕组 (MontageSubs)</span>
-          <span class="slogan">用爱发电 ❤️ Powered by Love</span>
+         <input type="checkbox" id="no-js-heart-toggle">
+          <label for="no-js-heart-toggle" style="cursor: pointer; display: flex; flex-direction: column; align-items: inherit; margin: 0; padding: 0;">
+            <span class="group-name">蒙太奇字幕组 (MontageSubs)</span>
+            <span class="slogan">用爱发电 <span class="static-heart">❤️</span> Powered by Love</span>
+          </label>
         </div>
       </div>
     </div>
@@ -64,12 +81,9 @@
             }
         `;
         document.head.appendChild(style);
-
         const trigger = document.querySelector('.brand-trigger');
         if (!trigger) return;
-
         let count = 0, last = 0, isRunning = false;
-
         trigger.addEventListener('click', (e) => {
             if (isRunning) return;
             const now = Date.now();
@@ -81,35 +95,29 @@
                 count = 0;
             }
         });
-
         function fireBurst(e) {
             const dimmer = document.createElement('div');
             dimmer.className = 'easter-egg-dimmer';
             document.body.appendChild(dimmer);
             requestAnimationFrame(() => dimmer.style.opacity = '1');
-
             const emojis = ['❤️', '❤️', '❤️', '💖', '💝', '💕', '🧡', '💛', '💚', '💙', '💜'];
             const isMobile = window.matchMedia("(max-width: 47.9375em)").matches;
-            
+                        
             const startX = e.clientX;
             const startY = e.clientY;
             const total = 60;
-
             for (let i = 0; i < total; i++) {
                 const el = document.createElement('div');
                 el.className = 'heart-particle';
                 el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-
                 let angle;
                 if (isMobile) {
                     angle = (Math.random() * 60 + 240) * (Math.PI / 180);
                 } else {
                     angle = (Math.random() * 180 + 140) * (Math.PI / 180);
                 }
-
                 const power = Math.random() * 400 + 300;
                 const dur = 3 + Math.random() * 2;
-
                 el.style.left = `${startX}px`;
                 el.style.top = `${startY}px`;
                 el.style.setProperty('--dur', `${dur}s`);
@@ -118,7 +126,6 @@
                 el.style.setProperty('--rot-mid', `${(Math.random()-0.5)*360}deg`);
                 el.style.setProperty('--rot-end', `${(Math.random()-0.5)*1080}deg`);
                 el.style.fontSize = `${20 + Math.random() * 15}px`;
-
                 document.body.appendChild(el);
                 el.addEventListener('animationend', () => el.remove());
             }
