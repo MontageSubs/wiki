@@ -20,12 +20,12 @@
         <div class="footer-row-item footer-row-social md-social">
           {% if config.extra.social %}
             {% for social in config.extra.social %}
-              <a href="{{ social.link | url }}" 
-                 target="_blank" 
-                 rel="noopener" 
-                 title="{{ social.name }}" 
-                 aria-label="{{ social.name }}" 
-                 class="md-social__link">
+              <a href="{{ social.link | url }}"
+                  target="_blank"
+                  rel="noopener"
+                  title="{{ social.name }}"
+                  aria-label="{{ social.name }}"
+                  class="md-social__link">
                 {% if loop.first %}
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 25.5-20.6 46.1-46.1 46.1H354.1V333.8h-132.2v160.1H73.6c-25.5 0-46.1-20.6-46.1-46.1l.7-160.2H32c-18 0-32-14.1-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-10 24-10s17 3 24 10l251.4 223.5c7 7 10 15 10 24z"></path></svg>
                 {% else %}
@@ -36,12 +36,102 @@
           {% endif %}
         </div>
         
-        <div class="footer-row-item footer-row-brand brand-group-wrapper">
-          <a href="https://montagesubs.github.io/" class="group-name" target="_blank" rel="noopener">蒙太奇字幕组 (MontageSubs)</a>
+        <div class="footer-row-item footer-row-brand brand-group-wrapper brand-trigger" style="cursor: pointer;">
+          <span class="group-name">蒙太奇字幕组 (MontageSubs)</span>
           <span class="slogan">用爱发电 ❤️ Powered by Love</span>
         </div>
       </div>
-
     </div>
   </div>
+
+  <script>
+    (function() {
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .heart-particle {
+                position: fixed; z-index: 10001; user-select: none; pointer-events: none; will-change: transform;
+                animation: heart-physics var(--dur) cubic-bezier(0.15, 0, 0.5, 1) forwards, heart-opacity var(--dur) ease-in forwards;
+            }
+            @keyframes heart-physics {
+                0% { transform: translate(0, 0) rotate(0deg) scale(0); }
+                25% { transform: translate(calc(var(--target-x) * 0.4), var(--peak-y)) rotate(var(--rot-mid)) scale(1.2); }
+                100% { transform: translate(var(--target-x), 110vh) rotate(var(--rot-end)) scale(0.8); }
+            }
+            @keyframes heart-opacity { 0% { opacity: 0; } 10% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+            .easter-egg-dimmer {
+                position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                background: rgba(0, 0, 0, 0.4); z-index: 10000; opacity: 0; transition: opacity 0.3s; pointer-events: auto;
+            }
+        `;
+        document.head.appendChild(style);
+
+        const trigger = document.querySelector('.brand-trigger');
+        if (!trigger) return;
+
+        let count = 0, last = 0, isRunning = false;
+
+        trigger.addEventListener('click', (e) => {
+            if (isRunning) return;
+            const now = Date.now();
+            if (now - last > 1000) count = 0;
+            last = now;
+            if (++count === 5) {
+                isRunning = true;
+                fireBurst(e);
+                count = 0;
+            }
+        });
+
+        function fireBurst(e) {
+            const dimmer = document.createElement('div');
+            dimmer.className = 'easter-egg-dimmer';
+            document.body.appendChild(dimmer);
+            requestAnimationFrame(() => dimmer.style.opacity = '1');
+
+            const emojis = ['❤️', '💖', '💝', '💕', '🧡', '💛', '💚', '💙', '💜'];
+            // 采用你 extra.css 中的 47.9375em 断点逻辑
+            const isMobile = window.matchMedia("(max-width: 47.9375em)").matches;
+            
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const total = 60;
+
+            for (let i = 0; i < total; i++) {
+                const el = document.createElement('div');
+                el.className = 'heart-particle';
+                el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+                let angle;
+                if (isMobile) {
+                    angle = (Math.random() * 60 + 240) * (Math.PI / 180);
+                } else {
+                    // 左偏 5 度：135+5=140, 315+5=320 (广度保持不变)
+                    angle = (Math.random() * 180 + 140) * (Math.PI / 180);
+                }
+
+                const power = Math.random() * 400 + 300;
+                const dur = 3 + Math.random() * 2;
+
+                el.style.left = `${startX}px`;
+                el.style.top = `${startY}px`;
+                el.style.setProperty('--dur', `${dur}s`);
+                el.style.setProperty('--target-x', `${Math.cos(angle) * power * 1.5}px`);
+                el.style.setProperty('--peak-y', `${-(startY * 0.5 + Math.random() * 200)}px`);
+                el.style.setProperty('--rot-mid', `${(Math.random()-0.5)*360}deg`);
+                el.style.setProperty('--rot-end', `${(Math.random()-0.5)*1080}deg`);
+                el.style.fontSize = `${20 + Math.random() * 15}px`;
+
+                document.body.appendChild(el);
+                el.addEventListener('animationend', () => el.remove());
+            }
+
+            // 3000ms 后准时解锁交互并移除背景
+            setTimeout(() => {
+                dimmer.style.opacity = '0';
+                isRunning = false; 
+                setTimeout(() => dimmer.remove(), 300);
+            }, 3000);
+        }
+    })();
+  </script>
 </footer>
