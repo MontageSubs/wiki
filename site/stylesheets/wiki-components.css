@@ -54,6 +54,20 @@
   fill: currentColor;
 }
 
+/* 调整悬停菜单换行 */
+[data-md-component="header"] .md-tooltip {
+  width: auto !important;
+  min-width: max-content !important;
+}
+
+[data-md-component="header"] .md-tooltip .md-tooltip__inner {
+  min-width: fit-content !important;
+  white-space: normal !important; 
+  max-width: 200px !important;
+  text-align: center;
+}
+
+
 /* --- 3. 核心弹出菜单逻辑与状态控制 --- */
 .hd-popup-menu, .gh-popup-menu {
   display: none;
