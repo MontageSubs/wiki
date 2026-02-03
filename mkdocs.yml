@@ -105,8 +105,8 @@ markdown_extensions:
 # ==========================================================================
 extra_css:
   - site/stylesheets/extra.css
-  - site/stylesheets/wiki-components.css
-  - site/stylesheets/custom-search.css
+#  - site/stylesheets/wiki-components.css
+#  - site/stylesheets/custom-search.css
 
 extra:
   social:
