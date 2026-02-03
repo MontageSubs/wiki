@@ -31,14 +31,6 @@
   padding: 6px;
 }
 
-/* 禁止悬浮提示换行 */
-.hd-action-wrapper label {
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
 /* --- 2. 统一触发按钮与图标渲染 --- */
 .icon-btn-trigger {
   width: 24px;
