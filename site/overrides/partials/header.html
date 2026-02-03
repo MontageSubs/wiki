@@ -2,32 +2,17 @@
 {% set target_new_url = repo_url ~ "/wiki/_new" %}
 {% set login_new_url = "https://github.com/login?return_to=" ~ (target_new_url | urlencode) %}
 
-<script>
-  (function() {
-    var palette = localStorage.getItem("__palette");
-    if (palette) {
-      try {
-        var data = JSON.parse(palette);
-        for (var key in data.color) {
-          document.documentElement.setAttribute("data-md-color-" + key, data.color[key]);
-        }
-      } catch (e) {
-      }
-    } else {
-      var isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      document.documentElement.setAttribute("data-md-color-scheme", isDark ? "slate" : "default");
-    }
-  })();
-</script>
-
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
+    
     <a href="{{ config.site_url | default(nav.homepage.url, true) | url }}" title="{{ config.site_name }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}" data-md-component="logo">
       {% include "partials/logo.html" %}
     </a>
+
     <label class="md-header__button md-icon" for="__drawer">
       {% include ".icons/material/menu.svg" %}
     </label>
+
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
@@ -38,7 +23,8 @@
         </div>
       </div>
     </div>
-    <div class="hd-action-wrapper">
+
+    <div class="hd-action-wrapper" style="display: flex; align-items: center; min-width: 40px;">
       <input type="checkbox" id="hd-action-toggle" autocomplete="off" hidden aria-hidden="true">
       <label for="hd-action-toggle" class="hd-overlay-mask"></label>
       <div class="hd-action-container">
@@ -64,6 +50,7 @@
         </aside>
       </div>
     </div>
+
     <form class="md-header__option" data-md-component="palette">
       {% for option in config.theme.palette %}
         {% set primary = option.primary | replace(" ", "-") | lower %}
@@ -76,12 +63,14 @@
         {% endif %}
       {% endfor %}
     </form>
+
     <label class="md-header__button md-icon" for="__search">
       {% include ".icons/material/magnify.svg" %}
     </label>
     <div class="md-search" data-md-component="search" role="dialog">
       {% include "partials/search.html" %}
     </div>
+
     {% if config.repo_url %}
       <div class="md-header__source">
         {% include "partials/source.html" %}
@@ -89,4 +78,3 @@
     {% endif %}
   </nav>
 </header>
-
