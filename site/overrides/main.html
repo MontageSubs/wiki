@@ -9,49 +9,28 @@
 
   <script>
     (function() {
-      function injectCustomHeader() {
-        var container = document.getElementById("hd-action-js-container");
-        // 如果容器不存在，或者已经注入过了（根据是否有 checkbox 判断），则跳过
-        if (!container || document.getElementById("hd-action-toggle-js")) return;
+      function injectTrigger() {
+        var container = document.querySelector("#hd-action-js-container .hd-action-container");
+        if (!container || container.querySelector(".md-header__button")) return;
 
-        var actionHtml = `
-          <input type="checkbox" id="hd-action-toggle-js" autocomplete="off" hidden aria-hidden="true">
-          <label for="hd-action-toggle-js" class="hd-overlay-mask"></label>
-          <div class="hd-action-container">
-            <label for="hd-action-toggle-js" class="md-header__button md-icon" title="新增条目">
-              <span class="twemoji">{% include ".icons/material/plus.svg" %}</span>
-            </label>
-            <aside class="hd-popup-menu" aria-hidden="true">
-              <div class="hd-popup-arrow"></div>
-              <div class="hd-popup-box">
-                <div class="hd-popup-header">
-                  <strong>参与百科贡献</strong>
-                  <p>一本众创、共建、同享的字幕百科</p>
-                </div>
-                <div class="hd-popup-body">
-                  <a href="{{ login_new_url }}" class="hd-btn-github" target="_blank">使用 GitHub 创建新条目</a>
-                  <nav class="hd-links-nav">
-                    <a href="{{ '百科语法指南/' | url }}">百科语法指南</a>
-                    <a href="{{ 'GitHub-帮助指南/' | url }}">GitHub 帮助指南</a>
-                    <a href="{{ '贡献指南/' | url }}">贡献指南</a>
-                  </nav>
-                </div>
-              </div>
-            </aside>
-          </div>
-        `;
-        container.innerHTML = actionHtml;
+        // 动态创建触发按钮
+        var label = document.createElement("label");
+        label.setAttribute("for", "hd-action-toggle");
+        label.className = "md-header__button md-icon";
+        label.title = "新增条目";
+        label.innerHTML = '<span class="twemoji">{% include ".icons/material/plus.svg" %}</span>';
+        
+        // 插入到 aside 之前
+        container.insertBefore(label, container.firstChild);
       }
 
-      // 使用 requestAnimationFrame 确保在浏览器渲染帧之间注入，避免阻塞 bundle.js
-      window.requestAnimationFrame(function() {
-        injectCustomHeader();
-      });
+      // 页面加载完成后立刻注入
+      window.requestAnimationFrame(injectTrigger);
 
-      // 处理 Material 的 Instant loading
-      if (typeof app$ !== "undefined") {
+      // 兼容 Material 的 Instant Loading
+      if (window.app$) {
         app$.subscribe(function() {
-          window.requestAnimationFrame(injectCustomHeader);
+          window.requestAnimationFrame(injectTrigger);
         });
       }
     })();
